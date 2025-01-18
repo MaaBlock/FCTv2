@@ -40,6 +40,15 @@
     <Filter Include="mutilthreadbase\headers">
       <UniqueIdentifier>{bfa8f5f7-aad6-4e53-85a6-c76a603a1c59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="context">
+      <UniqueIdentifier>{25766462-af90-4b21-87cc-c01a8a2647ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="context\header">
+      <UniqueIdentifier>{bde1feba-64c6-4304-9f8c-1f6efe4c2941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="context\source">
+      <UniqueIdentifier>{48566539-8c76-408e-a933-9e74a364778c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -65,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="UI\GLFW_Window.h">
       <Filter>ui\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\Context.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_Context.h">
+      <Filter>context\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
