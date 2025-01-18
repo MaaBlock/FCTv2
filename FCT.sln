@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FCT", "FCT\FCT.vcxproj", "{8F428744-8AF0-403E-9CB6-C2CF2281042F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial", "Tutorial\Tutorial.vcxproj", "{0CEF6B24-2CF6-4E4E-A996-C41B8866C789}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8F428744-8AF0-403E-9CB6-C2CF2281042F} = {8F428744-8AF0-403E-9CB6-C2CF2281042F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

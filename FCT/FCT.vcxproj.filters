@@ -22,6 +22,15 @@
     <Filter Include="runtime\source">
       <UniqueIdentifier>{97edc721-92f3-4346-8f78-7885b8a6e277}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{f1cb1b96-696a-4ae0-93a6-0be2b68561ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\headers">
+      <UniqueIdentifier>{94819006-7cf3-40a2-bd4b-5611f9ddc408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\source">
+      <UniqueIdentifier>{4eb6296b-51fb-4122-a095-611d2d8e71cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -36,6 +45,9 @@
     <ClInclude Include="Runtime\runtime.h">
       <Filter>runtime\headers</Filter>
     </ClInclude>
+    <ClInclude Include="UI\GLFW_WindowShareData.h">
+      <Filter>ui\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -46,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="Runtime\runtime.cpp">
       <Filter>runtime\source</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GLFW_WindowShareData.cpp">
+      <Filter>ui\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

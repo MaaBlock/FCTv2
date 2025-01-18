@@ -1,4 +1,11 @@
 #pragma once
+namespace FCT {
+	class Runtime {
+	public:
+		void Init();
+		void Tern();
+	private:
 
-void Init();
-void Tern();
+	};
+	Runtime* CreateRuntime();
+}
