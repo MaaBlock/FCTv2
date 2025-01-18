@@ -20,8 +20,8 @@ void GLFW_WindowShareData::init()
 		{
 			while (!g_taskQueue.empty()) {
 				GLFW_UiTask task;
-				g_taskQueue.consume_one(&task);
-				task.func(task.param);
+				g_taskQueue.pop(task);
+				task.func(task.data);
 			}
             glfwPollEvents();
 		}
@@ -29,14 +29,30 @@ void GLFW_WindowShareData::init()
 		});
 }
 
-void GLFW_WindowShareData::postUiTask(UITaskFunction func, void* param, bool waited)
+void GLFW_WindowShareData::postUiTask(UITaskFunction func, void* param, bool wait)
 {
 	if (g_inited)
 	{
+		std::shared_ptr<bool> waited = std::make_shared<bool>(wait);
 		GLFW_UiTask task;
-		task.func = func;
-		task.param = param;
+		task.data = new GLFW_UiTaskData;
+		task.data->param = param;
+		task.data->func = func;
+		task.data->waited = waited;
+		task.func = [](GLFW_UiTaskData* data) {
+			data->func(data->param);
+			*data->waited = false;
+			delete data;
+			};
 		g_taskQueue.push(task);
 		glfwPostEmptyEvent();
+		while (waited) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
 	}
+}
+
+void GLFW_WindowShareData::createWindow(int x, int y, const char* title)
+{
+
 }
