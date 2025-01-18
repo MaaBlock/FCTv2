@@ -31,6 +31,15 @@
     <Filter Include="ui\source">
       <UniqueIdentifier>{4eb6296b-51fb-4122-a095-611d2d8e71cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mutilthreadbase">
+      <UniqueIdentifier>{2df8a25f-2dee-457d-ae28-c4f227da6f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mutilthreadbase\source">
+      <UniqueIdentifier>{3f6a0ce1-f3ff-4781-8193-9ddf38d8384b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mutilthreadbase\headers">
+      <UniqueIdentifier>{bfa8f5f7-aad6-4e53-85a6-c76a603a1c59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -39,13 +48,22 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="headers.h">
-      <Filter>runtime</Filter>
-    </ClInclude>
     <ClInclude Include="Runtime\runtime.h">
       <Filter>runtime\headers</Filter>
     </ClInclude>
     <ClInclude Include="UI\GLFW_WindowShareData.h">
+      <Filter>ui\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MutilThreadBase\RefCount.h">
+      <Filter>mutilthreadbase\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Window.h">
+      <Filter>ui\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers.h">
+      <Filter>runtime\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\GLFW_Window.h">
       <Filter>ui\headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -61,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="UI\GLFW_WindowShareData.cpp">
       <Filter>ui\source</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GLFW_Window.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

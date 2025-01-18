@@ -4,13 +4,17 @@ namespace FCT {
 		Runtime* ret = new Runtime;
 		return ret;
 	}
-	void Runtime::Init()
+	void Runtime::init()
 	{
-		g_windowShareData = new GLFW_WindowShareData();
+		g_windowShareData = new GLFW_WindowShareData(this);
 		g_windowShareData->init();
 	}
-	void Runtime::Tern()
+	void Runtime::tern()
 	{
 		delete this;
+	}
+	Window* Runtime::createWindow(int w, int h, const char* title)
+	{
+		return g_windowShareData->createWindow(w,h,title);
 	}
 }

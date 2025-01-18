@@ -141,9 +141,12 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
+    <ClInclude Include="MutilThreadBase\RefCount.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Runtime\runtime.h" />
+    <ClInclude Include="UI\GLFW_Window.h" />
     <ClInclude Include="UI\GLFW_WindowShareData.h" />
+    <ClInclude Include="UI\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp" />
@@ -154,6 +157,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Runtime\runtime.cpp" />
+    <ClCompile Include="UI\GLFW_Window.cpp" />
     <ClCompile Include="UI\GLFW_WindowShareData.cpp" />
   </ItemGroup>
   <ItemGroup>
