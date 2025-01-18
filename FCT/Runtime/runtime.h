@@ -5,6 +5,7 @@ namespace FCT {
 		void Init();
 		void Tern();
 	private:
+		GLFW_WindowShareData* g_windowShareData;
 
 	};
 	Runtime* CreateRuntime();

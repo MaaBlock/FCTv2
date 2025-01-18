@@ -1,6 +1,6 @@
 #include "../headers.h"
 
-GLFW_WindowShareData::GLFW_WindowShareData()
+GLFW_WindowShareData::GLFW_WindowShareData() : g_taskQueue(1024)
 {
 	g_inited = false;
 	g_runing = true;
