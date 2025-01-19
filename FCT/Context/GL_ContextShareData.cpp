@@ -12,5 +12,11 @@ namespace FCT {
 	}
 	void GL_ContextShareData::init()
 	{
+		setOpenGLVersion(3, 3);
+	}
+	void GL_ContextShareData::setOpenGLVersion(int major, int minor)
+	{
+		g_glVersionMajor = major;
+		g_glVersionMinor = minor;
 	}
 }

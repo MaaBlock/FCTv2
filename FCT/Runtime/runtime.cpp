@@ -26,4 +26,8 @@ namespace FCT {
 	{
 		return g_glContextShareData->createContext(target);
 	}
+	void Runtime::setOpenGLVesion(int major, int minor)
+	{
+		g_glContextShareData->setOpenGLVersion(major, minor);
+	}
 }

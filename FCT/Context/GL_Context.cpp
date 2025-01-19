@@ -4,6 +4,8 @@ namespace FCT {
 	{
 		g_shareData = shareData;
 		g_runtime = runtime;
+		g_glVersionMajor = g_shareData->getGLVersionMajor();
+		g_glVersionMinor = g_shareData->getGLVersionMinor();
 	}
 
 	void GL_Context::create(IRenderTarget* target)

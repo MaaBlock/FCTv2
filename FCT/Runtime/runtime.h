@@ -11,6 +11,7 @@ namespace FCT {
 		void tern();
 		Window* createWindow(int w,int h,const char* title);
 		Context* createContext(IRenderTarget* target);
+		void setOpenGLVesion(int major, int minor);
 	private:
 		GLFW_WindowShareData* g_glfwWindowShareData;
 		GL_ContextShareData* g_glContextShareData;
