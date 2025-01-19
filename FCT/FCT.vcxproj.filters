@@ -81,6 +81,15 @@
     <ClInclude Include="Context\GL_Context.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\IRenderTarget.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\D3D11_Context.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_ContextShareData.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -96,6 +105,15 @@
       <Filter>ui\source</Filter>
     </ClCompile>
     <ClCompile Include="UI\GLFW_Window.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_ContextShareData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_Context.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\Context.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

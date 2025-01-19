@@ -8,14 +8,14 @@ namespace FCT {
 		g_runtime = runtime;
 	}
 
-	std::thread& GLFW_WindowShareData::getUiThread()
+	std::thread* GLFW_WindowShareData::getUiThread()
 	{
 		return g_uiThread;
 	}
 
 	void GLFW_WindowShareData::init()
 	{
-		g_uiThread = std::thread([this]() {
+		g_uiThread = new std::thread([this]() {
 			glfwInit();
 			g_inited = true;
 			while (g_runing)
@@ -50,7 +50,7 @@ namespace FCT {
 				};
 			g_taskQueue.push(task);
 			glfwPostEmptyEvent();
-			while (waited) {
+			while (*waited) {
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			}
 		}

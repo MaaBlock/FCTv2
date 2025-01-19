@@ -4,6 +4,7 @@ namespace FCT {
 	class RefCount {
 	public:
 		RefCount() : m_refCount(1) {}
+		virtual ~RefCount() {};
 		void addRef() {
 			m_refCount++;
 		}

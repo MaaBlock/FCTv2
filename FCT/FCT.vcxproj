@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../glad;$(IncludePath)</IncludePath>
+    <IncludePath>..\glad;$(IncludePath)</IncludePath>
     <LibraryPath>..\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +147,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Context\Context.h" />
+    <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\GL_Context.h" />
+    <ClInclude Include="Context\GL_ContextShareData.h" />
+    <ClInclude Include="Context\IRenderTarget.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
@@ -158,6 +161,9 @@
     <ClInclude Include="UI\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Context\Context.cpp" />
+    <ClCompile Include="Context\GL_Context.cpp" />
+    <ClCompile Include="Context\GL_ContextShareData.cpp" />
     <ClCompile Include="FCT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

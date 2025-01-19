@@ -18,14 +18,14 @@ namespace FCT {
 	class GLFW_WindowShareData {
 	public:
 		GLFW_WindowShareData(Runtime* runtime);
-		std::thread& getUiThread();
+		std::thread* getUiThread();
 		void init();
 		void postUiTask(UITaskFunction func, void* param = nullptr, bool waited = true);
 		Window* createWindow(int x, int y, const char* title);
 	private:
 		Runtime* g_runtime;
 		boost::lockfree::queue<GLFW_UiTask> g_taskQueue;
-		std::thread g_uiThread;
+		std::thread* g_uiThread;
 		bool g_inited;
 		bool g_runing;
 	};

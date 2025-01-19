@@ -6,7 +6,9 @@ namespace FCT {
 	public:
 		GLFW_Window(GLFW_WindowShareData* shareData, Runtime* runtime);
 		void create(int x, int y, const char* title);
-		bool isRunning() const;
+		bool isRunning() const override;
+		void bind(Context* ctx) override;
+		void swapBuffers() override;
 	private:
 		GLFW_WindowShareData* m_shareData;
 		Runtime* m_runtime;
