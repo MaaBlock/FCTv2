@@ -14,9 +14,30 @@ int main() {
 		});
 	while (wnd->isRunning()) {
 		if (needViewPort) {
-			ctx->viewport(0, 0, wnd->getWidth(), wnd->getHeight());
+			float x = 0,y = 0, w = wnd->getWidth(),h = wnd->getHeight();
+			if (h / w > 0.75) {
+				x = 0;
+				y = (h - w * 3 / 4) / 2;
+				h = w * 3 / 4;
+			}
+			else {
+				x = (w - h * 4 / 3) / 2;
+				y = 0;
+				w = h * 4 / 3;
+			}
+			ctx->viewport(x, y, w, h);
 		}
-		ctx->clear(1.0,0,0);
+		ctx->clear(0,0,0);
+		glBegin(GL_QUADS);
+		glColor3f(1.0, 0, 0);
+		glVertex2d(-1, -1);
+		glColor3f(1.0, 0, 0);
+		glVertex2d(1, -1);
+		glColor3f(1.0, 0, 0);
+		glVertex2d(1, 1);
+		glColor3f(1.0, 0, 0);
+		glVertex2d(-1, 1);
+		glEnd();
 		glBegin(GL_TRIANGLES);
 		glColor3f(1.0, 0, 0);
 		glVertex2d(-0.5, -0.5);
