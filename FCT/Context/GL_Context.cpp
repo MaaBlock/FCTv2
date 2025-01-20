@@ -20,4 +20,9 @@ namespace FCT {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
+	void GL_Context::viewport(int x, int y, int width, int height)
+	{
+		glViewport(x, y, width, height);
+	}
+
 }

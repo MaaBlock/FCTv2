@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -151,11 +151,14 @@
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
     <ClInclude Include="Context\IRenderTarget.h" />
+    <ClInclude Include="Context\Material.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Runtime\runtime.h" />
+    <ClInclude Include="UI\CallBackHandler.h" />
+    <ClInclude Include="UI\EventHandler.h" />
     <ClInclude Include="UI\GLFW_Window.h" />
     <ClInclude Include="UI\GLFW_WindowShareData.h" />
     <ClInclude Include="UI\Window.h" />
@@ -174,6 +177,7 @@
     <ClCompile Include="Runtime\runtime.cpp" />
     <ClCompile Include="UI\GLFW_Window.cpp" />
     <ClCompile Include="UI\GLFW_WindowShareData.cpp" />
+    <ClCompile Include="UI\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

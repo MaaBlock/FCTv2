@@ -90,6 +90,15 @@
     <ClInclude Include="Context\GL_ContextShareData.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\Material.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\EventHandler.h">
+      <Filter>ui\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CallBackHandler.h">
+      <Filter>ui\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -104,17 +113,20 @@
     <ClCompile Include="UI\GLFW_WindowShareData.cpp">
       <Filter>ui\source</Filter>
     </ClCompile>
-    <ClCompile Include="UI\GLFW_Window.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Context\GL_Context.cpp">
+      <Filter>context\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\GL_ContextShareData.cpp">
-      <Filter>源文件</Filter>
+      <Filter>context\source</Filter>
     </ClCompile>
-    <ClCompile Include="Context\GL_Context.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="UI\GLFW_Window.cpp">
+      <Filter>ui\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\Context.cpp">
-      <Filter>源文件</Filter>
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Window.cpp">
+      <Filter>ui\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
