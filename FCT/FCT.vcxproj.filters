@@ -105,7 +105,7 @@
     <ClInclude Include="Context\GL_VertexBuffer.h">
       <Filter>context\header</Filter>
     </ClInclude>
-    <ClInclude Include="Context\Vertex.h">
+    <ClInclude Include="Context\VertexFactory.h">
       <Filter>context\header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -136,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="UI\Window.cpp">
       <Filter>ui\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\VertexFactory.cpp">
+      <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -159,8 +159,8 @@
     <ClInclude Include="Context\GL_VertexBuffer.h" />
     <ClInclude Include="Context\IRenderTarget.h" />
     <ClInclude Include="Context\Material.h" />
-    <ClInclude Include="Context\Vertex.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
+    <ClInclude Include="Context\VertexFactory.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
@@ -176,6 +176,7 @@
     <ClCompile Include="Context\Context.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
+    <ClCompile Include="Context\VertexFactory.cpp" />
     <ClCompile Include="FCT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

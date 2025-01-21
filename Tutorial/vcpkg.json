@@ -2,6 +2,7 @@
   "name": "tutorial",
   "version": "0.0.1",
   "dependencies": [
-    "spirv-cross"
+    "spirv-cross",
+    "glslang"
   ]
 }

@@ -9,5 +9,6 @@
 #include "./Context/GL_Context.h"
 #include "./Context/GL_ContextShareData.h"
 #include "./Context/D3D11_Context.h"
+#include "./Context/VertexFactory.h"
 #include "./Runtime/runtime.h"
 #pragma comment(lib,"FCT.lib")
