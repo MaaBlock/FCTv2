@@ -99,6 +99,15 @@
     <ClInclude Include="UI\CallBackHandler.h">
       <Filter>ui\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Context\VertexBuffer.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_VertexBuffer.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\Vertex.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">

@@ -77,6 +77,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>../glad;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -150,8 +156,11 @@
     <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
+    <ClInclude Include="Context\GL_VertexBuffer.h" />
     <ClInclude Include="Context\IRenderTarget.h" />
     <ClInclude Include="Context\Material.h" />
+    <ClInclude Include="Context\Vertex.h" />
+    <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
