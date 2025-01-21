@@ -108,6 +108,18 @@
     <ClInclude Include="Context\VertexFactory.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\VertexShader.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\PixelShader.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_VertexShader.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_PixelShader.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -138,6 +150,18 @@
       <Filter>ui\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\VertexFactory.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\VertexShader.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\PixelShader.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_PixelShader.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_VertexShader.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>

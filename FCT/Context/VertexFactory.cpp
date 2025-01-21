@@ -1,43 +1,43 @@
 ﻿#include "../headers.h"
 
-void FCT::VertexFactory::addAttribute(VertexAttributeType type, const std::string& name, DataType dataType)
+void FCT::VertexFactory::addAttribute(PipelineAttributeType type, const std::string& name, DataType dataType)
 {
     std::string defaultName;
 
     switch (type) {
-    case VertexAttributeType::Position2f:
+    case PipelineAttributeType::Position2f:
         dataType = DataType::Vec2;
         defaultName = "position";
         break;
-    case VertexAttributeType::Position3f:
+    case PipelineAttributeType::Position3f:
         dataType = DataType::Vec3;
         defaultName = "position";
         break;
-    case VertexAttributeType::Position4f:
+    case PipelineAttributeType::Position4f:
         dataType = DataType::Vec4;
         defaultName = "position";
         break;
-    case VertexAttributeType::Color4f:
+    case PipelineAttributeType::Color4f:
         dataType = DataType::Vec4;
         defaultName = "color";
         break;
-    case VertexAttributeType::TexCoord2f:
+    case PipelineAttributeType::TexCoord2f:
         dataType = DataType::Vec2;
         defaultName = "texCoord";
         break;
-    case VertexAttributeType::Normal3f:
+    case PipelineAttributeType::Normal3f:
         dataType = DataType::Vec3;
         defaultName = "normal";
         break;
-    case VertexAttributeType::Tangent3f:
+    case PipelineAttributeType::Tangent3f:
         dataType = DataType::Vec3;
         defaultName = "tangent";
         break;
-    case VertexAttributeType::Bitangent3f:
+    case PipelineAttributeType::Bitangent3f:
         dataType = DataType::Vec3;
         defaultName = "bitangent";
         break;
-    case VertexAttributeType::Custom:
+    case PipelineAttributeType::Custom:
         defaultName = "custom";
         break;
     }

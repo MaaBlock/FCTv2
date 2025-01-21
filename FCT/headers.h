@@ -1,5 +1,5 @@
 #pragma once
-#include <glad\glad.h>
+#include <glad/glad.h>
 #include "./MutilThreadBase/RefCount.h"
 #include "./UI/Window.h"
 #include "./UI/GLFW_WindowShareData.h"
@@ -10,5 +10,9 @@
 #include "./Context/GL_ContextShareData.h"
 #include "./Context/D3D11_Context.h"
 #include "./Context/VertexFactory.h"
+#include "./Context/VertexShader.h"
+#include "./Context/PixelShader.h"
+#include "./Context/GL_VertexShader.h"
+#include "./Context/GL_PixelShader.h"
 #include "./Runtime/runtime.h"
 #pragma comment(lib,"FCT.lib")

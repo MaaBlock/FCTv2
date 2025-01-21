@@ -156,11 +156,15 @@
     <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
+    <ClInclude Include="Context\GL_PixelShader.h" />
     <ClInclude Include="Context\GL_VertexBuffer.h" />
+    <ClInclude Include="Context\GL_VertexShader.h" />
     <ClInclude Include="Context\IRenderTarget.h" />
     <ClInclude Include="Context\Material.h" />
+    <ClInclude Include="Context\PixelShader.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="Context\VertexFactory.h" />
+    <ClInclude Include="Context\VertexShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
@@ -176,7 +180,11 @@
     <ClCompile Include="Context\Context.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
+    <ClCompile Include="Context\GL_PixelShader.cpp" />
+    <ClCompile Include="Context\GL_VertexShader.cpp" />
+    <ClCompile Include="Context\PixelShader.cpp" />
     <ClCompile Include="Context\VertexFactory.cpp" />
+    <ClCompile Include="Context\VertexShader.cpp" />
     <ClCompile Include="FCT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
