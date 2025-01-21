@@ -4,7 +4,7 @@
 
 克隆此仓库后，请按照以下步骤设置项目：
 
-1. 确保已安装 Visual Studio 和 vcpkg。
+1. 确保已安装 Visual Studio 并勾选 vcpkg。
 
 2. 打开 Visual Studio。
 
