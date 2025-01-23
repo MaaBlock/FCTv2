@@ -2,7 +2,6 @@
 #include "../MutilThreadBase/RefCount.h"
 #include "./IPipelineResource.h"
 #include "./VertexFactory.h"
-#include "./VertexArray.h"
 
 namespace FCT {
 
