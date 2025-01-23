@@ -2,9 +2,10 @@
 #include <string>
 #include "../MutilThreadBase/RefCount.h"
 #include "./ShaderOutput.h"
+#include "./IPipelineResource.h"
 
 namespace FCT {
-    class PixelShader : public RefCount {
+    class PixelShader : public RefCount,public IPipelineResource {
     public:
         PixelShader(const ShaderOutput& vertexOutput);
         virtual ~PixelShader();
@@ -14,6 +15,7 @@ namespace FCT {
         bool isCompiled() const;
         virtual bool compile() = 0;
 
+        PipelineResourceType getType() const override;
     protected:
         std::string m_source;
         std::string m_compileError;
@@ -21,5 +23,6 @@ namespace FCT {
         const ShaderOutput& m_vertexOutput;
         std::string generateDefaultCode() const;
         std::string combineCode(const std::string& userCode) const;
+
     };
 } // namespace FCT

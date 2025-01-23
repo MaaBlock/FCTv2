@@ -3,10 +3,11 @@
 #include "../MutilThreadBase/RefCount.h"
 #include "./VertexFactory.h"
 #include "./ShaderOutput.h"
+#include "./IPipelineResource.h"
 
 namespace FCT {
 
-class VertexShader : public RefCount {
+class VertexShader : public RefCount,public IPipelineResource {
 public:
     VertexShader(VertexFactory* factory);
     virtual ~VertexShader();
@@ -17,6 +18,7 @@ public:
     virtual bool compile() = 0;
     void addCustomOutput(PipelineAttributeType type, const std::string& name, DataType dataType);
     const ShaderOutput& getOutput() const { return m_output; }
+    PipelineResourceType getType() const override;
 
 protected:
     VertexFactory* m_factory;

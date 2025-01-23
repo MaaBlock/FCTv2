@@ -21,18 +21,7 @@ bool VertexShader::compileFromSource(const std::string& userCode)
         ss << "VertexOutput main(VertexInput input) {\n";
         ss << "    VertexOutput output;\n";
         for (const auto& attr : m_factory->getAttributes()) {
-            if (attr.name == "position") {
-                ss << "    output.position = vec4(input.position, ";
-                if (getPositionType() == "vec2") {
-                    ss << "0.0, 1.0);\n";
-                } else if (getPositionType() == "vec3") {
-                    ss << "1.0);\n";
-                } else {
-                    ss << ");\n";
-                }
-            } else {
-                ss << "    output." << attr.name << " = input." << attr.name << ";\n";
-            }
+              ss << "    output." << attr.name << " = input." << attr.name << ";\n";
         }
         ss << "    return output;\n";
         ss << "}\n";
@@ -53,6 +42,11 @@ bool VertexShader::isPositionAttribute(PipelineAttributeType type) const {
     return type == PipelineAttributeType::Position2f ||
            type == PipelineAttributeType::Position3f ||
            type == PipelineAttributeType::Position4f;
+}
+
+PipelineResourceType VertexShader::getType() const
+{
+	return PipelineResourceType::VertexShader;
 }
 
 void VertexShader::generateCode()
@@ -83,7 +77,7 @@ void VertexShader::generateCode()
     }
     ss << "};\n\n";
 
-    ss << "VertexOutput main(VertexInput input);\n\n";
+    ss << "VertexOutput fct_user_main(VertexInput input);\n\n";
 
     for (const auto& output : m_output.getOutputs()) {
         if (isPositionAttribute(output.type)) {
@@ -97,13 +91,12 @@ void VertexShader::generateCode()
             ss << "out " << GetDataTypeName(output.dataType) << " out_" << output.name << ";\n";
         }
     }
-    ss << "\nvoid FCT_Main() {\n";
+    ss << "\nvoid main() {\n";
     ss << "    VertexInput input;\n";
     for (const auto& output : m_output.getOutputs()) {
         ss << "    input." << output.name << " = in_" << output.name << ";\n";
     }
-    ss << "    VertexOutput output = main(input);\n";
-     ss << "    // Ensure position is vec4\n";
+    ss << "    VertexOutput output = fct_user_main(input);\n";
     for (const auto& output : m_output.getOutputs()) {
         if (isPositionAttribute(output.type)) {
             ss << "    vec4 finalPosition = vec4(output." << output.name << ", ";
@@ -130,7 +123,14 @@ void VertexShader::generateCode()
 
 std::string VertexShader::combineCode(const std::string& userCode) const
 {
-    return m_source + "\n" + userCode;
+
+    std::string modifiedUserCode = userCode;
+    size_t mainPos = modifiedUserCode.find("main");
+    if (mainPos != std::string::npos) {
+        modifiedUserCode.replace(mainPos, 4, "fct_user_main");
+    }
+
+    return m_source + "\n" + modifiedUserCode;
 }
 
 std::string VertexShader::getCompileError() const {

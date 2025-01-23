@@ -25,4 +25,14 @@ namespace FCT {
 		glViewport(x, y, width, height);
 	}
 
+	VertexShader* GL_Context::createVertexShader(VertexFactory* factory)
+	{
+		return new GL_VertexShader(factory);
+	}
+
+	PixelShader* GL_Context::createPixelShader(const ShaderOutput& output)
+	{
+		return new GL_PixelShader(output);
+	}
+
 }

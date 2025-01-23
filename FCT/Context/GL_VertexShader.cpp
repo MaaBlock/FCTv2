@@ -56,4 +56,13 @@ namespace FCT {
         return true;
     }
 
+    void GL_VertexShader::bind()
+    {
+
+    }
+
+    void GL_VertexShader::unbind()
+    {
+    }
+
 } // namespace FCT

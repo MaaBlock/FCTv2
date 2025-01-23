@@ -9,6 +9,8 @@ namespace FCT {
 		int getGLVersionMajor() const { return g_shareData->getGLVersionMajor(); }
 		int getGLVersionMinor() const { return g_shareData->getGLVersionMinor(); }
 		void viewport(int x, int y, int width, int height) override;
+		VertexShader* createVertexShader(VertexFactory* factory) override;
+		PixelShader* createPixelShader(const ShaderOutput& output) override;
 	private:
 		GL_ContextShareData* g_shareData;
 		Runtime* g_runtime;

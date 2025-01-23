@@ -70,14 +70,14 @@ namespace FCT {
 
         ss << "\nout vec4 FragColor;\n\n";
 
-        ss << "PixelOutput main(PixelInput input);\n\n";
+        ss << "PixelOutput fct_user_main(PixelInput input);\n\n";
 
-        ss << "void FCT_Main() {\n";
+        ss << "void main() {\n";
         ss << "    PixelInput input;\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    input." << output.name << " = in_" << output.name << ";\n";
         }
-        ss << "    PixelOutput output = main(input);\n";
+        ss << "    PixelOutput output = fct_user_main(input);\n";
         if (hasColorAttribute) {
             for (const auto& output : m_vertexOutput.getOutputs()) {
                 if (output.type == PipelineAttributeType::Color4f) {
@@ -90,10 +90,19 @@ namespace FCT {
             ss << "    FragColor = output.color;\n";
         }
         ss << "}\n\n";
+        std::string modifiedUserCode = userCode;
+        size_t mainPos = modifiedUserCode.find("main");
+        if (mainPos != std::string::npos) {
+            modifiedUserCode.replace(mainPos, 4, "fct_user_main");
+        }
 
-        ss << userCode;
+        ss << modifiedUserCode;
 
         return ss.str();
+    }
+    PipelineResourceType PixelShader::getType() const
+    {
+		return PipelineResourceType::PixelShader;
     }
     std::string PixelShader::getCompileError() const {
         return m_compileError;

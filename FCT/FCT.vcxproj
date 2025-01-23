@@ -80,9 +80,7 @@
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -159,8 +157,10 @@
     <ClInclude Include="Context\GL_PixelShader.h" />
     <ClInclude Include="Context\GL_VertexBuffer.h" />
     <ClInclude Include="Context\GL_VertexShader.h" />
+    <ClInclude Include="Context\IPipelineResource.h" />
     <ClInclude Include="Context\IRenderTarget.h" />
     <ClInclude Include="Context\Material.h" />
+    <ClInclude Include="Context\Pipeline.h" />
     <ClInclude Include="Context\PixelShader.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="Context\VertexFactory.h" />
@@ -178,11 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Context\Context.cpp" />
+    <ClCompile Include="Context\DataTypes.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
     <ClCompile Include="Context\GL_PixelShader.cpp" />
     <ClCompile Include="Context\GL_VertexShader.cpp" />
+    <ClCompile Include="Context\Pipeline.cpp" />
     <ClCompile Include="Context\PixelShader.cpp" />
+    <ClCompile Include="Context\ShaderOutput.cpp" />
+    <ClCompile Include="Context\VertexBuffer.cpp" />
     <ClCompile Include="Context\VertexFactory.cpp" />
     <ClCompile Include="Context\VertexShader.cpp" />
     <ClCompile Include="FCT.cpp" />

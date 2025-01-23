@@ -1,6 +1,7 @@
 //#include <gl\GL.h>
 //#include <gl\GLU.h>
 #include "../FCT/headers.h"
+#include <iostream>
 
 int main() {
 	FCT::Runtime* rt = FCT::CreateRuntime();
@@ -12,6 +13,10 @@ int main() {
 	wnd->getCallBack()->addResizeCallback([&needViewPort](FCT::Window* wnd, int w, int h) {
 		needViewPort = true;
 		});
+	FCT::VertexFactory* factory = new FCT::VertexFactory;
+	factory->addAttribute(FCT::PipelineAttributeType::Color4f);
+	factory->addAttribute(FCT::PipelineAttributeType::Position2f);
+	FCT::Pipeline pipeline(ctx, factory);
 	while (wnd->isRunning()) {
 		if (needViewPort) {
 			float x = 0,y = 0, w = wnd->getWidth(),h = wnd->getHeight();

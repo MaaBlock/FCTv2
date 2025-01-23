@@ -9,6 +9,8 @@ namespace FCT {
         virtual ~GL_VertexShader();
 
         virtual bool compile() override;
+        void bind() override;
+        void unbind() override;
 
     private:
         GLuint m_shaderId;

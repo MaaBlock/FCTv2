@@ -14,5 +14,6 @@
 #include "./Context/PixelShader.h"
 #include "./Context/GL_VertexShader.h"
 #include "./Context/GL_PixelShader.h"
+#include "./Context/Pipeline.h"
 #include "./Runtime/runtime.h"
 #pragma comment(lib,"FCT.lib")

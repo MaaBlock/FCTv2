@@ -120,6 +120,12 @@
     <ClInclude Include="Context\GL_PixelShader.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\Pipeline.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\IPipelineResource.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -162,6 +168,18 @@
       <Filter>context\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\GL_VertexShader.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\DataTypes.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\ShaderOutput.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\Pipeline.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\VertexBuffer.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>
