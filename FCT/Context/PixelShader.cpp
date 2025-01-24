@@ -65,7 +65,7 @@ namespace FCT {
         ss << "};\n\n";
 
         for (const auto& output : m_vertexOutput.getOutputs()) {
-            ss << "in " << GetDataTypeName(output.dataType) << " in_" << output.name << ";\n";
+            ss << "in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
         }
 
         ss << "\nout vec4 FragColor;\n\n";
@@ -75,7 +75,7 @@ namespace FCT {
         ss << "void main() {\n";
         ss << "    PixelInput input;\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
-            ss << "    input." << output.name << " = in_" << output.name << ";\n";
+            ss << "    input." << output.name << " = vs2fs_" << output.name << ";\n";
         }
         ss << "    PixelOutput output = fct_user_main(input);\n";
         if (hasColorAttribute) {

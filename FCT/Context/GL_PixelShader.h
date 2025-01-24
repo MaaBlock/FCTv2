@@ -11,6 +11,7 @@ public:
     virtual bool compile() override;
     void bind() override;
     void unbind() override;
+    GLuint getShaderID() const { return m_shaderID; }
 private:
     GLuint m_shaderID;
 };

@@ -40,4 +40,17 @@ namespace FCT {
 		return new GL_VertexBuffer(array);
 	}
 
+	Material* GL_Context::createMaterial(VertexShader* vertexShader, PixelShader* pixelShader)
+	{
+		return new GL_Material(
+			dynamic_cast<GL_VertexShader*>(vertexShader),
+			dynamic_cast<GL_PixelShader*>(pixelShader)
+		);
+	}
+
+	InputLayout* GL_Context::createInputLayout(VertexFactory* factory)
+	{
+		return new GL_InputLayout(factory);
+	}
+
 }

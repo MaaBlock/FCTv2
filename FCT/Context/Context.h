@@ -4,8 +4,10 @@
 #include "./VertexShader.h"
 #include "./PixelShader.h"
 #include "./VertexBuffer.h"
+#include "./Material.h"
 namespace FCT {
 	class VertexBuffer;
+	class InputLayout;
 	class Context : public RefCount {
 	public:
 		virtual ~Context() {};
@@ -14,6 +16,8 @@ namespace FCT {
 		virtual VertexBuffer* createVertexBuffer(VertexArray* array) = 0;
 		virtual VertexShader* createVertexShader(VertexFactory* factory) = 0;
 		virtual PixelShader* createPixelShader(const ShaderOutput& output) = 0;
+		virtual Material* createMaterial(VertexShader* vertexShader, PixelShader* pixelShader) = 0;
+		virtual InputLayout* createInputLayout(VertexFactory* factory) = 0;
 	private:
 
 	};

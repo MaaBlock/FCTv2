@@ -1,5 +1,6 @@
 #include "GL_InputLayout.h"
 #include "Context.h"
+#include <iostream>
 
 namespace FCT {
 
@@ -37,6 +38,10 @@ bool GL_InputLayout::create(Context* context) {
 
     glBindVertexArray(m_vao);
 
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        std::cerr << "OpenGL Error affter glBindVertexArray: " << err << std::endl;
+    }
     int locationCounter = 0;
     for (const auto& attr : m_factory->getAttributes()) {
         GLint size = 0;

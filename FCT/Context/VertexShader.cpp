@@ -90,9 +90,7 @@ void VertexShader::generateCode()
     }
 
     for (const auto& output : m_output.getOutputs()) {
-        if (!isPositionAttribute(output.type)) {
-            ss << "out " << GetDataTypeName(output.dataType) << " out_" << output.name << ";\n";
-        }
+        ss << "out " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
     }
     ss << "\nvoid main() {\n";
     ss << "    VertexInput input;\n";
@@ -115,14 +113,13 @@ void VertexShader::generateCode()
         }
     }
     for (const auto& output : m_output.getOutputs()) {
-        if (!isPositionAttribute(output.type)) {
-            ss << "    out_" << output.name << " = output." << output.name << ";\n";
-        }
+        ss << "    vs2fs_" << output.name << " = output." << output.name << ";\n";
     }
     ss << "}\n";
 
     m_source = ss.str();
 }
+
 
 std::string VertexShader::combineCode(const std::string& userCode) const
 {
@@ -155,17 +152,15 @@ void VertexShader::addCustomOutput(PipelineAttributeType type, const std::string
 
 std::string VertexShader::getPositionType() const {
     for (const auto& attr : m_factory->getAttributes()) {
-        if (attr.name == "position") {
-            switch (attr.type) {
-                case PipelineAttributeType::Position2f:
-                    return "vec2";
-                case PipelineAttributeType::Position3f:
-                    return "vec3";
-                case PipelineAttributeType::Position4f:
-                    return "vec4";
-                default:
-                    break;
-            }
+        switch (attr.type) {
+        case PipelineAttributeType::Position2f:
+            return "vec2";
+        case PipelineAttributeType::Position3f:
+            return "vec3";
+        case PipelineAttributeType::Position4f:
+            return "vec4";
+        default:
+            continue;
         }
     }
     return "vec3"; 

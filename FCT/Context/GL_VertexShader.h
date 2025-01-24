@@ -8,11 +8,13 @@ namespace FCT {
         GL_VertexShader(VertexFactory* factory);
         virtual ~GL_VertexShader();
 
-        virtual bool compile() override;
-        void bind() override;
-        void unbind() override;
+    virtual bool compile() override;
+    void bind() override;
+    void unbind() override;
 
-    private:
-        GLuint m_shaderId;
+    GLuint getShaderID() const { return m_shaderId; }
+
+private:
+    GLuint m_shaderId;
     };
 } // namespace FCT

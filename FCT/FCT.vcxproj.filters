@@ -126,6 +126,9 @@
     <ClInclude Include="Context\IPipelineResource.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\GL_Material.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -183,6 +186,12 @@
       <Filter>context\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\GL_VertexBuffer.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_Material.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_InputLayout.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -154,6 +154,7 @@
     <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
+    <ClInclude Include="Context\GL_Material.h" />
     <ClInclude Include="Context\GL_PixelShader.h" />
     <ClInclude Include="Context\GL_VertexBuffer.h" />
     <ClInclude Include="Context\GL_VertexShader.h" />
@@ -181,6 +182,8 @@
     <ClCompile Include="Context\DataTypes.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
+    <ClCompile Include="Context\GL_InputLayout.cpp" />
+    <ClCompile Include="Context\GL_Material.cpp" />
     <ClCompile Include="Context\GL_PixelShader.cpp" />
     <ClCompile Include="Context\GL_VertexBuffer.cpp" />
     <ClCompile Include="Context\GL_VertexShader.cpp" />
