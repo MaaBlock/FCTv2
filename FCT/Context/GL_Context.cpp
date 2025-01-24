@@ -35,4 +35,9 @@ namespace FCT {
 		return new GL_PixelShader(output);
 	}
 
+	VertexBuffer* GL_Context::createVertexBuffer(VertexArray* array)
+	{
+		return new GL_VertexBuffer(array);
+	}
+
 }

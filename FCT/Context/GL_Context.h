@@ -11,12 +11,14 @@ namespace FCT {
 		void viewport(int x, int y, int width, int height) override;
 		VertexShader* createVertexShader(VertexFactory* factory) override;
 		PixelShader* createPixelShader(const ShaderOutput& output) override;
+		VertexBuffer* createVertexBuffer(VertexArray* array) override;
 	private:
 		GL_ContextShareData* g_shareData;
 		Runtime* g_runtime;
 		int g_glVersionMajor;
 		int g_glVersionMinor;
 		IRenderTarget* m_target;
+
 
 	};
 }

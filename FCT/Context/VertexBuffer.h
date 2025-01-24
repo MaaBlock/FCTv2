@@ -1,16 +1,22 @@
 #pragma once
-#include "../MutilThreadBase/RefCount.h"
-#include "./IPipelineResource.h"
+#include "./Context.h"
 #include "./VertexFactory.h"
 
 namespace FCT {
+    class Context;
+    class VertexBuffer : public RefCount, public IPipelineResource {
+    public:
+        PipelineResourceType getType() const override;
+        virtual ~VertexBuffer() = default;
 
-class VertexBuffer : public RefCount, public IPipelineResource {
-public:
-    PipelineResourceType getType() const override;
+        virtual void bind() = 0;
+        virtual void unbind() = 0;
+        virtual bool create(Context* context) = 0;
 
-protected:
-};
+        virtual VertexArray* getVertexArray() const = 0;
+        virtual size_t getVertexCount() const = 0;
+        virtual const VertexFactory* getFactory() const = 0;
+
+    };
 
 } // namespace FCT
-

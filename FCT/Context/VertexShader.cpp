@@ -62,11 +62,11 @@ void VertexShader::generateCode()
     std::string positionType = getPositionType();
 
     ss << "struct VertexInput {\n";
-    for (const auto& output : m_output.getOutputs()) {
-        if (isPositionAttribute(output.type)) {
-            ss << "    " << positionType << " " << output.name << ";\n";
+    for (const auto& attr : m_factory->getAttributes()) {
+        if (isPositionAttribute(attr.type)) {
+            ss << "    " << positionType << " " << attr.name << ";\n";
         } else {
-            ss << "    " << GetDataTypeName(output.dataType) << " " << output.name << ";\n";
+            ss << "    " << GetDataTypeName(attr.dataType) << " " << attr.name << ";\n";
         }
     }
     ss << "};\n\n";
@@ -79,13 +79,16 @@ void VertexShader::generateCode()
 
     ss << "VertexOutput fct_user_main(VertexInput input);\n\n";
 
-    for (const auto& output : m_output.getOutputs()) {
-        if (isPositionAttribute(output.type)) {
-            ss << "layout (location = " << static_cast<int>(output.type) << ") in " << positionType << " in_" << output.name << ";\n";
+    int locationCounter = 0;
+    for (const auto& attr : m_factory->getAttributes()) {
+        if (isPositionAttribute(attr.type)) {
+            ss << "layout (location = " << locationCounter << ") in " << positionType << " in_" << attr.name << ";\n";
         } else {
-            ss << "layout (location = " << static_cast<int>(output.type) << ") in " << GetDataTypeName(output.dataType) << " in_" << output.name << ";\n";
+            ss << "layout (location = " << locationCounter << ") in " << GetDataTypeName(attr.dataType) << " in_" << attr.name << ";\n";
         }
+        locationCounter++;
     }
+
     for (const auto& output : m_output.getOutputs()) {
         if (!isPositionAttribute(output.type)) {
             ss << "out " << GetDataTypeName(output.dataType) << " out_" << output.name << ";\n";

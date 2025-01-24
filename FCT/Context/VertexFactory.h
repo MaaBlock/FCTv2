@@ -108,6 +108,7 @@ namespace FCT {
         size_t getSize() const { return factory->getStride() * vertexCount; }
         size_t getVertexCount() const { return vertexCount; }
 
+        const VertexFactory* getFactory() const { return factory; }
     private:
         const VertexFactory* factory;
         void* data;

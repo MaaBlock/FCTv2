@@ -5,6 +5,7 @@ namespace FCT {
         PixelShader,
         VertexBuffer,
         IndexBuffer,
+        InputLayout,
         DepthStencilState,
         RasterizerState,
         BlendState,

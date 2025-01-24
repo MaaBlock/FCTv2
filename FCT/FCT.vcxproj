@@ -182,6 +182,7 @@
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
     <ClCompile Include="Context\GL_PixelShader.cpp" />
+    <ClCompile Include="Context\GL_VertexBuffer.cpp" />
     <ClCompile Include="Context\GL_VertexShader.cpp" />
     <ClCompile Include="Context\Pipeline.cpp" />
     <ClCompile Include="Context\PixelShader.cpp" />
