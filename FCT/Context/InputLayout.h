@@ -6,6 +6,7 @@
 namespace FCT {
 
     class Context;
+	class VertexBuffer;
     class InputLayout : public RefCount, public IPipelineResource {
     public:
         virtual ~InputLayout() = default;
@@ -15,9 +16,8 @@ namespace FCT {
 
         PipelineResourceType getType() const override { return PipelineResourceType::InputLayout; }
 
-        virtual bool create(Context* context) = 0;
+        virtual bool create(Context* context, VertexBuffer* buffer = nullptr) = 0;
     protected:
     };
 
 } // namespace FCT
-

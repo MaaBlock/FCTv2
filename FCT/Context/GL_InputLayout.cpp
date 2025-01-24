@@ -1,11 +1,10 @@
-#include "GL_InputLayout.h"
-#include "Context.h"
+#include "../headers.h"
 #include <iostream>
 
 namespace FCT {
 
 GL_InputLayout::GL_InputLayout(VertexFactory* factory)
-    : m_factory(factory), m_vao(0), m_isCreated(false) {
+    : m_factory(factory), m_buffer(nullptr), m_vao(0), m_isCreated(false) {
 }
 
 GL_InputLayout::~GL_InputLayout() {
@@ -26,9 +25,14 @@ void GL_InputLayout::unbind() {
     }
 }
 
-bool GL_InputLayout::create(Context* context) {
-    if (m_isCreated) {
-        return true;
+bool GL_InputLayout::create(Context* context, VertexBuffer* buffer) {
+    m_buffer = buffer;
+
+    // Delete old VAO if exists
+    if (m_isCreated && m_vao != 0) {
+        glDeleteVertexArrays(1, &m_vao);
+        m_vao = 0;
+        m_isCreated = false;
     }
 
     glGenVertexArrays(1, &m_vao);
@@ -37,6 +41,11 @@ bool GL_InputLayout::create(Context* context) {
     }
 
     glBindVertexArray(m_vao);
+
+    // Bind vertex buffer if provided
+    if (m_buffer) {
+        m_buffer->bind();
+    }
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -142,4 +151,3 @@ bool GL_InputLayout::create(Context* context) {
 }
 
 } // namespace FCT
-

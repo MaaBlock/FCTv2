@@ -13,13 +13,13 @@ public:
     void bind() override;
     void unbind() override;
 
-    bool create(Context* context) override;
+    bool create(Context* context, VertexBuffer* buffer = nullptr) override;
 
 private:
     VertexFactory* m_factory;
+    VertexBuffer* m_buffer;
     GLuint m_vao;
     bool m_isCreated;
 };
 
 } // namespace FCT
-
