@@ -163,6 +163,7 @@
     <ClInclude Include="Context\Material.h" />
     <ClInclude Include="Context\Pipeline.h" />
     <ClInclude Include="Context\PixelShader.h" />
+    <ClInclude Include="Context\VertexArray.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="Context\VertexFactory.h" />
     <ClInclude Include="Context\VertexShader.h" />

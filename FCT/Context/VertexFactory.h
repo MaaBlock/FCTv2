@@ -80,40 +80,6 @@ namespace FCT {
     private:
         std::vector<VertexAttribute> attributes;
     };
-    class VertexArray {
-    public:
-        VertexArray(const VertexFactory& factory, size_t vertexCount)
-            : factory(&factory), vertexCount(vertexCount) {
-            size_t totalSize = factory.getStride() * vertexCount;
-            data = new char[totalSize];
-            if (!data) throw std::bad_alloc();
-        }
-
-        ~VertexArray() {
-            delete[] data;
-        }
-
-        VertexArray(const VertexArray&) = delete;
-        VertexArray& operator=(const VertexArray&) = delete;
-        VertexArray(VertexArray&&) = delete;
-        VertexArray& operator=(VertexArray&&) = delete;
-
-        template<typename T>
-        void setAttribute(size_t vertexIndex, const std::string& name, const T& value);
-        template<typename T>
-        T getAttribute(size_t vertexIndex, const std::string& name) const;
-
-        void* getData() { return data; }
-        const void* getData() const { return data; }
-        size_t getSize() const { return factory->getStride() * vertexCount; }
-        size_t getVertexCount() const { return vertexCount; }
-
-        const VertexFactory* getFactory() const { return factory; }
-    private:
-        const VertexFactory* factory;
-        void* data;
-        size_t vertexCount;
-    };
     template<typename T>
     void VertexData::setAttribute(const std::string& name, const T& value) {
         const auto& attr = m_factory->getAttribute(name);
@@ -148,31 +114,4 @@ namespace FCT {
         throw std::runtime_error("未找到属性");
     }
 
-    template<typename T>
-    void VertexArray::setAttribute(size_t vertexIndex, const std::string& name, const T& value) {
-        const auto& attr = factory->getAttribute(name);
-        if (GetDataTypeSize(attr.dataType) != sizeof(T)) {
-            throw std::runtime_error("属性大小不匹配");
-        }
-        if (vertexIndex >= vertexCount) {
-            throw std::out_of_range("顶点索引超出范围");
-        }
-        size_t offset = factory->getStride() * vertexIndex + attr.offset;
-        std::memcpy(static_cast<char*>(data) + offset, &value, GetDataTypeSize(attr.dataType));
-    }
-
-    template<typename T>
-    T VertexArray::getAttribute(size_t vertexIndex, const std::string& name) const {
-        const auto& attr = factory->getAttribute(name);
-        if (GetDataTypeSize(attr.dataType) != sizeof(T)) {
-            throw std::runtime_error("属性大小不匹配");
-        }
-        if (vertexIndex >= vertexCount) {
-            throw std::out_of_range("顶点索引超出范围");
-        }
-        size_t offset = factory->getStride() * vertexIndex + attr.offset;
-        T result;
-        std::memcpy(&result, static_cast<const char*>(data) + offset, GetDataTypeSize(attr.dataType));
-        return result;
-    }
 } // namespace FCT

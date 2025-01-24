@@ -129,6 +129,9 @@
     <ClInclude Include="Context\GL_Material.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\VertexArray.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">

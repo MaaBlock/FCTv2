@@ -10,6 +10,7 @@
 #include "./Context/GL_ContextShareData.h"
 #include "./Context/D3D11_Context.h"
 #include "./Context/VertexFactory.h"
+#include "./Context/VertexArray.h"
 #include "./Context/VertexBuffer.h"
 #include "./Context/VertexShader.h"
 #include "./Context/PixelShader.h"

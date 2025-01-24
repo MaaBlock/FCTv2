@@ -1,8 +1,4 @@
-#include "GL_VertexBuffer.h"
-#include "Context.h"
-
-#include "GL_VertexBuffer.h"
-#include "Context.h"
+#include "../headers.h"
 namespace FCT {
 
 GL_VertexBuffer::GL_VertexBuffer(VertexArray* vertexArray)
