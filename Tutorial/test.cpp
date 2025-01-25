@@ -3,7 +3,20 @@
 #include <GLFW/glfw3.h>
 #include <thread>
 #include <iostream>
-
+void reviewport(FCT::Context* ctx,FCT::Window* wnd) {
+    float x = 0, y = 0, w = wnd->getWidth(), h = wnd->getHeight();
+    if (h / w > 0.75) {
+        x = 0;
+        y = (h - w * 3 / 4) / 2;
+        h = w * 3 / 4;
+    }
+    else {
+        x = (w - h * 4 / 3) / 2;
+        y = 0;
+        w = h * 4 / 3;
+    }
+    ctx->viewport(x, y, w, h);
+}
 int main() {
     FCT::Runtime* rt = FCT::CreateRuntime();
     rt->init();
@@ -33,22 +46,9 @@ int main() {
         });
     while (wnd->isRunning()) {
         if (needViewPort) {
-            float x = 0, y = 0, w = wnd->getWidth(), h = wnd->getHeight();
-            if (h / w > 0.75) {
-                x = 0;
-                y = (h - w * 3 / 4) / 2;
-                h = w * 3 / 4;
-            }
-            else {
-                x = (w - h * 4 / 3) / 2;
-                y = 0;
-                w = h * 4 / 3;
-            }
-            ctx->viewport(x, y, w, h);
+            reviewport(ctx, wnd);
         }
-        glClear(GL_COLOR_BUFFER_BIT);
         ctx->clear(0, 0, 0);
-        
         pipeline->begin();
         pipeline->draw(rectangle);
         pipeline->draw(triangle);
