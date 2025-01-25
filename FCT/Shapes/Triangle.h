@@ -13,12 +13,6 @@ namespace FCT {
             m_array = new VertexArray(m_factory, 3);
         }
 
-        Triangle(Context* context, VertexFactory* factory, const Vec2& size) : m_factory(factory) {
-            m_context = context;
-            m_array = new VertexArray(m_factory, 3);
-            this->size(size);
-        }
-
         void vertex(unsigned vertexIndex,const Vec2& vertex) {
             m_array->setPosition(vertexIndex, vertex);
         }

@@ -24,5 +24,6 @@
 #include "./Context/Pipeline.h"
 #include "./Shapes/Shape.h"
 #include "./Shapes/Rectangle.h"
+#include "./Shapes/Triangle.h"
 #include "./Runtime/runtime.h"
 #pragma comment(lib,"FCT.lib")
