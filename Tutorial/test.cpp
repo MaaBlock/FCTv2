@@ -14,14 +14,19 @@ int main() {
     FCT::VertexFactory* factory = new FCT::VertexFactory;
     factory->addAttribute(FCT::PipelineAttributeType::Position2f, "aPos");
     factory->addAttribute(FCT::PipelineAttributeType::Color4f, "aColor");
-    FCT::VertexArray* vertexArray = new FCT::VertexArray(*factory, 3);
+    FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
+    FCT::Rectangle* rectangle = new FCT::Rectangle(ctx,factory);
+    rectangle->size(FCT::Vec2(2, 2));
+    rectangle->color(FCT::Vec4(0.2f, 0.3f, 0.3f, 1.0f));
+    rectangle->create();
+    FCT::VertexArray* vertexArray = new FCT::VertexArray(factory, 3);
     vertexArray->setAttribute(0, "aPos", FCT::Vec2(-0.5f, -0.5f));
     vertexArray->setAttribute(0, "aColor", FCT::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
     vertexArray->setAttribute(1, "aPos", FCT::Vec2(0.5f, -0.5f));
     vertexArray->setAttribute(1, "aColor", FCT::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
     vertexArray->setAttribute(2, "aPos", FCT::Vec2(0.0f, 0.5f));
     vertexArray->setAttribute(2, "aColor", FCT::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    FCT::VertexArray* bgArray = new FCT::VertexArray(*factory, 4);
+    FCT::VertexArray* bgArray = new FCT::VertexArray(factory, 4);
     bgArray->setAttribute(0, "aPos", FCT::Vec2(-1.0f, -1.0f));
     bgArray->setAttribute(0, "aColor", FCT::Vec4(0.2f, 0.3f, 0.3f, 1.0f));
     bgArray->setAttribute(1, "aPos", FCT::Vec2(1.0f, -1.0f));
@@ -30,7 +35,7 @@ int main() {
     bgArray->setAttribute(2, "aColor", FCT::Vec4(0.2f, 0.3f, 0.3f, 1.0f));
     bgArray->setAttribute(3, "aPos", FCT::Vec2(-1.0f, 1.0f));
     bgArray->setAttribute(3, "aColor", FCT::Vec4(0.2f, 0.3f, 0.3f, 1.0f));
-    
+   
     FCT::VertexBuffer* bgBuffer = ctx->createVertexBuffer(bgArray);
     bgBuffer->create(ctx);
 
@@ -88,11 +93,11 @@ int main() {
         }
         glClear(GL_COLOR_BUFFER_BIT);
         ctx->clear(0, 0, 0);
+        
+        pipeline->begin();
+        pipeline->draw(rectangle);
+        pipeline->end();
 
-        material->bind();
-        bgBuffer->bind();
-        bgInputLayout->bind();
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
         triangleBuffer->bind();
         triangleInputLayout->bind();

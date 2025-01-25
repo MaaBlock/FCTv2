@@ -2,6 +2,7 @@
 #include "./VertexShader.h"
 #include "./PixelShader.h"
 #include "./VertexFactory.h"
+#include "../Shapes/Shape.h"
 
 namespace FCT {
 
@@ -11,17 +12,21 @@ namespace FCT {
     public:
         Pipeline(Context* context, VertexFactory* defaultFactory);
         ~Pipeline();
-
+        void begin();
+		void end();
+        void draw(Shape* shape);
         VertexShader* getDefaultVertexShader() const;
         PixelShader* getDefaultPixelShader() const;
+		Material* getDefaultMaterial() const;
 
     private:
         Context* m_context;
         VertexShader* m_defaultVertexShader;
         PixelShader* m_defaultPixelShader;
+		Material* m_defaultMaterial;
         VertexFactory* m_defaultFactory;
 
-        void createDefaultShaders();
+        void createDefaultResource();
     };
 
 } // namespace FCT

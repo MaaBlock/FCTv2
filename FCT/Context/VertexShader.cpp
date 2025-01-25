@@ -4,7 +4,7 @@
 
 namespace FCT {
 
-VertexShader::VertexShader(VertexFactory* factory) : m_factory(factory), m_isCompiled(false)
+VertexShader::VertexShader(VertexFactory* factory) : m_factory(factory), m_isCompiled(false),m_output()
 {
 }
 

@@ -3,9 +3,9 @@
 namespace FCT {
     class VertexArray {
     public:
-        VertexArray(const VertexFactory& factory, size_t vertexCount)
-            : factory(&factory), vertexCount(vertexCount) {
-            size_t totalSize = factory.getStride() * vertexCount;
+        VertexArray(const VertexFactory* factory, size_t vertexCount)
+            : factory(factory), vertexCount(vertexCount) {
+            size_t totalSize = factory->getStride() * vertexCount;
             data = new char[totalSize];
             if (!data) throw std::bad_alloc();
         }

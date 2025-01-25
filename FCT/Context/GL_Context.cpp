@@ -53,4 +53,9 @@ namespace FCT {
 		return new GL_InputLayout(factory);
 	}
 
+	DrawCall* GL_Context::createDrawCall(PrimitiveType primitiveType, uint32_t startVertex, uint32_t vertexCount)
+	{
+		return new GL_DrawCall(primitiveType, startVertex, vertexCount);
+	}
+
 }

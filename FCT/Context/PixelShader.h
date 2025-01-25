@@ -5,7 +5,7 @@
 #include "./IPipelineResource.h"
 
 namespace FCT {
-    class PixelShader : public RefCount,public IPipelineResource {
+    class PixelShader : public IPipelineResource {
     public:
         PixelShader(const ShaderOutput& vertexOutput);
         virtual ~PixelShader();

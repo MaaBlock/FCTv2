@@ -7,7 +7,7 @@
 
 namespace FCT {
 
-    class VertexShader : public RefCount, public IPipelineResource {
+    class VertexShader : public IPipelineResource {
     public:
         VertexShader(VertexFactory* factory);
         virtual ~VertexShader();

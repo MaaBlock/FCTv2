@@ -7,7 +7,7 @@ namespace FCT {
 
     class Context;
 	class VertexBuffer;
-    class InputLayout : public RefCount, public IPipelineResource {
+    class InputLayout : public IPipelineResource {
     public:
         virtual ~InputLayout() = default;
 

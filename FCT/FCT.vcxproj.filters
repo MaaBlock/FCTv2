@@ -49,6 +49,15 @@
     <Filter Include="context\source">
       <UniqueIdentifier>{48566539-8c76-408e-a933-9e74a364778c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shape">
+      <UniqueIdentifier>{64af5218-dcbb-4ff0-8a5c-1ab22d8acc47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shape\headers">
+      <UniqueIdentifier>{87c9ac0e-f5dc-4b3d-894e-7cbe85388ba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shape\source">
+      <UniqueIdentifier>{365521de-c441-4d83-860b-5925ec9c459d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -132,6 +141,18 @@
     <ClInclude Include="Context\VertexArray.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Shapes\Rectangle.h">
+      <Filter>shape\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\Shape.h">
+      <Filter>shape\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_DrawCall.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\DrawCall.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -195,6 +216,12 @@
       <Filter>context\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\GL_InputLayout.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\Rectangle.cpp">
+      <Filter>shape\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_DrawCall.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>

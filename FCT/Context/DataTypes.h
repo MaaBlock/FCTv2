@@ -1,5 +1,5 @@
 #pragma once
-
+#include "./Matrix.h"
 namespace FCT {
 
     enum class DataType {

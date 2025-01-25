@@ -4,7 +4,7 @@
 
 namespace FCT {
     class Context;
-    class VertexBuffer : public RefCount, public IPipelineResource {
+    class VertexBuffer : public IPipelineResource {
     public:
         PipelineResourceType getType() const override;
         virtual ~VertexBuffer() = default;

@@ -13,7 +13,8 @@ public:
         DataType dataType;
 
         OutputVariable(PipelineAttributeType t, const std::string& n, DataType dt)
-            : type(t), name(n), dataType(dt) {}
+            : type(t), name(n), dataType(dt) {
+        }
     };
 
     void addOutput(PipelineAttributeType type, const std::string& name, DataType dataType);

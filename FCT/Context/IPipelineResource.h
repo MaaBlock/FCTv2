@@ -10,8 +10,9 @@ namespace FCT {
         RasterizerState,
         BlendState,
         Texture,
+        DrawCall,
     };
-    class IPipelineResource {
+    class IPipelineResource : public RefCount {
     public:
         virtual ~IPipelineResource() {};
 
