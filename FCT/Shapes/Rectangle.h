@@ -7,11 +7,11 @@
 namespace FCT {
 	class Rectangle : public Shape {
 	public:
-		Rectangle(Context* context, VertexFactory* factory) : m_factory(factory) {
+		Rectangle(Context* context, VertexFactory* factory) : m_factory(factory), Shape(context){
 			m_context = context;
 			m_array = new VertexArray(m_factory, 6);
 		}
-		Rectangle(Context* context, VertexFactory* factory, const Vec2& size) : m_factory(factory) {
+		Rectangle(Context* context, VertexFactory* factory, const Vec2& size) : m_factory(factory), Shape(context) {
 			m_context = context;
 			m_array = new VertexArray(m_factory, 6);
 			this->size(size);

@@ -61,27 +61,14 @@ int main() {
     wnd->getCallBack()->addResizeCallback([&needViewPort](FCT::Window* wnd, int w, int h) {
         needViewPort = true;
         });
-    FCT::Mat4 nullMat;
-    FCT::Mat4 rotateMat;
-    auto nullMatTex = ctx->createTexture();
-    nullMatTex->setSlot(0);
-	nullMatTex->create(4, 1,FCT::Texture::Format::RGBA32F);
-    nullMatTex->setData(&nullMat, sizeof(nullMat));
-    auto rotateMatTex = ctx->createTexture();
-    rotateMatTex->setSlot(0);
-    rotateMatTex->create(4, 1, FCT::Texture::Format::RGBA32F);
-    rotateMatTex->setData(&rotateMat, sizeof(rotateMat));
     while (wnd->isRunning()) {
+        triangle->rotate(3.14 / 18);
         if (needViewPort) {
             reviewport(ctx, wnd);
         }
-        rotateMat.rotateZ(0.1);
-        rotateMatTex->setData(&rotateMat, sizeof(rotateMat));
         ctx->clear(0, 0, 0);
         pipeline->begin();
-        nullMatTex->bind();
         pipeline->draw(rectangle);
-        rotateMatTex->bind();
         pipeline->draw(triangle);
         pipeline->end();
         wnd->swapBuffers();

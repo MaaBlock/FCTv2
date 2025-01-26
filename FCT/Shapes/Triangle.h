@@ -8,7 +8,7 @@
 namespace FCT {
     class Triangle : public Shape {
     public:
-        Triangle(Context* context, VertexFactory* factory) : m_factory(factory) {
+        Triangle(Context* context, VertexFactory* factory) : m_factory(factory), Shape(context) {
             m_context = context;
             m_array = new VertexArray(m_factory, 3);
         }

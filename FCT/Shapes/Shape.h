@@ -2,6 +2,8 @@
 #include "../Context/DataTypes.h"
 #include "../MutilThreadBase/RefCount.h"
 #include "../Context/IPipelineResource.h"
+#include "../Context/Context.h"
+#include "../Context/ConstBuffer.h"
 #include <glad/glad.h>
 #include <vector>
 #include <atomic>
@@ -18,7 +20,7 @@ namespace FCT
         Vec2 m_scale{1, 1};
         mutable Mat4 m_cachedTransform;
         mutable std::atomic<bool> m_transformDirty{true};
-
+        Texture* m_transform;
         Shape *m_parent = nullptr;
         std::vector<Shape *> m_children;
 
@@ -41,6 +43,11 @@ namespace FCT
         }
 
     public:
+        Shape(Context* ctx) {
+			m_transform = ctx->createTexture();
+            m_transform->setSlot(0);
+            m_transform->create(4, 1, FCT::Texture::Format::RGBA32F);
+        }
         virtual ~Shape() {
             setParent(nullptr);
             for (auto child : m_children)
@@ -68,6 +75,10 @@ namespace FCT
         {
             m_scale = scale;
             markDirty();
+        }
+
+        void rotate(float degrees) {
+			setRotation(m_rotation + degrees);
         }
 
         const Mat4 &worldTransform() const
@@ -100,6 +111,9 @@ namespace FCT
         
         virtual void create() = 0;
         void draw() const {
+            updateTransform();
+			m_transform->setData(&m_cachedTransform,sizeof(m_cachedTransform));
+            m_transform->bind();
             for (auto res : m_resources) {
                 res->bind();
             }
