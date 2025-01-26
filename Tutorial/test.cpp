@@ -3,6 +3,12 @@
 #include <GLFW/glfw3.h>
 #include <thread>
 #include <iostream>
+void GL_Cheak(const char* describe) {
+	int error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << describe << ": OpenGL error " << error << std::endl;
+	}
+}
 void reviewport(FCT::Context* ctx,FCT::Window* wnd) {
     float x = 0, y = 0, w = wnd->getWidth(), h = wnd->getHeight();
     if (h / w > 0.75) {
@@ -45,7 +51,7 @@ int main() {
         needViewPort = true;
         });
     while (wnd->isRunning()) {
-        triangle->rotate(3.14 / 18);
+        triangle->rotate(-3.14 / 18);
         if (needViewPort) {
             reviewport(ctx, wnd);
         }
@@ -56,7 +62,6 @@ int main() {
         pipeline->end();
         wnd->swapBuffers();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
     }
     rectangle->release();
     triangle->release();

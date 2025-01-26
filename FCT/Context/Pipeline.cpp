@@ -16,6 +16,8 @@ namespace FCT {
     void Pipeline::begin()
     {
         m_defaultMaterial->bind();
+        m_viewMatrixConstBuffer->bind();
+        m_projectionMatrixConstBuffer->bind();
 	}
 
     void Pipeline::end()
@@ -53,6 +55,13 @@ namespace FCT {
 
 		m_defaultMaterial = m_context->createMaterial(m_defaultVertexShader, m_defaultPixelShader);
         m_defaultMaterial->compile();
+
+        m_viewMatrixConstBuffer = m_context->createConstBuffer();
+        m_viewMatrixConstBuffer->create(sizeof(Mat4), 1);
+        m_viewMatrixConstBuffer->setData(&m_viewMatrix, sizeof(Mat4));
+        m_projectionMatrixConstBuffer = m_context->createConstBuffer();
+		m_projectionMatrixConstBuffer->create(sizeof(Mat4), 2);
+		m_projectionMatrixConstBuffer->setData(&m_projectionMatrix, sizeof(Mat4));
     }
 
 } // namespace FCT

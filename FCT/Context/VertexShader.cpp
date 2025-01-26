@@ -72,6 +72,16 @@ void VertexShader::generateCode()
 
     std::string positionType = getPositionType();
     ss << "layout(binding = 0) uniform sampler2D matrixTexture;\n";
+    
+    ss << "layout(std140, binding = 1) uniform ViewMatrixBuffer\n";
+    ss << "{\n";
+    ss << "    mat4 u_viewMatrix;\n";
+    ss << "};\n\n";
+
+    ss << "layout(std140, binding = 2) uniform ProjectionMatrixBuffer\n";
+    ss << "{\n";
+    ss << "    mat4 u_projectionMatrix;\n";
+    ss << "};\n\n";
 
     ss << "mat4 getMatrixFromTexture(int index) {\n";
     ss << "    return mat4(\n";
@@ -127,14 +137,21 @@ void VertexShader::generateCode()
                 ss << "    vec3 position3D = vec3(position2D, 1.0);\n";
                 ss << "    mat3 worldMatrix3x3 = mat3(worldMatrix);\n";
                 ss << "    vec3 transformedPosition = worldMatrix3x3 * position3D;\n";
-                ss << "    gl_Position = vec4(transformedPosition.xy, 0.0, 1.0);\n";
+                ss << "    vec4 worldPos = vec4(transformedPosition.xy, 0.0, 1.0);\n"; 
+                ss << "    vec4 viewPos = u_viewMatrix * worldPos;\n";
+                ss << "    gl_Position = u_projectionMatrix * viewPos;\n";
+
             }
             else if (output.type == PipelineAttributeType::Position3f) {
                 ss << "    vec4 finalPosition = vec4(output." << output.name << ", 1.0);\n";
-                ss << "    gl_Position = worldMatrix * finalPosition;\n";
+                ss << "    vec4 worldPos = worldMatrix * finalPosition;\n";
+                ss << "    vec4 viewPos = u_viewMatrix * worldPos;\n";
+                ss << "    gl_Position = u_projectionMatrix * viewPos;\n";
             }
             else { 
-                ss << "    gl_Position = worldMatrix * output." << output.name << ";\n";
+                ss << "    worldPos = worldMatrix * output." << output.name << ";\n";
+                ss << "    vec4 viewPos = u_viewMatrix * worldPos;\n";
+                ss << "    gl_Position = u_projectionMatrix * viewPos;\n";
             }
             break;
         }

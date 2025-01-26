@@ -23,7 +23,7 @@ namespace FCT {
 		virtual Material* createMaterial(VertexShader* vertexShader, PixelShader* pixelShader) = 0;
 		virtual InputLayout* createInputLayout(VertexFactory* factory) = 0;
 		virtual DrawCall* createDrawCall(PrimitiveType primitiveType, uint32_t startVertex, uint32_t vertexCount) = 0;
-		virtual ConstBuffer* createConstBuffer(const void* data, size_t size) = 0;
+		virtual ConstBuffer* createConstBuffer() = 0;
 		virtual Texture* createTexture() = 0;
 	private:
 
