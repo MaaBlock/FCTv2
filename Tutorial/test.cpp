@@ -3,23 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <thread>
 #include <iostream>
-void checkOpenGLErrors(const char* location) {
-    GLenum error;
-    while ((error = glGetError()) != GL_NO_ERROR) {
-        std::string errorString;
-        switch (error) {
-        case GL_INVALID_ENUM:                  errorString = "INVALID_ENUM"; break;
-        case GL_INVALID_VALUE:                 errorString = "INVALID_VALUE"; break;
-        case GL_INVALID_OPERATION:             errorString = "INVALID_OPERATION"; break;
-        case GL_STACK_OVERFLOW:                errorString = "STACK_OVERFLOW"; break;
-        case GL_STACK_UNDERFLOW:               errorString = "STACK_UNDERFLOW"; break;
-        case GL_OUT_OF_MEMORY:                 errorString = "OUT_OF_MEMORY"; break;
-        case GL_INVALID_FRAMEBUFFER_OPERATION: errorString = "INVALID_FRAMEBUFFER_OPERATION"; break;
-        default:                               errorString = "UNKNOWN_ERROR"; break;
-        }
-        std::cout << "OpenGL error " << errorString << " (" << error << ") at " << location << std::endl;
-    }
-}
 void reviewport(FCT::Context* ctx,FCT::Window* wnd) {
     float x = 0, y = 0, w = wnd->getWidth(), h = wnd->getHeight();
     if (h / w > 0.75) {
@@ -41,7 +24,7 @@ int main() {
     auto wnd = rt->createWindow(800, 600, "Triangle Example");
     auto ctx = rt->createContext(wnd);
     FCT::VertexFactory* factory = new FCT::VertexFactory;
-    factory->addAttribute(FCT::PipelineAttributeType::Position2f, "aPos");
+    factory->addAttribute(FCT::PipelineAttributeType::Position3f, "aPos");
     factory->addAttribute(FCT::PipelineAttributeType::Color4f, "aColor");
     FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
     FCT::Rectangle* rectangle = new FCT::Rectangle(ctx,factory);
