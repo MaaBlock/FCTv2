@@ -31,5 +31,6 @@ namespace FCT {
         std::string combineCode(const std::string& userCode) const;
         std::string getPositionType() const;
         bool isPositionAttribute(PipelineAttributeType type) const;
+		bool hasBatchId() const;
     };
 } // namespace FCT

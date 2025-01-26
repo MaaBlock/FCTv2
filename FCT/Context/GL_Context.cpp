@@ -58,4 +58,16 @@ namespace FCT {
 		return new GL_DrawCall(primitiveType, startVertex, vertexCount);
 	}
 
+	ConstBuffer* GL_Context::createConstBuffer(const void* data, size_t size)
+	{	
+		ConstBuffer* ret = new GL_ConstBuffer(this);
+		ret->setData(data, size, 0);
+		return ret;
+	}
+
+	Texture* GL_Context::createTexture()
+	{
+		return new GL_Texture();
+	}
+
 }

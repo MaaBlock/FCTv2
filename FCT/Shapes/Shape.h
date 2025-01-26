@@ -26,16 +26,16 @@ namespace FCT
         {
             if (m_transformDirty)
             {
-                Mat4 transform = Mat4::Translate(m_position.x, m_position.y, 0) * Mat4::RotateZ(m_rotation) * Mat4::Scale(m_scale.x, m_scale.y, 1);
+                m_cachedTransform.identity();
+                m_cachedTransform.translate(m_position.x, m_position.y, 0);
+                m_cachedTransform.rotateZ(m_rotation);
+                m_cachedTransform.scale(m_scale.x, m_scale.y, 1);
 
                 if (m_parent)
                 {
-                    m_cachedTransform = m_parent->worldTransform() * transform;
+                    m_cachedTransform = m_parent->worldTransform() * m_cachedTransform;
                 }
-                else
-                {
-                    m_cachedTransform = transform;
-                }
+
                 m_transformDirty = false;
             }
         }

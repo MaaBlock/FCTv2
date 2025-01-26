@@ -11,6 +11,7 @@ namespace FCT {
         BlendState,
         Texture,
         DrawCall,
+        ConstBuffer
     };
     class IPipelineResource : public RefCount {
     public:

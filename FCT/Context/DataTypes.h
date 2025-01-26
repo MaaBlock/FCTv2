@@ -34,7 +34,8 @@ namespace FCT {
         Normal3f,
         Tangent3f,
         Bitangent3f,
-        Custom
+        BatchId,
+        Custom,
     };
     size_t GetDataTypeSize(DataType type);
     const char* GetDataTypeName(DataType type);

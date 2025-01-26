@@ -44,6 +44,16 @@ bool VertexShader::isPositionAttribute(PipelineAttributeType type) const {
            type == PipelineAttributeType::Position4f;
 }
 
+bool VertexShader::hasBatchId() const
+{
+	for (const auto& attr : m_factory->getAttributes()) {
+		if (attr.type == PipelineAttributeType::BatchId) {
+			return true;
+		}
+	}
+	return false;
+}
+
 PipelineResourceType VertexShader::getType() const
 {
 	return PipelineResourceType::VertexShader;
@@ -57,9 +67,20 @@ void VertexShader::generateCode()
 
     std::stringstream ss;
 
-    ss << "#version 330 core\n\n";
+    ss << "#version 330 core\n";
+    ss << "#extension GL_ARB_shading_language_420pack : enable\n";
 
     std::string positionType = getPositionType();
+    ss << "layout(binding = 0) uniform sampler2D matrixTexture;\n";
+
+    ss << "mat4 getMatrixFromTexture(int index) {\n";
+    ss << "    return mat4(\n";
+    ss << "        texelFetch(matrixTexture, ivec2(0, index), 0),\n";
+    ss << "        texelFetch(matrixTexture, ivec2(1, index), 0),\n";
+    ss << "        texelFetch(matrixTexture, ivec2(2, index), 0),\n";
+    ss << "        texelFetch(matrixTexture, ivec2(3, index), 0)\n";
+    ss << "    );\n";
+    ss << "}\n\n";
 
     ss << "struct VertexInput {\n";
     for (const auto& attr : m_factory->getAttributes()) {
@@ -100,16 +121,22 @@ void VertexShader::generateCode()
     ss << "    VertexOutput output = fct_user_main(input);\n";
     for (const auto& output : m_output.getOutputs()) {
         if (isPositionAttribute(output.type)) {
-            ss << "    vec4 finalPosition = vec4(output." << output.name << ", ";
+            ss << "    mat4 worldMatrix = getMatrixFromTexture(0);\n";
             if (output.type == PipelineAttributeType::Position2f) {
-                ss << "0.0, 1.0);\n";
-            } else if (output.type == PipelineAttributeType::Position3f) {
-                ss << "1.0);\n";
-            } else { 
-                ss << ");\n";
+                ss << "    vec2 position2D = output." << output.name << ";\n";
+                ss << "    vec3 position3D = vec3(position2D, 1.0);\n";
+                ss << "    mat3 worldMatrix3x3 = mat3(worldMatrix);\n";
+                ss << "    vec3 transformedPosition = worldMatrix3x3 * position3D;\n";
+                ss << "    gl_Position = vec4(transformedPosition.xy, 0.0, 1.0);\n";
             }
-            ss << "    gl_Position = finalPosition;\n";
-            break; 
+            else if (output.type == PipelineAttributeType::Position3f) {
+                ss << "    vec4 finalPosition = vec4(output." << output.name << ", 1.0);\n";
+                ss << "    gl_Position = worldMatrix * finalPosition;\n";
+            }
+            else { 
+                ss << "    gl_Position = worldMatrix * output." << output.name << ";\n";
+            }
+            break;
         }
     }
     for (const auto& output : m_output.getOutputs()) {

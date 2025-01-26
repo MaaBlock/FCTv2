@@ -153,6 +153,15 @@
     <ClInclude Include="Context\DrawCall.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Context\GL_ConstBuffer.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\Texture.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_Texture.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -222,6 +231,15 @@
       <Filter>shape\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\GL_DrawCall.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_ConstBuffer.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\ConstBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GL_Texture.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>

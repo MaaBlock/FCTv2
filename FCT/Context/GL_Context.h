@@ -16,12 +16,13 @@ namespace FCT {
 		Material* createMaterial(VertexShader* vertexShader, PixelShader* pixelShader) override;
 		InputLayout* createInputLayout(VertexFactory* factory) override;
 		DrawCall* createDrawCall(PrimitiveType primitiveType, uint32_t startVertex, uint32_t vertexCount) override;
+		ConstBuffer* createConstBuffer(const void* data, size_t size) override;
+		Texture* createTexture() override;
 	private:
 		GL_ContextShareData* g_shareData;
 		Runtime* g_runtime;
 		int g_glVersionMajor;
 		int g_glVersionMinor;
 		IRenderTarget* m_target;
-
 	};
 }
