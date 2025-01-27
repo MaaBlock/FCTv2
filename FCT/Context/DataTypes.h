@@ -49,12 +49,29 @@ namespace FCT {
     {
         float x, y, z;
         Vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
+        
+        Vec3(const Vec3& other) {
+            x = other.x;
+            y = other.y;
+            z = other.z;
+        }
+
+        bool operator==(const Vec3& other) const {
+            return (x == other.x) && (y == other.y) && (z == other.z);
+        }
 
         Vec3& operator+=(const Vec3& rhs) {
             x += rhs.x;
             y += rhs.y;
             z += rhs.z;
             return *this;
+        }
+        bool operator<(const Vec3& other) const {
+			return (x < other.x) && (y < other.y) && (z < other.z);
+        }
+
+        float lengthSquared() const {
+            return x * x + y * y + z * z;
         }
         Vec3& operator-=(const Vec3& rhs) {
             x -= rhs.x;

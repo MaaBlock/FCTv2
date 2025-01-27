@@ -192,6 +192,9 @@
     <ClInclude Include="ImageLoader\FreeImage_ImageLoader.h">
       <Filter>ImageLoader\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Context\VertexRenderPipeline.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -282,6 +285,9 @@
       <Filter>ImageLoader\source</Filter>
     </ClCompile>
     <ClCompile Include="Context\Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\VertexRenderPipeline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

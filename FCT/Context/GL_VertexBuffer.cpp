@@ -38,4 +38,13 @@ bool GL_VertexBuffer::create(Context* context) {
     return true;
 }
 
+void GL_VertexBuffer::updata()
+{
+	if (m_isCreated) {
+		glBindBuffer(GL_ARRAY_BUFFER, m_bufferId);
+		glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getSize(), m_vertexArray->getData(), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+}
+
 } // namespace FCT

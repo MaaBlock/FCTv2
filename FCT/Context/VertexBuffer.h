@@ -12,6 +12,7 @@ namespace FCT {
         virtual void bind() = 0;
         virtual void unbind() = 0;
         virtual bool create(Context* context) = 0;
+        virtual void updata() = 0;
 
         virtual VertexArray* getVertexArray() const = 0;
         virtual size_t getVertexCount() const = 0;

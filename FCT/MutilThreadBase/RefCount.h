@@ -20,4 +20,10 @@ namespace FCT {
 	private:
 		std::atomic<size_t> m_refCount;
 	};
+	inline void safeAddRef(RefCount* obj) {
+		if (obj) obj->addRef();
+	}
+	inline void safeRelease(RefCount* obj) {
+		if (obj) obj->release();
+	}
 }

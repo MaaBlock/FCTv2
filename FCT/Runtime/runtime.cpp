@@ -36,4 +36,8 @@ namespace FCT {
 	{
 		return new FreeImage_ImageLoader();
 	}
+	Pipeline* Runtime::createVectorRenderPipeline(Context* ctx)
+	{
+		return nullptr;
+	}
 }

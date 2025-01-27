@@ -19,10 +19,12 @@ namespace FCT {
         VertexShader* getDefaultVertexShader() const;
         PixelShader* getDefaultPixelShader() const;
 		Material* getDefaultMaterial() const;
+        VertexFactory* getVertexFactory() const;
+        void setDefaultMaterial(Material* material);
         void setPerspective(float fov, float aspect, float nearPlane, float farPlane);
         void setViewMatrix(const Mat4& viewMatrix);
         void lookAt(const Vec3& eye, const Vec3& target, const Vec3& up);
-    private:
+    protected:
         Context* m_context;
         VertexShader* m_defaultVertexShader;
         PixelShader* m_defaultPixelShader;

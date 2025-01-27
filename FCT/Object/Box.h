@@ -10,12 +10,15 @@ namespace FCT {
 	public:
 		Box(Context* context, VertexFactory* factory);
 		Box(Context* context, VertexFactory* factory, const Vec3& size);
-
+		~Box();
+		void texture(Texture* texture);
 		void size(const Vec3& size);
 		void color(const Vec4& color);
 		virtual void create() override;
 		void setTextureCoordinates();
+		void updata();
 	private:
+		Texture* m_texture;
 		Context* m_context;
 		VertexFactory* m_factory;
 		VertexArray* m_array;

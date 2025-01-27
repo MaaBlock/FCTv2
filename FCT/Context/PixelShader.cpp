@@ -82,7 +82,12 @@ namespace FCT {
             ss << "    input." << output.name << " = vs2fs_" << output.name << ";\n";
         }
         if (hasTexCoordAttribute) {
-            ss << "input." << getColorName() << " = texture(mainTexture, input." << getTexCoordName() << "); \n";
+            if (hasColorAttribute) {
+                ss << "input." << getColorName() << " *= texture(mainTexture, input." << getTexCoordName() << "); \n";
+			}
+			else {
+                ss << "input." << getColorName() << " = texture(mainTexture, input." << getTexCoordName() << "); \n";
+            }
         }
         ss << "    PixelOutput output = fct_user_main(input);\n";
         if (hasColorAttribute) {

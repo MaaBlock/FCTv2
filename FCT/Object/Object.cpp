@@ -15,7 +15,7 @@ namespace FCT
             child->release();
         }
         for (auto res : m_resources) {
-            res->release();
+            safeRelease(res);
         }
     }
 
@@ -89,7 +89,7 @@ namespace FCT
 
     void Object::addResource(IPipelineResource* res) {
         m_resources.push_back(res);
-        res->addRef();
+        safeAddRef(res);
     }
 
     void Object::draw() const {
@@ -97,7 +97,8 @@ namespace FCT
         m_transform->setData(&m_cachedTransform, sizeof(m_cachedTransform));
         m_transform->bind();
         for (auto res : m_resources) {
-            res->bind();
+            if (res)
+                res->bind();
         }
     }
 

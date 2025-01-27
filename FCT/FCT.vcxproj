@@ -171,6 +171,7 @@
     <ClInclude Include="Context\VertexArray.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="Context\VertexFactory.h" />
+    <ClInclude Include="Context\VertexRenderPipeline.h" />
     <ClInclude Include="Context\VertexShader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Context\Texture.cpp" />
     <ClCompile Include="Context\VertexBuffer.cpp" />
     <ClCompile Include="Context\VertexFactory.cpp" />
+    <ClCompile Include="Context\VertexRenderPipeline.cpp" />
     <ClCompile Include="Context\VertexShader.cpp" />
     <ClCompile Include="FCT.cpp" />
     <ClCompile Include="ImageLoader\FreeImage_ImageLoader.cpp" />

@@ -13,6 +13,7 @@ public:
     void bind() override;
     void unbind() override;
     bool create(Context* context) override;
+    void updata() override;
 
     VertexArray* getVertexArray() const { return m_vertexArray; }
     size_t getVertexCount() const { return m_vertexArray->getVertexCount(); }

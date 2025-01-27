@@ -46,6 +46,14 @@ namespace FCT {
     {
 		return m_defaultMaterial;
     }
+    VertexFactory* Pipeline::getVertexFactory() const
+    {
+		return m_defaultFactory;
+    }
+    void Pipeline::setDefaultMaterial(Material* material)
+    {
+		m_defaultMaterial = material;
+    }
     void Pipeline::setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
         float tanHalfFov = tan(fov / 2.0f);
 

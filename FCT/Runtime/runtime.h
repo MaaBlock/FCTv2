@@ -6,6 +6,7 @@
 namespace FCT {
 	class GLFW_WindowShareData;
 	class GL_ContextShareData;
+	class Pipeline;
 	class Runtime {
 	public:
 		void init();
@@ -14,6 +15,7 @@ namespace FCT {
 		Context* createContext(IRenderTarget* target);
 		void setOpenGLVesion(int major, int minor);
 		ImageLoader* createImageLoader();
+		Pipeline* createVectorRenderPipeline(Context* ctx);
 	private:
 		GLFW_WindowShareData* g_glfwWindowShareData;
 		GL_ContextShareData* g_glContextShareData;

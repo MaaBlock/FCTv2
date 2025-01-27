@@ -5,6 +5,7 @@ namespace FCT {
 		: m_factory(factory), Object(context), m_size(1, 1, 1) {
 		m_context = context;
 		m_array = new VertexArray(m_factory, 36); 
+		m_texture = nullptr;
 		updateVertices();
 	}
 
@@ -12,7 +13,22 @@ namespace FCT {
 		: m_factory(factory), Object(context), m_size(size) {
 		m_context = context;
 		m_array = new VertexArray(m_factory, 36);
+		m_texture = nullptr;
 		updateVertices();
+	}
+	Box::~Box()
+	{
+		safeRelease(m_texture);
+		safeRelease(m_inputLayout);
+		safeRelease(m_vertexBuffer);
+		safeRelease(m_drawCall);
+	}
+	void Box::texture(Texture* texture)
+	{
+		safeRelease(m_texture);
+		m_texture = texture;
+		m_texture->setSlot(3);
+		safeAddRef(m_texture);
 	}
 	void Box::setTextureCoordinates() {
 		// Front face
@@ -63,6 +79,10 @@ namespace FCT {
 		m_array->setTexCoord(34, Vec2(0, 0));
 		m_array->setTexCoord(35, Vec2(1, 0));
 	}
+	void Box::updata()
+	{
+		m_vertexBuffer->updata();
+	}
 	void Box::size(const Vec3& size) {
 		m_size = size;
 		updateVertices();
@@ -82,6 +102,7 @@ namespace FCT {
 		m_drawCall = m_context->createDrawCall(PrimitiveType::Triangles, 0, 36);
 		addResource(m_vertexBuffer);
 		addResource(m_inputLayout);
+		addResource(m_texture);
 		addResource(m_drawCall);
 		m_initialized = true;
 	}
