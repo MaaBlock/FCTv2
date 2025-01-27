@@ -40,20 +40,21 @@ public:
 
     Camera(FCT::Vec3 pos = FCT::Vec3(0.0f, 0.0f, 5.0f))
         : position(pos), front(FCT::Vec3(0.0f, 0.0f, -1.0f)), up(FCT::Vec3(0.0f, 1.0f, 0.0f)),
-        right(FCT::Vec3(1.0f, 0.0f, 0.0f)), yaw(-90.0f), pitch(0.0f), speed(0.05f), sensitivity(0.1f) {
+        right(FCT::Vec3(1.0f, 0.0f, 0.0f)), yaw(-90.0f), pitch(0.0f), speed(2.5f), sensitivity(0.1f) {
         updateCameraVectors();
     }
 
-    void processKeyboard(char* keyState) {
+    void processKeyboard(char* keyState, float deltaTime) {
+        float velocity = speed * deltaTime;
         FCT::Vec3 frontFlat = FCT::normalize(FCT::Vec3(front.x, 0.0f, front.z));
         FCT::Vec3 rightFlat = FCT::normalize(FCT::cross(frontFlat, FCT::Vec3(0.0f, 1.0f, 0.0f)));
 
-        if (keyState['W']) position += frontFlat * speed;
-        if (keyState['S']) position -= frontFlat * speed;
-        if (keyState['A']) position -= rightFlat * speed;
-        if (keyState['D']) position += rightFlat * speed;
-        if (keyState[FCT::KC_SPACE]) position += FCT::Vec3(0.0f, 1.0f, 0.0f) * speed;
-        if (keyState[FCT::KC_LEFT_SHIFT]) position -= FCT::Vec3(0.0f, 1.0f, 0.0f) * speed;
+        if (keyState['W']) position += frontFlat * velocity;
+        if (keyState['S']) position -= frontFlat * velocity;
+        if (keyState['A']) position -= rightFlat * velocity;
+        if (keyState['D']) position += rightFlat * velocity;
+        if (keyState[FCT::KC_SPACE]) position += FCT::Vec3(0.0f, 1.0f, 0.0f) * velocity;
+        if (keyState[FCT::KC_LEFT_SHIFT]) position -= FCT::Vec3(0.0f, 1.0f, 0.0f) * velocity;
     }
 
     void processMouseMovement(float xoffset, float yoffset) {
@@ -134,13 +135,19 @@ int main() {
 
     Camera camera(FCT::Vec3(0.0f, 0.0f, 5.0f));
 
+    auto lastFrame = std::chrono::high_resolution_clock::now();
+
     while (wnd->isRunning()) {
+        auto currentFrame = std::chrono::high_resolution_clock::now();
+        float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentFrame - lastFrame).count();
+        lastFrame = currentFrame;
+
         if (needViewPort) {
             reviewport(ctx, wnd);
             needViewPort = false;
         }
 
-        camera.processKeyboard(KeyState);
+        camera.processKeyboard(KeyState, deltaTime);
         camera.processMouseMovement(mouseDx, mouseDy);
         mouseDx = 0;
         mouseDy = 0;
@@ -157,8 +164,8 @@ int main() {
         pipeline->draw(box);
         pipeline->end();
         wnd->swapBuffers();
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }
+
 
     box->release();
     delete pipeline;
