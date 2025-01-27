@@ -1,4 +1,5 @@
-﻿#include "../FCT/headers.h"
+﻿
+#include "../FCT/headers.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <thread>
@@ -33,9 +34,11 @@ int main() {
     rt->setOpenGLVesion(3, 3);
     auto wnd = rt->createWindow(800, 600, "3D Example");
     auto ctx = rt->createContext(wnd);
+    auto il = rt->createImageLoader();
     FCT::VertexFactory* factory = new FCT::VertexFactory;
     factory->addAttribute(FCT::PipelineAttributeType::Position3f, "aPos");
     factory->addAttribute(FCT::PipelineAttributeType::Color4f, "aColor");
+    factory->addAttribute(FCT::PipelineAttributeType::TexCoord2f, "aTexCoord");
     FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
 
     float fov = 45.0f * 3.14159f / 180.0f; 
@@ -47,8 +50,13 @@ int main() {
     FCT::Box* box = new FCT::Box(ctx, factory);
     box->size(FCT::Vec3(1, 1, 1));
     box->color(FCT::Vec4(1, 1, 1, 1));
+    box->setTextureCoordinates();
     box->create();
-
+    FCT::Texture* texture = ctx->createTexture();
+    texture->setSlot(3);
+    if (texture->loadFromFile("MaBlock.png", il)) {
+		std::cout << "Texture loaded successfully." << std::endl;
+    };
     reviewport(ctx, wnd); 
     bool needViewPort = false;
     wnd->getCallBack()->addResizeCallback([&needViewPort](FCT::Window* wnd, int w, int h) {
@@ -69,9 +77,10 @@ int main() {
         FCT::Vec3 target(0.0f, 0.0f, 0.0f);
         FCT::Vec3 up(0.0f, 1.0f, 0.0f);
         pipeline->lookAt(eye, target, up);
-
+        glEnable(GL_DEPTH_TEST);
         ctx->clear(0.2f, 0.3f, 0.3f);
         pipeline->begin();
+        texture->bind();
         pipeline->draw(box);
         pipeline->end();
         wnd->swapBuffers();

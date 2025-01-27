@@ -67,6 +67,15 @@
     <Filter Include="object\source">
       <UniqueIdentifier>{8caf63cb-d12d-4280-b9a3-192c548f820f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImageLoader">
+      <UniqueIdentifier>{aea8c1a6-796d-44f5-9e45-555fb89ecdaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageLoader\headers">
+      <UniqueIdentifier>{bc444566-142a-420c-8b11-690aa0958910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageLoader\source">
+      <UniqueIdentifier>{e2b18a59-fb02-451a-b12f-68f500b07f87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -177,6 +186,12 @@
     <ClInclude Include="Object\Object.h">
       <Filter>object\headers</Filter>
     </ClInclude>
+    <ClInclude Include="ImageLoader\ImageLoader.h">
+      <Filter>ImageLoader\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader\FreeImage_ImageLoader.h">
+      <Filter>ImageLoader\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -262,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="Object\Object.cpp">
       <Filter>object\source</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageLoader\FreeImage_ImageLoader.cpp">
+      <Filter>ImageLoader\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\Texture.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

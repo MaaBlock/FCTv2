@@ -4,6 +4,8 @@
 #include "./UI/Window.h"
 #include "./UI/GLFW_WindowShareData.h"
 #include "./UI/GLFW_Window.h"
+#include "./ImageLoader/ImageLoader.h"
+#include "./ImageLoader/FreeImage_ImageLoader.h"
 #include "./Context/IRenderTarget.h"
 #include "./Context/Context.h"
 #include "./Context/GL_Context.h"

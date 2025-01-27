@@ -14,7 +14,55 @@ namespace FCT {
 		m_array = new VertexArray(m_factory, 36);
 		updateVertices();
 	}
+	void Box::setTextureCoordinates() {
+		// Front face
+		m_array->setTexCoord(0, Vec2(0, 1));
+		m_array->setTexCoord(1, Vec2(1, 1));
+		m_array->setTexCoord(2, Vec2(1, 0));
+		m_array->setTexCoord(3, Vec2(0, 1));
+		m_array->setTexCoord(4, Vec2(1, 0));
+		m_array->setTexCoord(5, Vec2(0, 0));
 
+		// Back face
+		m_array->setTexCoord(6, Vec2(0, 1));
+		m_array->setTexCoord(7, Vec2(1, 1));
+		m_array->setTexCoord(8, Vec2(1, 0));
+		m_array->setTexCoord(9, Vec2(0, 1));
+		m_array->setTexCoord(10, Vec2(1, 0));
+		m_array->setTexCoord(11, Vec2(0, 0));
+
+		// Top face
+		m_array->setTexCoord(12, Vec2(0, 1));
+		m_array->setTexCoord(13, Vec2(0, 0));
+		m_array->setTexCoord(14, Vec2(1, 0));
+		m_array->setTexCoord(15, Vec2(0, 1));
+		m_array->setTexCoord(16, Vec2(1, 0));
+		m_array->setTexCoord(17, Vec2(1, 1));
+
+		// Bottom face
+		m_array->setTexCoord(18, Vec2(0, 0));
+		m_array->setTexCoord(19, Vec2(1, 0));
+		m_array->setTexCoord(20, Vec2(1, 1));
+		m_array->setTexCoord(21, Vec2(0, 0));
+		m_array->setTexCoord(22, Vec2(1, 1));
+		m_array->setTexCoord(23, Vec2(0, 1));
+
+		// Right face
+		m_array->setTexCoord(24, Vec2(0, 1));
+		m_array->setTexCoord(25, Vec2(0, 0));
+		m_array->setTexCoord(26, Vec2(1, 0));
+		m_array->setTexCoord(27, Vec2(0, 1));
+		m_array->setTexCoord(28, Vec2(1, 0));
+		m_array->setTexCoord(29, Vec2(1, 1));
+
+		// Left face
+		m_array->setTexCoord(30, Vec2(1, 1));
+		m_array->setTexCoord(31, Vec2(0, 1));
+		m_array->setTexCoord(32, Vec2(0, 0));
+		m_array->setTexCoord(33, Vec2(1, 1));
+		m_array->setTexCoord(34, Vec2(0, 0));
+		m_array->setTexCoord(35, Vec2(1, 0));
+	}
 	void Box::size(const Vec3& size) {
 		m_size = size;
 		updateVertices();

@@ -1,6 +1,6 @@
 #pragma once
 #include "IPipelineResource.h"
-
+#include "../ImageLoader/ImageLoader.h"
 namespace FCT {
 	class Texture : public IPipelineResource {
 	public:
@@ -8,7 +8,9 @@ namespace FCT {
 			R32F,
 			RG32F,
 			RGB32F,
-			RGBA32F
+			RGBA32F,
+			RGB8,
+			RGBA8
 		};
 
 		virtual ~Texture() = default;
@@ -23,11 +25,11 @@ namespace FCT {
 		virtual unsigned int getWidth() const = 0;
 		virtual unsigned int getHeight() const = 0;
 		virtual Format getFormat() const = 0;
-
 		virtual void bind() override = 0;
 		virtual void unbind() override = 0;
 
 		virtual void setSlot(unsigned int slot) = 0;
 		virtual unsigned int getSlot() const = 0;
+		bool loadFromFile(const std::string& filename, ImageLoader* imageLoader);
 	};
 }

@@ -23,6 +23,8 @@ namespace FCT {
         const ShaderOutput& m_vertexOutput;
         std::string generateDefaultCode() const;
         std::string combineCode(const std::string& userCode) const;
+        std::string getTexCoordName() const;
+        std::string getColorName() const;
 
     };
 } // namespace FCT

@@ -14,7 +14,7 @@ namespace FCT {
 		void size(const Vec3& size);
 		void color(const Vec4& color);
 		virtual void create() override;
-
+		void setTextureCoordinates();
 	private:
 		Context* m_context;
 		VertexFactory* m_factory;

@@ -3,14 +3,29 @@
 
 namespace FCT {
 
-GL_Texture::GL_Texture() : m_textureID(0), m_width(0), m_height(0), m_format(Format::RGBA32F) {}
+GL_Texture::GL_Texture() : m_textureID(0), m_width(0), m_height(0), m_format(Format::RGBA32F) {
+    m_slot = 0;
+}
 
 GL_Texture::~GL_Texture() {
     if (m_textureID != 0) {
         glDeleteTextures(1, &m_textureID);
     }
 }
-
+GLenum GL_Texture::getGLDataType() const {
+    switch (m_format) {
+    case Format::R32F:
+    case Format::RG32F:
+    case Format::RGB32F:
+    case Format::RGBA32F:
+        return GL_FLOAT;
+    case Format::RGB8:
+    case Format::RGBA8:
+        return GL_UNSIGNED_BYTE;
+    default:
+        throw std::runtime_error("Unsupported texture format");
+    }
+}
 void GL_Texture::create(unsigned int width, unsigned int height, Format format) {
     m_width = width;
     m_height = height;
@@ -19,7 +34,7 @@ void GL_Texture::create(unsigned int width, unsigned int height, Format format) 
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, getGLInternalFormat(), width, height, 0, getGLFormat(), GL_FLOAT, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, getGLInternalFormat(), width, height, 0, getGLFormat(), getGLDataType(), nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -34,8 +49,9 @@ void GL_Texture::setData(const void* data, size_t size) {
         throw std::runtime_error("Texture not created");
     }
 
+    glActiveTexture(GL_TEXTURE0 + m_slot);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, getGLFormat(), GL_FLOAT, data);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, getGLFormat(), getGLDataType(), data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -55,9 +71,12 @@ GLenum GL_Texture::getGLFormat() const {
         case Format::RG32F: return GL_RG;
         case Format::RGB32F: return GL_RGB;
         case Format::RGBA32F: return GL_RGBA;
+        case Format::RGB8: return GL_RGB;
+        case Format::RGBA8: return GL_RGBA;
         default: throw std::runtime_error("Unsupported texture format");
     }
 }
+
 
 GLenum GL_Texture::getGLInternalFormat() const {
     switch (m_format) {
@@ -65,6 +84,8 @@ GLenum GL_Texture::getGLInternalFormat() const {
         case Format::RG32F: return GL_RG32F;
         case Format::RGB32F: return GL_RGB32F;
         case Format::RGBA32F: return GL_RGBA32F;
+		case Format::RGB8: return GL_RGB8;
+		case Format::RGBA8: return GL_RGBA8;
         default: throw std::runtime_error("Unsupported texture format");
     }
 }

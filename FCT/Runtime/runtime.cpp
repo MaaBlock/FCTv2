@@ -10,9 +10,11 @@ namespace FCT {
 		g_glfwWindowShareData->init();
 		g_glContextShareData = new GL_ContextShareData(this);
 		g_glContextShareData->init();
+		FreeImage_ImageLoader::Init();
 	}
 	void Runtime::tern()
 	{
+		FreeImage_ImageLoader::Tern();
 		delete g_glfwWindowShareData;
 		delete g_glContextShareData;
 		delete this;
@@ -29,5 +31,9 @@ namespace FCT {
 	void Runtime::setOpenGLVesion(int major, int minor)
 	{
 		g_glContextShareData->setOpenGLVersion(major, minor);
+	}
+	ImageLoader* Runtime::createImageLoader()
+	{
+		return new FreeImage_ImageLoader();
 	}
 }

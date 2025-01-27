@@ -8,6 +8,8 @@ namespace FCT {
         GL_Texture();
         virtual ~GL_Texture();
 
+        GLenum getGLDataType() const;
+
         void create(unsigned int width, unsigned int height, Format format) override;
         void setData(const void* data, size_t size) override;
 

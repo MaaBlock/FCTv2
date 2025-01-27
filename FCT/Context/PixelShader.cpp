@@ -44,7 +44,8 @@ namespace FCT {
     {
         std::stringstream ss;
         ss << "#version 330 core\n\n";
-
+        ss << "#extension GL_ARB_shading_language_420pack : enable\n";
+        ss << "layout(binding = 3) uniform sampler2D mainTexture;\n\n";
         ss << "struct PixelInput {\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    " << GetDataTypeName(output.dataType) << " " << output.name << ";\n";
@@ -53,10 +54,14 @@ namespace FCT {
 
         ss << "struct PixelOutput {\n";
         bool hasColorAttribute = false;
+        bool hasTexCoordAttribute = false;
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    " << GetDataTypeName(output.dataType) << " " << output.name << ";\n";
             if (output.type == PipelineAttributeType::Color4f) {
                 hasColorAttribute = true;
+            }
+            if (output.type == PipelineAttributeType::TexCoord2f) {
+				hasTexCoordAttribute = true;
             }
         }
         if (!hasColorAttribute) {
@@ -67,7 +72,6 @@ namespace FCT {
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
         }
-
         ss << "\nout vec4 FragColor;\n\n";
 
         ss << "PixelOutput fct_user_main(PixelInput input);\n\n";
@@ -76,6 +80,9 @@ namespace FCT {
         ss << "    PixelInput input;\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    input." << output.name << " = vs2fs_" << output.name << ";\n";
+        }
+        if (hasTexCoordAttribute) {
+            ss << "input." << getColorName() << " = texture(mainTexture, input." << getTexCoordName() << "); \n";
         }
         ss << "    PixelOutput output = fct_user_main(input);\n";
         if (hasColorAttribute) {
@@ -114,6 +121,24 @@ namespace FCT {
 
     bool PixelShader::isCompiled() const {
         return m_isCompiled;
+    }
+
+    std::string PixelShader::getTexCoordName() const {
+        for (const auto& output : m_vertexOutput.getOutputs()) {
+            if (output.type == PipelineAttributeType::TexCoord2f) {
+                return output.name;
+            }
+        }
+        return "";
+    }
+
+    std::string PixelShader::getColorName() const {
+        for (const auto& output : m_vertexOutput.getOutputs()) {
+            if (output.type == PipelineAttributeType::Color4f) {
+                return output.name;
+            }
+        }
+        return "color";
     }
 
 } // namespace FCT
