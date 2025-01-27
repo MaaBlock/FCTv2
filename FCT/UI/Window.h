@@ -19,6 +19,7 @@ namespace FCT {
 		virtual void swapBuffers() = 0;
 		virtual int getWidth() = 0;
 		virtual int getHeight() = 0;
+		virtual void setCursorPos(int x, int y) = 0;
 		void registerHandler(EventHandler* handler);
 		void unregisterHandler(EventHandler* handler);
 		void clearHandler();
