@@ -58,6 +58,15 @@
     <Filter Include="shape\source">
       <UniqueIdentifier>{365521de-c441-4d83-860b-5925ec9c459d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{1e88c87a-0730-4517-a412-99b0077774f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object\headers">
+      <UniqueIdentifier>{17f99104-62a7-41fa-955f-37215e00c9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object\source">
+      <UniqueIdentifier>{8caf63cb-d12d-4280-b9a3-192c548f820f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -162,6 +171,12 @@
     <ClInclude Include="Context\GL_Texture.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Box.h">
+      <Filter>object\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object.h">
+      <Filter>object\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -241,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="Context\GL_Texture.cpp">
       <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Box.cpp">
+      <Filter>object\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Object.cpp">
+      <Filter>object\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

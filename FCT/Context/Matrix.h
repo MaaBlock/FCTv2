@@ -36,6 +36,33 @@ namespace FCT {
 			trans.m[14] = z;
 			*this = *this * trans;
 		}
+		void rotateX(float degrees) {
+			float radians = degrees * 3.14159265f / 180.0f;
+			float c = cosf(radians);
+			float s = sinf(radians);
+
+			Mat4 rot = {
+				1,  0,  0, 0,
+				0,  c, -s, 0,
+				0,  s,  c, 0,
+				0,  0,  0, 1
+			};
+			*this = *this * rot;
+		}
+
+		void rotateY(float degrees) {
+			float radians = degrees * 3.14159265f / 180.0f;
+			float c = cosf(radians);
+			float s = sinf(radians);
+
+			Mat4 rot = {
+				 c, 0, s, 0,
+				 0, 1, 0, 0,
+				-s, 0, c, 0,
+				 0, 0, 0, 1
+			};
+			*this = *this * rot;
+		}
 
 		void rotateZ(float degrees) {
 			float radians = degrees * 3.14159265f / 180.0f;

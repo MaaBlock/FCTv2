@@ -175,6 +175,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="MutilThreadBase\RefCount.h" />
+    <ClInclude Include="Object\Box.h" />
+    <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Runtime\runtime.h" />
     <ClInclude Include="Shapes\Rectangle.h" />
@@ -206,6 +208,8 @@
     <ClCompile Include="Context\VertexFactory.cpp" />
     <ClCompile Include="Context\VertexShader.cpp" />
     <ClCompile Include="FCT.cpp" />
+    <ClCompile Include="Object\Box.cpp" />
+    <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
