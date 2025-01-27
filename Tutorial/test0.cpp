@@ -136,12 +136,11 @@ int main() {
     Camera camera(FCT::Vec3(0.0f, 0.0f, 5.0f));
 
     auto lastFrame = std::chrono::high_resolution_clock::now();
-
     while (wnd->isRunning()) {
         auto currentFrame = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentFrame - lastFrame).count();
         lastFrame = currentFrame;
-
+        //std::cout << 1 / deltaTime << std::endl;
         if (needViewPort) {
             reviewport(ctx, wnd);
             needViewPort = false;

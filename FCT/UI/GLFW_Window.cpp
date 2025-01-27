@@ -100,7 +100,7 @@ void FCT::GLFW_Window::bind(Context* ctx)
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwMakeContextCurrent(m_window);
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
+        glfwSwapInterval(0);
 	}
 	else if (dynamic_cast<D3D11_Context*>(ctx)) {
 		throw std::runtime_error("GLFW_Window 不支持 bind D3D11_Context");
