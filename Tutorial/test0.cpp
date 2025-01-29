@@ -418,9 +418,14 @@ int main() {
         world.render(pipeline, camera.position);
         pipeline->end();
         vrp->begin(screen);
-        vrp->rectangle(Vec2(15, 15), Vec2(20, 20),1);
-        vrp->moveTo(Vec2(30, 25));
-        vrp->arcTo(Vec2(25, 25), 0, 2 * 3.1415926535);
+       // vrp->rectangle(Vec2(15, 0), Vec2(20, 20),1);
+        vrp->moveTo(Vec2(15, 15));
+        vrp->lineTo(Vec2(20, 15));
+        vrp->arcTo(Vec2(25, 15), 3.1415926535,0);
+        vrp->lineTo(Vec2(35, 15));
+        vrp->lineTo(Vec2(35, 35));
+        vrp->lineTo(Vec2(15, 35));
+        vrp->lineTo(Vec2(15, 15));
         vrp->end();
         wnd->swapBuffers();
         GL_Check("loop end");

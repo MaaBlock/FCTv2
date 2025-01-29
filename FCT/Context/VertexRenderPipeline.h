@@ -27,6 +27,8 @@ namespace FCT {
 		void fillrect(Vec2 pos, Vec2 size);
 		void rectangle(Vec2 pos, Vec2 size, float width);
 		void arcTo(Vec2 center, float beginAngle, float endAngle);
+		void circle(Vec2 center, float radius);
+		void roundedRect(Vec2 pos, Vec2 size, float width, float r);
 		void end();
 	private:
 		void unwrapperArcTo(Vec2 center, float beginAngle, float endAngle, float q);

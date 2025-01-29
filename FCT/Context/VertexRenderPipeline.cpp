@@ -3,14 +3,15 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <corecrt_math_defines.h>
-namespace FCT { 
+namespace FCT
+{
 	const float Command_End = -1;
 	const float Command_MoveTo = 1;
 	const float Command_LineTo = 2;
 	const float Command_BezierCurveTo = 3;
 	const float Command_SetColor = 4;
 	const float CommandArcTo = 5.0;
-	FCT::VertexRenderScreen::VertexRenderScreen(VertexRenderPipeline* pl) : Object(pl)
+	FCT::VertexRenderScreen::VertexRenderScreen(VertexRenderPipeline *pl) : Object(pl)
 	{
 		m_pl = pl;
 		m_vf = pl->getVertexFactory();
@@ -19,7 +20,6 @@ namespace FCT {
 		size(Vec3(1, 1, 1));
 		viewport(0, 0, 1, 1);
 	}
-
 
 	void FCT::VertexRenderScreen::size(Vec3 centerToCorner)
 	{
@@ -38,16 +38,16 @@ namespace FCT {
 
 	void VertexRenderScreen::viewport(float x, float y, float w, float h)
 	{
-		Vec2 topLeft(x, y);
-		Vec2 topRight(x + w, y);
-		Vec2 bottomLeft(x, y + h);
-		Vec2 bottomRight(x + w, y + h);
-		m_arr->setAttribute(0,"vectorCoord", topLeft);
-		m_arr->setAttribute(1,"vectorCoord", topRight);
-		m_arr->setAttribute(2,"vectorCoord", bottomLeft);
-		m_arr->setAttribute(3,"vectorCoord", bottomRight);
-		m_arr->setAttribute(4,"vectorCoord", topRight);
-		m_arr->setAttribute(5,"vectorCoord", bottomLeft);
+		Vec2 bottomLeft(x, y);
+		Vec2 bottomRight(x + w, y);
+		Vec2 topLeft(x, y + h);
+		Vec2 topRight(x + w, y + h);
+		m_arr->setAttribute(0, "vectorCoord", topLeft);
+		m_arr->setAttribute(1, "vectorCoord", topRight);
+		m_arr->setAttribute(2, "vectorCoord", bottomLeft);
+		m_arr->setAttribute(3, "vectorCoord", bottomRight);
+		m_arr->setAttribute(4, "vectorCoord", topRight);
+		m_arr->setAttribute(5, "vectorCoord", bottomLeft);
 	}
 
 	void VertexRenderScreen::create()
@@ -62,7 +62,7 @@ namespace FCT {
 		addResource(m_dc);
 	}
 
-	FCT::VertexRenderPipeline::VertexRenderPipeline(Context* ctx) : Pipeline(ctx, this->createFactory())
+	FCT::VertexRenderPipeline::VertexRenderPipeline(Context *ctx) : Pipeline(ctx, this->createFactory())
 	{
 		m_vrvs = ctx->createVertexShader(m_defaultFactory);
 		if (!m_vrvs->compileFromSource(R"(
@@ -72,7 +72,8 @@ VertexOutput main(VertexInput input)
 	output.position = input.position;
 	output.vectorCoord = input.vectorCoord;
 	return output;
-})")) {
+})"))
+		{
 			std::cout << "vs±¨´í:" << std::endl;
 			std::cout << m_vrvs->getCompileError() << std::endl;
 		}
@@ -117,9 +118,9 @@ vec2 ArcTest(vec2 pos, vec2 bp,vec2 ep, vec2 c, float b, float e, float r, float
     bool isInx = (pos.x >= minX && pos.x <= maxX);
     bool isIny = (pos.y >= minY && pos.y <= maxY);
     bool isInCircle = length(pos - c) <= r;
-    float bLessE = float(b < e);
+    float bLessE = b < e ? 1 : -1;
     
-    if (q == 1.0 || q == 3.0) {
+    if (q == 1.0 || q == 4.0) {
         ret.x = float(isIny && (isInCircle || pos.x < minX));
         ret.x *= -bLessE;
     } else {
@@ -129,10 +130,10 @@ vec2 ArcTest(vec2 pos, vec2 bp,vec2 ep, vec2 c, float b, float e, float r, float
     
     if (q == 1.0 || q == 2.0) {
         ret.y = float(isInx && (isInCircle || pos.y < minY));
-        ret.y *= bLessE;
+        ret.y *= -bLessE;
     } else {
         ret.y = float(isInx && pos.y < maxY && !isInCircle);
-        ret.y *= -bLessE;
+        ret.y *= bLessE;
     }
     
     return ret;
@@ -197,16 +198,20 @@ PixelOutput main(PixelInput input) {
 			i+=5;
 		}
     }
-    
+    /*
+    output.color = vec4((crossings + vec2(2,2)) / 4,0,1.0);
+	return output;
+	*/
     float weightX = 1.0 - abs(crossings.x * 2.0 - 1.0);
     float weightY = 1.0 - abs(crossings.y * 2.0 - 1.0);
     float coverage = max(abs(crossings.x * weightX + crossings.y * weightY) / max(weightX + weightY, 0.0001220703125), min(abs(crossings.x), abs(crossings.y)));
     
     output.color = fillColor;
     output.color.a *= coverage;
-    return output;
+	return output;
 }
-)")) {
+)"))
+		{
 			std::cout << "ps±¨´í:" << std::endl;
 			std::cout << m_vrps->getCompileError() << std::endl;
 		}
@@ -215,7 +220,7 @@ PixelOutput main(PixelInput input) {
 		setDefaultMaterial(m_vrMaterial);
 	}
 
-	void VertexRenderPipeline::begin(VertexRenderScreen* screen)
+	void VertexRenderPipeline::begin(VertexRenderScreen *screen)
 	{
 		m_screeen = screen;
 		Pipeline::begin();
@@ -253,48 +258,116 @@ PixelOutput main(PixelInput input) {
 		lineTo(Vec2(pos.x + size.x, pos.y));
 		lineTo(pos);
 	}
-
-
 	void VertexRenderPipeline::arcTo(Vec2 center, float beginAngle, float endAngle)
 	{
 		beginAngle = fmod(beginAngle, 2 * M_PI);
 		endAngle = fmod(endAngle, 2 * M_PI);
-		if (beginAngle < 0) beginAngle += 2 * M_PI;
-		if (endAngle < 0) endAngle += 2 * M_PI;
+		if (beginAngle < 0) {
+			beginAngle += 2 * M_PI;
+			if (endAngle) {
+				endAngle += 2 * M_PI;
+				endAngle = fmod(endAngle, 2 * M_PI);
+			}
+			else {
+				endAngle += 2 * M_PI;
+			}
+		}
+		if (endAngle < 0) {
+			if (beginAngle) {
+				beginAngle += 2 * M_PI;
+				beginAngle = fmod(beginAngle, 2 * M_PI);
+			}
+			else {
+				beginAngle += 2 * M_PI;
+			}
+			endAngle += 2 * M_PI;
+		}
 
-		if (abs(endAngle - beginAngle) < 1e-6 || abs(endAngle - beginAngle) >= 2 * M_PI - 1e-6) {
-			for (int q = 1; q <= 4; ++q) {
-				float qBegin = (q - 1) * M_PI_2;
-				float qEnd = q * M_PI_2;
-				unwrapperArcTo(center, qBegin, qEnd, q);
+		if (abs(endAngle - beginAngle) < 1e-6 || abs(endAngle - beginAngle) >= 2 * M_PI - 1e-6)
+		{
+			for (int q = 1; q <= 4; ++q)
+			{
+				unwrapperArcTo(center, (q - 1) * M_PI_2, q * M_PI_2, q);
 			}
 			return;
 		}
 
-		bool isClockwise = beginAngle > endAngle;
+		bool isClockwise = endAngle < beginAngle;
 
-		const float quadrantAngles[5] = { 0, M_PI_2, M_PI, 3 * M_PI_2, 2 * M_PI };
+		if (isClockwise)
+		{
+			if (endAngle > beginAngle)
+				endAngle -= 2 * M_PI; 
 
-		if (isClockwise) {
-			endAngle += 2 * M_PI;
+			for (int q = 4; q >= 1; --q)
+			{
+				float quadrantStart = q * M_PI_2;
+				float quadrantEnd = (q - 1) * M_PI_2;
+
+				if (beginAngle > quadrantEnd && endAngle < quadrantStart)
+				{
+					float arcStart = std::min(beginAngle, quadrantStart);
+					float arcEnd = std::max(endAngle, quadrantEnd);
+					unwrapperArcTo(center, arcStart, arcEnd, q);
+				}
+
+				if (endAngle >= quadrantEnd)
+					break;
+			}
 		}
+		else
+		{
+			if (endAngle < beginAngle)
+				endAngle += 2 * M_PI; // Ensure endAngle is greater than beginAngle
 
-		float currentAngle = beginAngle;
-		int currentQuadrant = (int)(currentAngle / M_PI_2) % 4 + 1;
+			for (int q = 1; q <= 4; ++q)
+			{
+				float quadrantStart = (q - 1) * M_PI_2;
+				float quadrantEnd = q * M_PI_2;
 
-		while ((isClockwise && currentAngle < endAngle) || (!isClockwise && currentAngle > endAngle)) {
-			float nextQuadrantAngle = quadrantAngles[currentQuadrant % 4];
-			if (isClockwise && nextQuadrantAngle <= currentAngle) nextQuadrantAngle += 2 * M_PI;
+				if (beginAngle < quadrantEnd && endAngle > quadrantStart)
+				{
+					float arcStart = std::max(beginAngle, quadrantStart);
+					float arcEnd = std::min(endAngle, quadrantEnd);
+					unwrapperArcTo(center, arcStart, arcEnd, q);
+				}
 
-			float segmentEnd = isClockwise ?
-				std::min(nextQuadrantAngle, endAngle) :
-				std::max(nextQuadrantAngle, endAngle);
-
-			unwrapperArcTo(center, currentAngle, segmentEnd, currentQuadrant);
-
-			currentAngle = segmentEnd;
-			currentQuadrant = isClockwise ? (currentQuadrant % 4) + 1 : ((currentQuadrant - 2 + 4) % 4) + 1;
+				if (endAngle <= quadrantEnd)
+					break;
+			}
 		}
+	}
+	void VertexRenderPipeline::circle(Vec2 center, float radius)
+	{
+		moveTo(Vec2(center.x + radius, center.y));
+		arcTo(center, 0, M_2_PI);
+	}
+	void VertexRenderPipeline::roundedRect(Vec2 pos, Vec2 size, float width, float r)
+	{
+		r = std::min(r, std::min(size.x / 2, size.y / 2));
+		float halfWidth = width / 2;
+
+		// ÍâÂÖÀª£¨Ë³Ê±Õë£©
+		moveTo(Vec2(pos.x + r, pos.y));
+		lineTo(Vec2(pos.x + size.x - r, pos.y));
+		arcTo(Vec2(pos.x + size.x - r, pos.y + r), -M_PI_2, 0);
+		lineTo(Vec2(pos.x + size.x, pos.y + size.y - r));
+		arcTo(Vec2(pos.x + size.x - r, pos.y + size.y - r), 0, M_PI_2);
+		lineTo(Vec2(pos.x + r, pos.y + size.y));
+		arcTo(Vec2(pos.x + r, pos.y + size.y - r), M_PI_2, M_PI);
+		lineTo(Vec2(pos.x, pos.y + r));
+		arcTo(Vec2(pos.x + r, pos.y + r), M_PI, 3 * M_PI_2);
+
+		// ÄÚÂÖÀª£¨ÄæÊ±Õë£©
+		moveTo(Vec2(pos.x + r + width, pos.y + width));
+		arcTo(Vec2(pos.x + r + width, pos.y + r + width), 3 * M_PI_2, M_PI);
+		lineTo(Vec2(pos.x + width, pos.y + size.y - r - width));
+		arcTo(Vec2(pos.x + r + width, pos.y + size.y - r - width), M_PI, M_PI_2);
+		lineTo(Vec2(pos.x + size.x - r - width, pos.y + size.y - width));
+		arcTo(Vec2(pos.x + size.x - r - width, pos.y + size.y - r - width), M_PI_2, 0);
+		lineTo(Vec2(pos.x + size.x - width, pos.y + r + width));
+		arcTo(Vec2(pos.x + size.x - r - width, pos.y + r + width), 0, -M_PI_2);
+		lineTo(Vec2(pos.x + r + width, pos.y + width));
 	}
 	void VertexRenderPipeline::rectangle(Vec2 pos, Vec2 size, float width)
 	{
@@ -314,7 +387,7 @@ PixelOutput main(PixelInput input) {
 	void FCT::VertexRenderPipeline::end()
 	{
 		m_commandQueue.push_back(Command_End);
-		Texture* texture = m_context->createTexture();
+		Texture *texture = m_context->createTexture();
 		texture->setSlot(4);
 		texture->create(m_commandQueue.size(), 1, FCT::Texture::Format::R32F);
 		texture->setData(m_commandQueue.data(), m_commandQueue.size());
@@ -327,6 +400,7 @@ PixelOutput main(PixelInput input) {
 
 	void VertexRenderPipeline::unwrapperArcTo(Vec2 center, float beginAngle, float endAngle, float q)
 	{
+		// std::cout << "beginAngle:" << beginAngle << ":" << endAngle << ":" << q << '\n';
 		m_commandQueue.push_back(CommandArcTo);
 
 		m_commandQueue.push_back(center.x);
@@ -338,13 +412,12 @@ PixelOutput main(PixelInput input) {
 		m_commandQueue.push_back(q);
 	}
 
-	FCT::VertexFactory* FCT::VertexRenderPipeline::createFactory()
+	FCT::VertexFactory *FCT::VertexRenderPipeline::createFactory()
 	{
 		m_vrf = new VertexFactory();
 		m_vrf->addAttribute(FCT::PipelineAttributeType::Position3f, "position");
 		m_vrf->addAttribute(FCT::PipelineAttributeType::Custom, "vectorCoord", DataType::Vec2);
 		return m_vrf;
 	}
-
 
 }
