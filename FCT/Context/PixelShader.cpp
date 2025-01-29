@@ -74,7 +74,7 @@ namespace FCT {
         }
         ss << "\nout vec4 FragColor;\n\n";
 
-        ss << "PixelOutput fct_user_main(PixelInput input);\n\n";
+        ss << "PixelOutput fct_user_main(PixelInput);\n\n";
 
         ss << "void main() {\n";
         ss << "    PixelInput input;\n";

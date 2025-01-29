@@ -255,7 +255,7 @@ public:
             newPosition.y += jumpVelocity * deltaTime;
             jumpVelocity -= gravity * deltaTime;
 
-            if (!world.isBlockAt(newPosition) && !world.isBlockAt(Vec3(newPosition.x, newPosition.y - 1.6f, newPosition.z))) {
+            if (!world.isBlockAt(newPosition + 0.5) && !world.isBlockAt(Vec3(newPosition.x, newPosition.y - 1.6f, newPosition.z))) {
                 position = newPosition;
             }
             else {
@@ -281,9 +281,7 @@ public:
         }
     }
 
-
-
-
+    
     void processMouseMovement(float xoffset, float yoffset) {
         xoffset *= sensitivity;
         yoffset *= sensitivity;
@@ -313,6 +311,11 @@ public:
         return front;
     }
 };
+
+void glfw_error_callback(int error, const char* description)
+{
+    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+}
 int main() {
     FCT::Runtime* rt = FCT::CreateRuntime();
     rt->init();
@@ -325,11 +328,18 @@ int main() {
     factory->addAttribute(FCT::PipelineAttributeType::Color4f, "aColor");
     factory->addAttribute(FCT::PipelineAttributeType::TexCoord2f, "aTexCoord");
     FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
+    VertexRenderPipeline* vrp = new VertexRenderPipeline(ctx);
+    VertexRenderScreen* screen = new VertexRenderScreen(vrp);
+    screen->setPosition(Vec3(0, 0.5 + 2, 0));
+    screen->size(Vec3(1, 1, 0.51));
+    screen->viewport(0, 0, 50, 50);
+    screen->create();
     float fov = 45.0f * 3.14159f / 180.0f;
     float aspect = 4.0f / 3.0f;
     float nearPlane = 0.1f;
     float farPlane = 100.0f;
     pipeline->setPerspective(fov, aspect, nearPlane, farPlane);
+    vrp->setPerspective(fov, aspect, nearPlane, farPlane);
 	Block::Init(ctx, factory, il);
     World world;
     reviewport(ctx, wnd);
@@ -366,6 +376,9 @@ int main() {
         });
     Camera camera(FCT::Vec3(0.0f, 0.5f + 1.6f, 0.0f));
     auto lastFrame = std::chrono::high_resolution_clock::now();
+    glfwSetErrorCallback(glfw_error_callback);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     while (wnd->isRunning()) {
         auto currentFrame = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentFrame - lastFrame).count();
@@ -384,12 +397,12 @@ int main() {
             world.selectBlock(hitPosition);
             if (leftMousePressed) {
                 world.destroyBlock(hitPosition);
-                leftMousePressed = false;  // 防止连续破坏
+                leftMousePressed = false;
             }
             if (rightMousePressed) {
                 Vec3 normal = world.getNormal(hitPosition, camera.position);
                 world.placeBlock(hitPosition, normal);
-                rightMousePressed = false;  // 防止连续放置
+                rightMousePressed = false;
             }
         }
 
@@ -399,11 +412,18 @@ int main() {
         mouseDy = 0;
         glEnable(GL_DEPTH_TEST);
         camera.bind(pipeline);
+        camera.bind(vrp);
         ctx->clear(0.2f, 0.3f, 0.3f);
         pipeline->begin();
-        world.render(pipeline,camera.position);
+        world.render(pipeline, camera.position);
         pipeline->end();
+        vrp->begin(screen);
+        vrp->rectangle(Vec2(15, 15), Vec2(20, 20),1);
+        vrp->moveTo(Vec2(30, 25));
+        vrp->arcTo(Vec2(25, 25), 0, 2 * 3.1415926535);
+        vrp->end();
         wnd->swapBuffers();
+        GL_Check("loop end");
     }
     delete pipeline;
     factory->release();

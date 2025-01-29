@@ -97,6 +97,7 @@ void FCT::GLFW_Window::bind(Context* ctx)
 		GL_Context* glCtx = dynamic_cast<GL_Context*>(ctx);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glCtx->getGLVersionMajor());
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glCtx->getGLVersionMinor());
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwMakeContextCurrent(m_window);
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

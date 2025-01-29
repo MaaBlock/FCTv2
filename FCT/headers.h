@@ -29,6 +29,7 @@
 #include "./Context/GL_DrawCall.h"
 #include "./Context/GL_Texture.h"
 #include "./Context/Pipeline.h"
+#include "./Context/VertexRenderPipeline.h"
 #include "./Shapes/Shape.h"
 #include "./Shapes/Rectangle.h"
 #include "./Shapes/Triangle.h"

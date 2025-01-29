@@ -269,9 +269,6 @@
     <ClCompile Include="Context\GL_ConstBuffer.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
-    <ClCompile Include="Context\ConstBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Context\GL_Texture.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
@@ -284,11 +281,14 @@
     <ClCompile Include="ImageLoader\FreeImage_ImageLoader.cpp">
       <Filter>ImageLoader\source</Filter>
     </ClCompile>
-    <ClCompile Include="Context\Texture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Context\VertexRenderPipeline.cpp">
-      <Filter>源文件</Filter>
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\ConstBuffer.cpp">
+      <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\Texture.cpp">
+      <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

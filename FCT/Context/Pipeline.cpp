@@ -87,6 +87,11 @@ namespace FCT {
         updateViewMatrix();
     }
 
+    Context* Pipeline::getContext() const
+    {
+		return m_context;
+    }
+
     void Pipeline::updateProjectionMatrix() {
         if (m_projectionMatrixConstBuffer) {
             m_projectionMatrixConstBuffer->setData(&m_projectionMatrix, sizeof(Mat4));

@@ -102,6 +102,8 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "stdlib.h": "c",
+        "stdio.h": "c"
     }
 }

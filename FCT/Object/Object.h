@@ -28,6 +28,7 @@ namespace FCT
 
     public:
         Object(Context* ctx);
+        Object(Pipeline* pl);
         virtual ~Object();
 
         void setPosition(const Vec3 &pos);

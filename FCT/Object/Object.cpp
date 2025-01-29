@@ -8,6 +8,13 @@ namespace FCT
         m_transform->create(4, 1, FCT::Texture::Format::RGBA32F);
     }
 
+    Object::Object(Pipeline* pl)
+    {
+        m_transform = pl->getContext()->createTexture();
+        m_transform->setSlot(0);
+        m_transform->create(4, 1, FCT::Texture::Format::RGBA32F);
+    }
+
     Object::~Object() {
         setParent(nullptr);
         for (auto child : m_children)

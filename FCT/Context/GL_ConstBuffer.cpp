@@ -38,6 +38,7 @@ namespace FCT {
 	void GL_ConstBuffer::bind()
 	{
 		glBindBuffer(GL_UNIFORM_BUFFER, m_bufferId);
+		glBindBufferBase(GL_UNIFORM_BUFFER, m_bindIndex, m_bufferId);
 	}
 
 	void GL_ConstBuffer::unbind()

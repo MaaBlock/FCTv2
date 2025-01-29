@@ -108,7 +108,7 @@ void VertexShader::generateCode()
     }
     ss << "};\n\n";
 
-    ss << "VertexOutput fct_user_main(VertexInput input);\n\n";
+    ss << "VertexOutput fct_user_main(VertexInput);\n\n";
 
     int locationCounter = 0;
     for (const auto& attr : m_factory->getAttributes()) {
