@@ -2,8 +2,9 @@
   "name": "fct",
   "version": "0.0.1",
   "dependencies": [
+    "freeimage",
     "glslang",
     "spirv-cross",
-    "freeimage"
+    "freetype"
   ]
 }
