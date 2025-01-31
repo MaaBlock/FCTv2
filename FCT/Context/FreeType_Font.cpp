@@ -68,7 +68,6 @@ bool FCT::FreeType_Font::create(const char *fontPath)
 		}
 	}
 	/*
-	// 如果以上方法都失败，尝试使用 FT_Set_Char_Size
 	if (FT_Set_Char_Size(m_face, 0, 64 * 64, 72, 72))
 	{
 		std::cout << "Could not set font char size" << std::endl;
@@ -134,7 +133,9 @@ void FCT::FreeType_Font::outlineToCommands(FT_Outline *outline, std::vector<floa
 
 	layer_iterator.p = nullptr;
 	have_layers = FT_Get_Color_Glyph_Layer(m_face, m_face->glyph->glyph_index, &layer_index, &color_index, &layer_iterator);
-
+	commands.push_back(Command_BeginPath);
+	commands.push_back(0);
+	commands.push_back(Command_EndPath);
 	do
 	{
 		commands.push_back(Command_BeginPath);

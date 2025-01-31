@@ -320,6 +320,7 @@ int main() {
     FCT::Runtime* rt = FCT::CreateRuntime();
     rt->init();
     auto font = rt->createFont();
+    auto emjFont = rt->createFont();
     rt->setOpenGLVesion(3, 3);
     auto wnd = rt->createWindow(800, 600, "test0");
     auto ctx = rt->createContext(wnd);
@@ -348,8 +349,9 @@ int main() {
     //font->create("NotoColorEmoji_WindowsCompatible.ttf");
     //font->create("C://Windows//Fonts//seguiemj.ttf");
     //font->create("Twemoji.Mozilla.ttf");
+    emjFont->create("C://Windows//Fonts//seguiemj.ttf");
     font->create("C:\\Windows\\Fonts\\simsun.ttc");
-    font->translateGlyph(U'\U0001F600');
+    emjFont->translateGlyph(U'\U0001F600');
     font->translateGlyph(L'草');
     reviewport(ctx, wnd);
     bool needViewPort = false;
@@ -383,7 +385,7 @@ int main() {
     wnd->getCallBack()->addLButtonUpCallback([&leftMousePressed](Window* wnd, int x, int y) {
         leftMousePressed = true;
         });
-    Camera camera(FCT::Vec3(0.0f, 0.5f + 1.6f, 0.0f));
+    Camera camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3, 0.0f));
     auto lastFrame = std::chrono::high_resolution_clock::now();
     glfwSetErrorCallback(glfw_error_callback);
     glEnable(GL_BLEND);
@@ -443,7 +445,13 @@ int main() {
         vrp->lineTo(Vec2(15, 15));
         vrp->endPath();//*/
 		//vrp->drawChar(font, U'\U0001F600', 15, 15);
+        Mat4 tmp;
+		tmp.scale(0.1, 0.1, 1);
+        vrp->setTransform(tmp);
 		vrp->drawChar(font, L'草', 15, 15);
+        tmp.translate(3.0, 0);
+        vrp->setTransform(tmp);
+		vrp->drawChar(emjFont, U'\U0001F600', 15, 15);
         vrp->end(); 
         wnd->swapBuffers();
         GL_Check("loop end");
