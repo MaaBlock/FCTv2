@@ -11,12 +11,16 @@ namespace FCT {
 		g_glContextShareData = new GL_ContextShareData(this);
 		g_glContextShareData->init();
 		FreeImage_ImageLoader::Init();
+		g_freeTypeFontShareData = new FreeType_FontShareData;
+		g_freeTypeFontShareData->init();
 	}
 	void Runtime::tern()
 	{
 		FreeImage_ImageLoader::Tern();
+		g_freeTypeFontShareData->tern();
 		delete g_glfwWindowShareData;
 		delete g_glContextShareData;
+		delete g_freeTypeFontShareData;
 		delete this;
 
 	}
@@ -31,6 +35,10 @@ namespace FCT {
 	void Runtime::setOpenGLVesion(int major, int minor)
 	{
 		g_glContextShareData->setOpenGLVersion(major, minor);
+	}
+	Font* Runtime::createFont()
+	{
+		return g_freeTypeFontShareData->create();
 	}
 	ImageLoader* Runtime::createImageLoader()
 	{

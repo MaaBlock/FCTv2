@@ -30,6 +30,8 @@
 #include "./Context/GL_Texture.h"
 #include "./Context/Pipeline.h"
 #include "./Context/VertexRenderPipeline.h"
+#include "./Context/Font.h"
+#include "./Context/FreeType_Font.h"
 #include "./Shapes/Shape.h"
 #include "./Shapes/Rectangle.h"
 #include "./Shapes/Triangle.h"

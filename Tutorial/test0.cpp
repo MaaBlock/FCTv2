@@ -319,8 +319,9 @@ void glfw_error_callback(int error, const char* description)
 int main() {
     FCT::Runtime* rt = FCT::CreateRuntime();
     rt->init();
+    auto font = rt->createFont();
     rt->setOpenGLVesion(3, 3);
-    auto wnd = rt->createWindow(800, 600, "3D Example");
+    auto wnd = rt->createWindow(800, 600, "test0");
     auto ctx = rt->createContext(wnd);
     auto il = rt->createImageLoader();
     FCT::VertexFactory* factory = new FCT::VertexFactory;
@@ -330,9 +331,9 @@ int main() {
     FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
     VertexRenderPipeline* vrp = new VertexRenderPipeline(ctx);
     VertexRenderScreen* screen = new VertexRenderScreen(vrp);
-    screen->setPosition(Vec3(0, 0.5 + 2, 0));
-    screen->size(Vec3(1, 1, 0.51));
-    screen->viewport(0, 0, 50, 50);
+    screen->setPosition(Vec3(0, 0.5 + 2 + 1, -3));
+    screen->size(Vec3(2, 2, 0.51));
+    screen->viewport(-20, -20, 100, 100);
     screen->create();
     float fov = 45.0f * 3.14159f / 180.0f;
     float aspect = 4.0f / 3.0f;
@@ -342,6 +343,14 @@ int main() {
     vrp->setPerspective(fov, aspect, nearPlane, farPlane);
 	Block::Init(ctx, factory, il);
     World world;
+    //font->create("Noto-COLRv1.ttf");
+    //font->create("NotoColorEmoji.ttf");
+    //font->create("NotoColorEmoji_WindowsCompatible.ttf");
+    //font->create("C://Windows//Fonts//seguiemj.ttf");
+    //font->create("Twemoji.Mozilla.ttf");
+    font->create("C:\\Windows\\Fonts\\simsun.ttc");
+    font->translateGlyph(U'\U0001F600');
+    font->translateGlyph(L'草');
     reviewport(ctx, wnd);
     bool needViewPort = false;
     wnd->getCallBack()->addResizeCallback([&needViewPort](FCT::Window* wnd, int w, int h) {
@@ -418,15 +427,24 @@ int main() {
         world.render(pipeline, camera.position);
         pipeline->end();
         vrp->begin(screen);
-       // vrp->rectangle(Vec2(15, 0), Vec2(20, 20),1);
+        //vrp->rectangle(Vec2(15, 0), Vec2(20, 20),1);
+        
+        //vrp->beginPath(1);
+        //vrp->moveTo(Vec2(20, 15));
+		//vrp->arcTo(Vec2(10, 15), 0, 2 * 3.14159);
+        //vrp->endPath();
+        /*
+        vrp->beginPath(0);
         vrp->moveTo(Vec2(15, 15));
         vrp->lineTo(Vec2(20, 15));
-        vrp->arcTo(Vec2(25, 15), 3.1415926535,0);
         vrp->lineTo(Vec2(35, 15));
         vrp->lineTo(Vec2(35, 35));
         vrp->lineTo(Vec2(15, 35));
         vrp->lineTo(Vec2(15, 15));
-        vrp->end();
+        vrp->endPath();//*/
+		//vrp->drawChar(font, U'\U0001F600', 15, 15);
+		vrp->drawChar(font, L'草', 15, 15);
+        vrp->end(); 
         wnd->swapBuffers();
         GL_Check("loop end");
     }
