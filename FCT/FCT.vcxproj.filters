@@ -76,6 +76,15 @@
     <Filter Include="ImageLoader\source">
       <UniqueIdentifier>{e2b18a59-fb02-451a-b12f-68f500b07f87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="text">
+      <UniqueIdentifier>{d02afd64-6b34-43f3-b85a-2ac0b6d4a02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="text\source">
+      <UniqueIdentifier>{c80a4a10-3b49-4dce-ad46-15e4c6d3c1d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="text\headers">
+      <UniqueIdentifier>{0b298809-c941-4c24-af50-5fbba94b2a56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -195,11 +204,23 @@
     <ClInclude Include="Context\VertexRenderPipeline.h">
       <Filter>context\header</Filter>
     </ClInclude>
-    <ClInclude Include="Context\Font.h">
-      <Filter>context\header</Filter>
+    <ClInclude Include="Context\TextPipeline.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Context\FreeType_Font.h">
-      <Filter>context\header</Filter>
+    <ClInclude Include="Text\TextPipeline.h">
+      <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLayout.h">
+      <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\FreeType_Font.h">
+      <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\Font.h">
+      <Filter>text\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\TextLayout.h">
+      <Filter>text\headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -296,11 +317,17 @@
     <ClCompile Include="Context\Texture.cpp">
       <Filter>context\source</Filter>
     </ClCompile>
-    <ClCompile Include="Context\Font.cpp">
-      <Filter>context\source</Filter>
+    <ClCompile Include="Text\TextPipeline.cpp">
+      <Filter>text\source</Filter>
     </ClCompile>
-    <ClCompile Include="Context\FreeType_Font.cpp">
-      <Filter>context\source</Filter>
+    <ClCompile Include="Text\FreeType_Font.cpp">
+      <Filter>text\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\Font.cpp">
+      <Filter>text\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\TextLayout.cpp">
+      <Filter>text\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

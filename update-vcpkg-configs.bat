@@ -6,8 +6,8 @@ set "VERSION=0.0.1"
 
 rem 定义项目路径和依赖库
 set "projects=FCT Tutorial"
-set "FCT_DEPS=spirv-cross glslang freeimage freetype"
-set "TUTORIAL_DEPS=spirv-cross glslang freeimage freetype"
+set "FCT_DEPS=spirv-cross glslang freeimage freetype harfbuzz"
+set "TUTORIAL_DEPS=spirv-cross glslang freeimage freetype harfbuzz"
 
 for %%p in (%projects%) do (
     echo 正在处理 %%p 项目...

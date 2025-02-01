@@ -352,6 +352,8 @@ int main() {
     emjFont->create("C://Windows//Fonts//seguiemj.ttf");
     font->create("C:\\Windows\\Fonts\\simsun.ttc");
     emjFont->translateGlyph(U'\U0001F600');
+    emjFont->translateGlyph(U'🔥');
+    emjFont->translateGlyph(U'🥹');
     font->translateGlyph(L'草');
     reviewport(ctx, wnd);
     bool needViewPort = false;
@@ -449,9 +451,13 @@ int main() {
 		tmp.scale(0.1, 0.1, 1);
         vrp->setTransform(tmp);
 		vrp->drawChar(font, L'草', 15, 15);
-        tmp.translate(3.0, 0);
+        tmp.scale(0.25, 0.25, 1);
+        tmp.translate(1, 0);
         vrp->setTransform(tmp);
-		vrp->drawChar(emjFont, U'\U0001F600', 15, 15);
+		vrp->drawChar(emjFont, U'🔥', 15, 15);
+        tmp.translate(2, 0);
+        vrp->setTransform(tmp);
+		vrp->drawChar(emjFont, U'🥹', 15, 15);
         vrp->end(); 
         wnd->swapBuffers();
         GL_Check("loop end");

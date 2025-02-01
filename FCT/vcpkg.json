@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "dependencies": [
     "freeimage",
+    "freetype",
     "glslang",
     "spirv-cross",
-    "freetype"
+    "harfbuzz"
   ]
 }

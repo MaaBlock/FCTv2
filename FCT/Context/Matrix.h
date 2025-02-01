@@ -46,8 +46,8 @@ namespace FCT
 		}
 		void translate(float x, float y)
 		{
-			m[3] += x;
-			m[7] += y;
+			m[8] += x;
+			m[9] += y;
 		}
 		void translate(float x, float y, float z)
 		{

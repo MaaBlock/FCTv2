@@ -153,8 +153,6 @@
     <ClInclude Include="Context\Context.h" />
     <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\DrawCall.h" />
-    <ClInclude Include="Context\Font.h" />
-    <ClInclude Include="Context\FreeType_Font.h" />
     <ClInclude Include="Context\GL_ConstBuffer.h" />
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
@@ -169,6 +167,7 @@
     <ClInclude Include="Context\Material.h" />
     <ClInclude Include="Context\Pipeline.h" />
     <ClInclude Include="Context\PixelShader.h" />
+    <ClInclude Include="Context\TextPipeline.h" />
     <ClInclude Include="Context\Texture.h" />
     <ClInclude Include="Context\VertexArray.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
@@ -186,6 +185,11 @@
     <ClInclude Include="Runtime\runtime.h" />
     <ClInclude Include="Shapes\Rectangle.h" />
     <ClInclude Include="Shapes\Shape.h" />
+    <ClInclude Include="TextLayout.h" />
+    <ClInclude Include="Text\Font.h" />
+    <ClInclude Include="Text\FreeType_Font.h" />
+    <ClInclude Include="Text\TextLayout.h" />
+    <ClInclude Include="Text\TextPipeline.h" />
     <ClInclude Include="UI\CallBackHandler.h" />
     <ClInclude Include="UI\EventHandler.h" />
     <ClInclude Include="UI\GLFW_Window.h" />
@@ -196,8 +200,6 @@
     <ClCompile Include="Context\ConstBuffer.cpp" />
     <ClCompile Include="Context\Context.cpp" />
     <ClCompile Include="Context\DataTypes.cpp" />
-    <ClCompile Include="Context\Font.cpp" />
-    <ClCompile Include="Context\FreeType_Font.cpp" />
     <ClCompile Include="Context\GL_ConstBuffer.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
@@ -228,6 +230,10 @@
     </ClCompile>
     <ClCompile Include="Runtime\runtime.cpp" />
     <ClCompile Include="Shapes\Rectangle.cpp" />
+    <ClCompile Include="Text\Font.cpp" />
+    <ClCompile Include="Text\FreeType_Font.cpp" />
+    <ClCompile Include="Text\TextLayout.cpp" />
+    <ClCompile Include="Text\TextPipeline.cpp" />
     <ClCompile Include="UI\GLFW_Window.cpp" />
     <ClCompile Include="UI\GLFW_WindowShareData.cpp" />
     <ClCompile Include="UI\Window.cpp" />
