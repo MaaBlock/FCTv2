@@ -334,6 +334,7 @@ int main() {
     FCT::Pipeline* pipeline = new FCT::Pipeline(ctx, factory);
     VertexRenderPipeline* vrp = new VertexRenderPipeline(ctx);
     VertexRenderScreen* screen = new VertexRenderScreen(vrp);
+    TextPipeline* tp = new TextPipeline(ctx);
     screen->setPosition(Vec3(0, 0.5 + 2 + 1, -3));
     screen->size(Vec3(2, 0, 0), Vec3(0, 2, 2));
     screen->viewport(-20, -20, 100, 100);
@@ -463,6 +464,9 @@ int main() {
         vrp->setTransform(tmp);
 		vrp->drawChar(emjFont, U'🥹', 15, 15);
         vrp->end(); 
+        tp->beginDraw();
+        tp->drawText(300, 200, 200, 200);
+        tp->endDraw();
         wnd->swapBuffers();
         GL_Check("loop end");
     }

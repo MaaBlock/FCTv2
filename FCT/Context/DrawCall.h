@@ -19,7 +19,9 @@ namespace FCT {
 		}
 
 		virtual ~DrawCall() = default;
-
+		void setCount(uint32_t count){
+			m_vertexCount = count;
+		}
 		void bind() override = 0;
 		void unbind() override = 0;
 

@@ -6,18 +6,13 @@ namespace FCT
     {
     public:
         VertexArray(const VertexFactory *factory, size_t vertexCount)
-            : factory(factory), vertexCount(vertexCount)
+            : factory(factory),
+              vertexCount(vertexCount),
+              dataVec(factory->getStride() * vertexCount)
         {
-            size_t totalSize = factory->getStride() * vertexCount;
-            data = new char[totalSize];
-            if (!data)
-                throw std::bad_alloc();
         }
 
-        ~VertexArray()
-        {
-            delete[] data;
-        }
+        virtual ~VertexArray() {};
 
         VertexArray(const VertexArray &) = delete;
         VertexArray &operator=(const VertexArray &) = delete;
@@ -29,9 +24,9 @@ namespace FCT
         template <typename T>
         T getAttribute(size_t vertexIndex, const std::string &name) const;
 
-        void *getData() { return data; }
-        const void *getData() const { return data; }
-        size_t getSize() const { return factory->getStride() * vertexCount; }
+        void *getData() { return dataVec.data(); }
+        const void *getData() const { return dataVec.data(); }
+        size_t getSize() const { return dataVec.size(); }
         size_t getVertexCount() const { return vertexCount; }
 
         const VertexFactory *getFactory() const { return factory; }
@@ -74,6 +69,19 @@ namespace FCT
         void setBitangent(size_t vertexIndex, const Vec3 &bitangent)
         {
             setAttributeByType(vertexIndex, PipelineAttributeType::Bitangent3f, bitangent);
+        }
+        void addVertex(int size = 1)
+        {
+
+            const size_t stride = factory->getStride();
+            const size_t newSize = dataVec.size() + size * stride;
+
+            dataVec.resize(newSize);
+            vertexCount += size;
+        }
+        void clear() {
+            dataVec.clear();
+            vertexCount = 0;
         }
 
     private:
@@ -127,7 +135,7 @@ namespace FCT
                 break;
             }
         }
-        
+
         bool isCompatibleType(PipelineAttributeType attrType, PipelineAttributeType valueType)
         {
             if (attrType == valueType)
@@ -160,11 +168,11 @@ namespace FCT
                     return;
                 }
             }
-            //throw std::runtime_error("No compatible attribute found for the given type");
+            // throw std::runtime_error("No compatible attribute found for the given type");
         }
 
         const VertexFactory *factory;
-        void *data;
+        std::vector<char> dataVec;
         size_t vertexCount;
     };
 
@@ -180,8 +188,8 @@ namespace FCT
         {
             throw std::out_of_range("Vertex index out of range");
         }
-        size_t offset = factory->getStride() * vertexIndex + attr.offset;
-        std::memcpy(static_cast<char *>(data) + offset, &value, GetDataTypeSize(attr.dataType));
+        const size_t offset = factory->getStride() * vertexIndex + attr.offset;
+        std::memcpy(dataVec.data() + offset, &value, GetDataTypeSize(attr.dataType));
     }
 
     template <typename T>
@@ -196,9 +204,9 @@ namespace FCT
         {
             throw std::out_of_range("Vertex index out of range");
         }
-        size_t offset = factory->getStride() * vertexIndex + attr.offset;
+        const size_t offset = factory->getStride() * vertexIndex + attr.offset;
         T result;
-        std::memcpy(&result, static_cast<const char *>(data) + offset, GetDataTypeSize(attr.dataType));
+        std::memcpy(&result, dataVec.data() + offset, GetDataTypeSize(attr.dataType));
         return result;
     }
 }

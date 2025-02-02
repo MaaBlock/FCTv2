@@ -131,8 +131,8 @@ void VertexShader::generateCode()
     }
     ss << "\nvoid main() {\n";
     ss << "    VertexInput vs_input;\n";
-    for (const auto& output : m_output.getOutputs()) {
-        ss << "    vs_input." << output.name << " = in_" << output.name << ";\n";
+    for (const auto& attr : m_factory->getAttributes()) {
+        ss << "    vs_input." << attr.name << " = in_" << attr.name << ";\n";
     }
     ss << "    VertexOutput vs_output = fct_user_main(vs_input);\n";
     for (const auto& output : m_output.getOutputs()) {
