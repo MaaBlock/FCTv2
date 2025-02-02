@@ -11,16 +11,17 @@ namespace FCT
 		m_vf = pl->getVertexFactory();
 		m_ctx = pl->getContext();
 		m_arr = new VertexArray(m_vf, 6);
-		size(Vec3(1, 1, 1));
+		size(Vec3(1, 0,0),Vec3(0,1,0));
 		viewport(0, 0, 1, 1);
 	}
 
-	void FCT::VertexRenderScreen::size(Vec3 centerToCorner)
+	void FCT::VertexRenderScreen::size(Vec3 halfSizeX, Vec3 halfSizeY)
 	{
-		Vec3 topRight = centerToCorner;
-		Vec3 topLeft = Vec3(-centerToCorner.x, centerToCorner.y, centerToCorner.z);
-		Vec3 bottomRight = Vec3(centerToCorner.x, -centerToCorner.y, centerToCorner.z);
-		Vec3 bottomLeft = Vec3(-centerToCorner.x, -centerToCorner.y, centerToCorner.z);
+		Vec3 center(0, 0, 0);
+		Vec3 topRight = center + halfSizeX + halfSizeY;
+		Vec3 topLeft = center - halfSizeX + halfSizeY;
+		Vec3 bottomRight = center + halfSizeX - halfSizeY;
+		Vec3 bottomLeft = center - halfSizeX - halfSizeY;
 
 		m_arr->setPosition(0, topLeft);
 		m_arr->setPosition(1, topRight);

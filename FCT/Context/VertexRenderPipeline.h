@@ -14,7 +14,7 @@ namespace FCT {
 	class VertexRenderScreen : public Object {
 	public:
 		VertexRenderScreen(VertexRenderPipeline* pl);
-		void size(Vec3 halfVec);
+		void size(Vec3 halfSizeX, Vec3 halfSizeY);
 		void viewport(float x,float y, float w, float h);
 		void create();
 	private:

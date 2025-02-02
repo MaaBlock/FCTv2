@@ -16,7 +16,7 @@ namespace FCT {
         const std::string& getSource() const;
         bool isCompiled() const;
         virtual bool compile() = 0;
-        void addCustomOutput(PipelineAttributeType type, const std::string& name, DataType dataType);
+        void addCustomOutput(PipelineAttributeType type, const std::string& name = "", DataType dataType = DataType::Float);
         const ShaderOutput& getOutput() const { return m_output; }
         PipelineResourceType getType() const override;
 

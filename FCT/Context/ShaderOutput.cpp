@@ -3,8 +3,11 @@
 
 namespace FCT {
 
-void ShaderOutput::addOutput(PipelineAttributeType type, const std::string& name, DataType dataType) {
-    m_outputs.emplace_back(type, name, dataType);
+void ShaderOutput::addOutput(PipelineAttributeType type, const std::string& name = "", DataType dataType = DataType::Float) {
+	std::string ret = name;
+    TranslagteAttributeType(type, dataType);
+	TranslagteDefaultName(type, ret);
+    m_outputs.emplace_back(type, ret, dataType);
 }
 
 std::string ShaderOutput::generateStructDefinition(const std::string& structName) const {

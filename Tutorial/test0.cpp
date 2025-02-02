@@ -333,7 +333,7 @@ int main() {
     VertexRenderPipeline* vrp = new VertexRenderPipeline(ctx);
     VertexRenderScreen* screen = new VertexRenderScreen(vrp);
     screen->setPosition(Vec3(0, 0.5 + 2 + 1, -3));
-    screen->size(Vec3(2, 2, 0.51));
+    screen->size(Vec3(2, 0, 0), Vec3(0, 2, 2));
     screen->viewport(-20, -20, 100, 100);
     screen->create();
     float fov = 45.0f * 3.14159f / 180.0f;

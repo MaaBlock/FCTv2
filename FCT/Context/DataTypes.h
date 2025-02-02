@@ -1,5 +1,6 @@
 #pragma once
 #include "./Matrix.h"
+#include <string>
 namespace FCT {
 
     enum class DataType {
@@ -37,6 +38,61 @@ namespace FCT {
         BatchId,
         Custom,
     };
+    inline void TranslagteAttributeType(PipelineAttributeType attribute,DataType& type) {
+		switch (attribute) {
+		case PipelineAttributeType::Position2f:
+			type = DataType::Vec2;
+			break;
+		case PipelineAttributeType::Position3f:
+			type = DataType::Vec3;
+			break;
+		case PipelineAttributeType::Position4f:
+			type = DataType::Vec4;
+			break;
+		case PipelineAttributeType::Color4f:
+			type = DataType::Vec4;
+			break;
+		case PipelineAttributeType::TexCoord2f:
+			type = DataType::Vec2;
+			break;
+		case PipelineAttributeType::Normal3f:
+			type = DataType::Vec3;
+			break;
+		case PipelineAttributeType::Tangent3f:
+			type = DataType::Vec3;
+			break;
+		case PipelineAttributeType::Bitangent3f:
+			type = DataType::Vec3;
+			break;
+		default:
+			break;
+		}
+    };
+    inline std::string GetDefaultName(PipelineAttributeType attribute) {
+        switch (attribute) {
+		case PipelineAttributeType::Position2f:
+			return "position";
+		case PipelineAttributeType::Position3f:
+			return "position";
+		case PipelineAttributeType::Position4f:
+			return "position";
+		case PipelineAttributeType::Color4f:
+			return "color";
+		case PipelineAttributeType::TexCoord2f:
+			return "texCoord";
+		case PipelineAttributeType::Normal3f:
+			return "normal";
+		case PipelineAttributeType::Tangent3f:
+			return "tangent";
+		case PipelineAttributeType::Bitangent3f:
+			return "bitangent";
+		case PipelineAttributeType::Custom:
+			return "custom";
+        }
+    }
+    inline void TranslagteDefaultName(PipelineAttributeType attribute, std::string& name) {
+		name = name.empty() ? GetDefaultName(attribute) : name;
+    }
     size_t GetDataTypeSize(DataType type);
     const char* GetDataTypeName(DataType type);
 
