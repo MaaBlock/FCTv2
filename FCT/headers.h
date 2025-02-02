@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <glad/glad.h>
 #include "./MutilThreadBase/RefCount.h"
 #include "./UI/Window.h"

@@ -1,6 +1,6 @@
 #pragma once
 #include "./PixelShader.h"
-#include <glad/glad.h> 
+#include <glad/glad.h>
 
 namespace FCT {
 

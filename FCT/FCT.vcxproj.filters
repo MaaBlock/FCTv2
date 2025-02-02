@@ -222,6 +222,24 @@
     <ClInclude Include="Text\TextLayout.h">
       <Filter>text\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Context\ConstBuffer.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\DataTypes.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\GL_InputLayout.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\InputLayout.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\Matrix.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\ShaderOutput.h">
+      <Filter>context\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -328,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="Text\TextLayout.cpp">
       <Filter>text\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\DrawCall.cpp">
+      <Filter>context\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

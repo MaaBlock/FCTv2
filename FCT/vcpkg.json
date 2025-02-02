@@ -5,7 +5,8 @@
     "freeimage",
     "freetype",
     "glslang",
+    "harfbuzz",
     "spirv-cross",
-    "harfbuzz"
+    "angle"
   ]
 }

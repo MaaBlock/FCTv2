@@ -160,7 +160,7 @@ namespace FCT
                     return;
                 }
             }
-            throw std::runtime_error("No compatible attribute found for the given type");
+            //throw std::runtime_error("No compatible attribute found for the given type");
         }
 
         const VertexFactory *factory;

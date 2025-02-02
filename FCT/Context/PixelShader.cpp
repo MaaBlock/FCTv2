@@ -20,22 +20,22 @@ namespace FCT {
     std::string PixelShader::generateDefaultCode() const
     {
         std::stringstream ss;
-        ss << "PixelOutput main(PixelInput input) {\n";
-        ss << "    PixelOutput output;\n";
+        ss << "PixelOutput main(PixelInput ps_input) {\n";
+        ss << "    PixelOutput ps_output;\n";
 
         bool hasColorAttribute = false;
         for (const auto& output : m_vertexOutput.getOutputs()) {
             if (output.type == PipelineAttributeType::Color4f) {
                 hasColorAttribute = true;
             }
-            ss << "    output." << output.name << " = input." << output.name << ";\n";
+            ss << "    ps_output." << output.name << " = ps_input." << output.name << ";\n";
         }
 
         if (!hasColorAttribute) {
-            ss << "    output.color = vec4(1.0, 0.647, 0.0, 1.0);\n";
+            ss << "    ps_output.color = vec4(1.0, 0.647, 0.0, 1.0);\n";
         }
 
-        ss << "    return output;\n";
+        ss << "    return ps_output;\n";
         ss << "}\n";
         return ss.str();
     }
@@ -43,8 +43,10 @@ namespace FCT {
     std::string PixelShader::combineCode(const std::string& userCode) const
     {
         std::stringstream ss;
-        ss << "#version 330 core\n\n";
-        ss << "#extension GL_ARB_shading_language_420pack : enable\n";
+        ss << "#version 320 es\n\n";
+        ss << "precision highp float;\n";
+        ss << "precision highp int;\n";
+        //ss << "#extension GL_ARB_shading_language_420pack : enable\n";
         ss << "layout(binding = 3) uniform sampler2D mainTexture;\n\n";
         ss << "struct PixelInput {\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
@@ -69,37 +71,39 @@ namespace FCT {
         }
         ss << "};\n\n";
 
+        int locationCounter = 0;
         for (const auto& output : m_vertexOutput.getOutputs()) {
-            ss << "in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+            ss << "layout (location = " << locationCounter + 1 << ")" << "in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+            locationCounter++;
         }
-        ss << "\nout vec4 FragColor;\n\n";
+        ss << "\nlayout (location = 0)out vec4 FragColor;\n\n";
 
         ss << "PixelOutput fct_user_main(PixelInput);\n\n";
 
         ss << "void main() {\n";
-        ss << "    PixelInput input;\n";
+        ss << "    PixelInput ps_input;\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
-            ss << "    input." << output.name << " = vs2fs_" << output.name << ";\n";
+            ss << "    ps_input." << output.name << " = vs2fs_" << output.name << ";\n";
         }
         if (hasTexCoordAttribute) {
             if (hasColorAttribute) {
-                ss << "input." << getColorName() << " *= texture(mainTexture, input." << getTexCoordName() << "); \n";
+                ss << "ps_input." << getColorName() << " *= texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
 			}
 			else {
-                ss << "input." << getColorName() << " = texture(mainTexture, input." << getTexCoordName() << "); \n";
+                ss << "ps_input." << getColorName() << " = texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
             }
         }
-        ss << "    PixelOutput output = fct_user_main(input);\n";
+        ss << "    PixelOutput ps_output = fct_user_main(ps_input);\n";
         if (hasColorAttribute) {
             for (const auto& output : m_vertexOutput.getOutputs()) {
                 if (output.type == PipelineAttributeType::Color4f) {
-                    ss << "    FragColor = output." << output.name << ";\n";
+                    ss << "    FragColor = ps_output." << output.name << ";\n";
                     break;
                 }
             }
         }
         else {
-            ss << "    FragColor = output.color;\n";
+            ss << "    FragColor = ps_output.color;\n";
         }
         ss << "}\n\n";
         std::string modifiedUserCode = userCode;

@@ -95,12 +95,13 @@ void FCT::GLFW_Window::bind(Context* ctx)
 {
     if (dynamic_cast<GL_Context*>(ctx)) {
 		GL_Context* glCtx = dynamic_cast<GL_Context*>(ctx);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glCtx->getGLVersionMajor());
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glCtx->getGLVersionMinor());
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        //glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwMakeContextCurrent(m_window);
-		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        gladLoadGLES2Loader((GLADloadproc)glfwGetProcAddress);
         glfwSwapInterval(0);
 	}
 	else if (dynamic_cast<D3D11_Context*>(ctx)) {

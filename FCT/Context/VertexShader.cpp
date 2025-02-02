@@ -18,12 +18,12 @@ bool VertexShader::compileFromSource(const std::string& userCode)
     std::string finalUserCode;
     if (userCode.empty() && isCusstomOutputEmpty) {
         std::stringstream ss;
-        ss << "VertexOutput main(VertexInput input) {\n";
-        ss << "    VertexOutput output;\n";
+        ss << "VertexOutput main(VertexInput vs_input) {\n";
+        ss << "    VertexOutput vs_output;\n";
         for (const auto& attr : m_factory->getAttributes()) {
-              ss << "    output." << attr.name << " = input." << attr.name << ";\n";
+              ss << "    vs_output." << attr.name << " = vs_input." << attr.name << ";\n";
         }
-        ss << "    return output;\n";
+        ss << "    return vs_output;\n";
         ss << "}\n";
         finalUserCode = ss.str();
     } else if (userCode.empty() && !isCusstomOutputEmpty) {
@@ -67,8 +67,12 @@ void VertexShader::generateCode()
 
     std::stringstream ss;
 
-    ss << "#version 330 core\n";
-    ss << "#extension GL_ARB_shading_language_420pack : enable\n";
+    ss << "#version 320 es\n";
+    ss << "precision highp float;\n";
+    ss << "precision highp int;\n";
+    ss << "precision highp sampler2D;\n";
+
+    //ss << "#extension GL_ARB_shading_language_420pack : enable\n";
 
     std::string positionType = getPositionType();
     ss << "layout(binding = 0) uniform sampler2D matrixTexture;\n";
@@ -119,21 +123,23 @@ void VertexShader::generateCode()
         }
         locationCounter++;
     }
-
+    locationCounter = 0;
+    ss << "\nlayout (location = 0)out vec4 gl_Position;\n\n";
     for (const auto& output : m_output.getOutputs()) {
-        ss << "out " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+        ss << "layout (location = " << locationCounter + 1 << ")" << "out " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+        locationCounter++;
     }
     ss << "\nvoid main() {\n";
-    ss << "    VertexInput input;\n";
+    ss << "    VertexInput vs_input;\n";
     for (const auto& output : m_output.getOutputs()) {
-        ss << "    input." << output.name << " = in_" << output.name << ";\n";
+        ss << "    vs_input." << output.name << " = in_" << output.name << ";\n";
     }
-    ss << "    VertexOutput output = fct_user_main(input);\n";
+    ss << "    VertexOutput vs_output = fct_user_main(vs_input);\n";
     for (const auto& output : m_output.getOutputs()) {
         if (isPositionAttribute(output.type)) {
             ss << "    mat4 worldMatrix = getMatrixFromTexture(0);\n";
             if (output.type == PipelineAttributeType::Position2f) {
-                ss << "    vec2 position2D = output." << output.name << ";\n";
+                ss << "    vec2 position2D = vs_output." << output.name << ";\n";
                 ss << "    vec3 position3D = vec3(position2D, 1.0);\n";
                 ss << "    mat3 worldMatrix3x3 = mat3(worldMatrix);\n";
                 ss << "    vec3 transformedPosition = worldMatrix3x3 * position3D;\n";
@@ -143,13 +149,13 @@ void VertexShader::generateCode()
 
             }
             else if (output.type == PipelineAttributeType::Position3f) {
-                ss << "    vec4 finalPosition = vec4(output." << output.name << ", 1.0);\n";
+                ss << "    vec4 finalPosition = vec4(vs_output." << output.name << ", 1.0);\n";
                 ss << "    vec4 worldPos = worldMatrix * finalPosition;\n";
                 ss << "    vec4 viewPos = u_viewMatrix * worldPos;\n";
                 ss << "    gl_Position = u_projectionMatrix * viewPos;\n";
             }
             else { 
-                ss << "    worldPos = worldMatrix * output." << output.name << ";\n";
+                ss << "    worldPos = worldMatrix * vs_output." << output.name << ";\n";
                 ss << "    vec4 viewPos = u_viewMatrix * worldPos;\n";
                 ss << "    gl_Position = u_projectionMatrix * viewPos;\n";
             }
@@ -157,7 +163,7 @@ void VertexShader::generateCode()
         }
     }
     for (const auto& output : m_output.getOutputs()) {
-        ss << "    vs2fs_" << output.name << " = output." << output.name << ";\n";
+        ss << "    vs2fs_" << output.name << " = vs_output." << output.name << ";\n";
     }
     ss << "}\n";
 

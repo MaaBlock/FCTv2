@@ -317,11 +317,13 @@ void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 int main() {
+    _putenv_s("ANGLE_ENABLE_FEATURE_OVERRIDES", "*");
+    _putenv_s("ANGLE_ENABLE_VALIDATION", "0");
     FCT::Runtime* rt = FCT::CreateRuntime();
     rt->init();
     auto font = rt->createFont();
     auto emjFont = rt->createFont();
-    rt->setOpenGLVesion(3, 3);
+    rt->setOpenGLVesion(3, 2);
     auto wnd = rt->createWindow(800, 600, "test0");
     auto ctx = rt->createContext(wnd);
     auto il = rt->createImageLoader();
@@ -392,6 +394,8 @@ int main() {
     glfwSetErrorCallback(glfw_error_callback);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
     while (wnd->isRunning()) {
         auto currentFrame = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentFrame - lastFrame).count();

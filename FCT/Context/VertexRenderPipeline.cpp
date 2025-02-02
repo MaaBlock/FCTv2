@@ -61,12 +61,12 @@ namespace FCT
 	{
 		m_vrvs = ctx->createVertexShader(m_defaultFactory);
 		if (!m_vrvs->compileFromSource(R"(
-VertexOutput main(VertexInput input)
+VertexOutput main(VertexInput vs_input)
 {
-	VertexOutput output;
-	output.position = input.position;
-	output.vectorCoord = input.vectorCoord;
-	return output;
+	VertexOutput vs_output;
+	vs_output.position = vs_input.position;
+	vs_output.vectorCoord = vs_input.vectorCoord;
+	return vs_output;
 })"))
 		{
 			std::cout << "vs报错:" << std::endl;
@@ -121,10 +121,10 @@ float CurveTestXAxis(vec2 v0, vec2 v1, vec2 v2, vec2 pixelsPerUnit) {
     if (flags == 0) return 0.0;
     vec2 x1x2 = QuadCurveSolveXAxis(v0, v1, v2) * pixelsPerUnit.x;
     float ret = 0.0;
-    if ((flags & 0x01) != 0) {
+    if ((flags & 1) != 0) {
         ret += clamp(x1x2.x + 0.5, 0.0, 1.0);
     }
-    if ((flags & 0x02) != 0) {
+    if ((flags & 2) != 0) {
         ret -= clamp(x1x2.y + 0.5, 0.0, 1.0);
     }
     return ret;
@@ -182,7 +182,7 @@ vec2 ArcTest(vec2 pos, vec2 bp,vec2 ep, vec2 c, float b, float e, float r, float
     bool isInx = (pos.x >= minX && pos.x <= maxX);
     bool isIny = (pos.y >= minY && pos.y <= maxY);
     bool isInCircle = length(pos - c) <= r;
-    float bLessE = b < e ? 1 : -1;
+    float bLessE = b < e ? 1.0 : -1.0;
     
     if (q == 1.0 || q == 4.0) {
         ret.x = float(isIny && (isInCircle || pos.x < minX));
@@ -211,13 +211,13 @@ float NoZeroSign(float x) {
     return x >= 0.0 ? 1.0 : -1.0;
 }
 
-PixelOutput main(PixelInput input) {
-    PixelOutput output;
-    output.position = input.position;
-    output.vectorCoord = input.vectorCoord;
-    output.color = vec4(1.0, 1.0, 1.0, 1.0);
+PixelOutput main(PixelInput ps_input) {
+    PixelOutput ps_output;
+    ps_output.position = ps_input.position;
+    ps_output.vectorCoord = ps_input.vectorCoord;
+    ps_output.color = vec4(1.0, 1.0, 1.0, 1.0);
     
-    vec2 unitsPerPixel = fwidth(input.vectorCoord);
+    vec2 unitsPerPixel = fwidth(ps_input.vectorCoord);
     vec2 pixelsPerUnit = 1.0 / unitsPerPixel;
     
     vec2 crossings = vec2(0.0);
@@ -229,7 +229,7 @@ PixelOutput main(PixelInput input) {
 	bool isPathStarted = false;
 	vec2 pathCrossings = vec2(0.0);
 
-	float pathOperation = 0; // 0: 默认 1:并 2:交 3:补
+	float pathOperation = 0.0; // 0: 默认 1:并 2:交 3:补
     while(true) {
         float command = texelFetch(commandQueue, ivec2(i, 0), 0).x;
         i++;
@@ -246,27 +246,27 @@ PixelOutput main(PixelInput input) {
         	if (length(pathCrossings) > 0.0) {
             	fillColor = currentColor;
         	}
-			if (pathOperation == 0) {
+			if (pathOperation == 0.0) {
             	crossings += pathCrossings;
-        	} else if (pathOperation == 1) { 
+        	} else if (pathOperation == 1.0) { 
 				crossings = vec2(
                 	NoZeroSign(crossings.x) * NoZeroSign(pathCrossings.x) * max(abs(crossings.x), abs(pathCrossings.x)),
                 	NoZeroSign(crossings.y) * NoZeroSign(pathCrossings.y) * max(abs(crossings.y), abs(pathCrossings.y))
             	);
-        	} else if (pathOperation == 2) { 
+        	} else if (pathOperation == 2.0) { 
 				crossings = vec2(
                 	sign(crossings.x) * sign(pathCrossings.x) * min(abs(crossings.x), abs(pathCrossings.x)),
                 	sign(crossings.y) * sign(pathCrossings.y) * min(abs(crossings.y), abs(pathCrossings.y))
             	);
-        	} else if (pathOperation == 3) {
+        	} else if (pathOperation == 3.0) {
 			    crossings += pathCrossings;
 				crossings = vec2(
-					NoZeroSign(crossings.x) * (1 - abs(crossings.x)),
-					NoZeroSign(crossings.y) * (1 - abs(crossings.y))
+					NoZeroSign(crossings.x) * (1.0 - abs(crossings.x)),
+					NoZeroSign(crossings.y) * (1.0 - abs(crossings.y))
             	);
 			}
 			pathCrossings = vec2(0);
-			pathOperation = 0;
+			pathOperation = 0.0;
     	}
         if (command == CommandMoveTo) {
             lastPos.x = texelFetch(commandQueue, ivec2(i, 0), 0).x;
@@ -281,8 +281,8 @@ PixelOutput main(PixelInput input) {
 			to = applyTransform(to);
             i += 2;
 
-            vec2 v0 = lastPos - input.vectorCoord;
-            vec2 v1 = to - input.vectorCoord;
+            vec2 v0 = lastPos - ps_input.vectorCoord;
+            vec2 v1 = to - ps_input.vectorCoord;
 			//if (isPathStarted) {
 				pathCrossings += LineTest(v0, v1, pixelsPerUnit);
 			//} else {
@@ -309,9 +309,9 @@ PixelOutput main(PixelInput input) {
 			float q = texelFetch(commandQueue, ivec2(i+4, 0), 0).x;
     		vec2 ep = c + vec2(r * cos(e), r * sin(e));
 			//if (isPathStarted) {
-				pathCrossings += ArcTest(input.vectorCoord, bp, ep, c, b, e, r, q, pixelsPerUnit);
+				pathCrossings += ArcTest(ps_input.vectorCoord, bp, ep, c, b, e, r, q, pixelsPerUnit);
 			//} else {
-			//	crossings += ArcTest(input.vectorCoord, bp, ep, c, b, e, r, q, pixelsPerUnit);
+			//	crossings += ArcTest(ps_input.vectorCoord, bp, ep, c, b, e, r, q, pixelsPerUnit);
 			//}
 			lastPos = ep;
 			i+=5;
@@ -325,9 +325,9 @@ PixelOutput main(PixelInput input) {
 			end = applyTransform(end);
             i += 4;
 
-            vec2 v0 = lastPos - input.vectorCoord;
-            vec2 v1 = control - input.vectorCoord;
-            vec2 v2 = end - input.vectorCoord;
+            vec2 v0 = lastPos - ps_input.vectorCoord;
+            vec2 v1 = control - ps_input.vectorCoord;
+            vec2 v2 = end - ps_input.vectorCoord;
 			//if (isPathStarted) {
 				pathCrossings += CurveTest(v0, v1, v2, pixelsPerUnit);
 			//} else {
@@ -345,21 +345,22 @@ PixelOutput main(PixelInput input) {
 		}
     }
     /*
-    output.color = vec4((crossings + vec2(2,2)) / 4,0,1.0);
-	return output;
+    ps_output.color = vec4((crossings + vec2(2,2)) / 4,0,1.0);
+	return ps_output;
 	*/
     float weightX = 1.0 - abs(crossings.x * 2.0 - 1.0);
     float weightY = 1.0 - abs(crossings.y * 2.0 - 1.0);
     float coverage = max(abs(crossings.x * weightX + crossings.y * weightY) / max(weightX + weightY, 0.0001220703125), min(abs(crossings.x), abs(crossings.y)));
     
-    output.color = fillColor;
-    output.color.a *= coverage;
-	return output;
+    ps_output.color = fillColor;
+    ps_output.color.a *= coverage;
+	return ps_output;
 }
 )"))
 		{
 			std::cout << "ps报错:" << std::endl;
 			std::cout << m_vrps->getCompileError() << std::endl;
+			std::cout << m_vrps->getSource() << std::endl;
 		}
 		m_vrMaterial = ctx->createMaterial(m_vrvs, m_vrps);
 		m_vrMaterial->compile();
