@@ -20,6 +20,7 @@ namespace FCT {
 		void viewport(Vec2 lt, Vec2 rb);
 		void addFont(Font* font);
 		void beginDraw();
+		void color(Vec4 color);
 		void drawText(const char32_t* str,float x, float y, float w, float h);
 		void endDraw();
 		void toggleOriginVertical(bool toggle);
@@ -42,6 +43,7 @@ namespace FCT {
 		Texture* m_commandTexture;
 		Mat4 m_cachedTransform;
 		std::vector<Font*> m_fonts;
+		Vec4 m_color;
 	};
 	/*
 	ToDo:

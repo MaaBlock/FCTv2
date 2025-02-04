@@ -2,6 +2,10 @@
 #include <iostream>
 namespace FCT
 {
+    void TextPipeline::color(Vec4 color)
+    {
+        m_color = color;
+    }
 	TextPipeline::TextPipeline(Context *ctx) : Pipeline(ctx, createFactory())
 	{
 		m_transform = ctx->createTexture();
@@ -10,6 +14,7 @@ namespace FCT
 		m_transform->setData(&m_cachedTransform,sizeof(m_cachedTransform));
 		m_ctx = ctx;
 		m_vs = ctx->createVertexShader(m_vf);
+        m_color = Vec4(1, 1, 1, 1);
 		m_vs->addCustomOutput(FCT::PipelineAttributeType::Position3f, "position");
 		if (!m_vs->compileFromSource(R"(
 layout(std140,binding = 5) uniform TextScreenInformation{
@@ -387,6 +392,11 @@ PixelOutput main(PixelInput ps_input) {
             for (auto font : m_fonts) {
                 if (font->hasGlyph(id)) {
                     auto data = font->getGlyphInfo(id);
+                    m_commandQueue.push_back(Command_SetColor);
+                    m_commandQueue.push_back(m_color.x);
+                    m_commandQueue.push_back(m_color.y);
+                    m_commandQueue.push_back(m_color.z);
+                    m_commandQueue.push_back(m_color.w);
                     m_commandQueue.push_back(Command_SetTransform);
                     m_commandQueue.push_back(transform.m[0]);
                     m_commandQueue.push_back(transform.m[1]);

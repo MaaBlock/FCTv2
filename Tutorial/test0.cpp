@@ -402,7 +402,7 @@ int main()
     TextPipeline *tp = new TextPipeline(ctx);
     TextPipeline *leaveTextBoard = new TextPipeline(ctx);
     leaveTextBoard->viewport(Vec2(0,0), Vec2(200, 150));
-    leaveTextBoard->screen(Vec3(0, 1.5, 0), Vec3(2, 0, 0), Vec3(0, 2, 0));
+    leaveTextBoard->screen(Vec3(0, 1.5, -3.49), Vec3(2, 0, 0), Vec3(0, 2, 0));
     leaveTextBoard->updataScreenInformation();
     screen->setPosition(Vec3(0, 0.5 + 2 + 1, -3));
     screen->size(Vec3(2, 0, 0), Vec3(0, 2, 0));
@@ -414,6 +414,7 @@ int main()
     float farPlane = 100.0f;
     pipeline->setPerspective(fov, aspect, nearPlane, farPlane);
     vrp->setPerspective(fov, aspect, nearPlane, farPlane);
+    leaveTextBoard->setPerspective(fov, aspect, nearPlane, farPlane);
     Block::Init(ctx, factory, il);
     World world;
     // font->create("Noto-COLRv1.ttf");
@@ -543,6 +544,7 @@ int main()
 
         leaveTextBoard->beginDraw();
         leaveTextBoard->drawText(U"留言板", 0, 0, 200, 200);
+        leaveTextBoard->drawText(U"🔥🥹🔥", 0, 20, 200, 200);
         leaveTextBoard->endDraw();
         tp->beginDraw();
         tp->drawText(fps_u32str.c_str(), 0, 0, 200, 200);
