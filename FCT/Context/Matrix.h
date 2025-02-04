@@ -70,7 +70,34 @@ namespace FCT
 				0, 0, 0, 1};
 			*this = *this * rot;
 		}
-
+		static Mat4 CreateTranslation(float x,float y) {
+			Mat4 ret;
+			ret.m[8] += x;
+			ret.m[9] += y;
+			return ret;
+		}
+		static Mat4 CreateScale(float scaleX, float scaleY) {
+			Mat4 ret = {
+				scaleX,0, 0, 0,
+				0, scaleY, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1 };
+			return ret;
+		}
+		static Mat4 Translate(float x, float y) {
+			Mat4 ret;
+			ret.m[8] += x;
+			ret.m[9] += y;
+			return ret;
+		}
+		static Mat4 Scale(float scaleX, float scaleY) {
+			Mat4 ret = {
+				scaleX,0, 0, 0,
+				0, scaleY, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1 };
+			return ret;
+		}
 		void rotateY(float degrees)
 		{
 			float radians = degrees * 3.14159265f / 180.0f;

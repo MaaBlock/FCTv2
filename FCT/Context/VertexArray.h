@@ -23,7 +23,8 @@ namespace FCT
         void setAttribute(size_t vertexIndex, const std::string &name, const T &value);
         template <typename T>
         T getAttribute(size_t vertexIndex, const std::string &name) const;
-
+        //template <>
+        //void setAttribute<int>(size_t vertexIndex, const std::string& name, const int& value);
         void *getData() { return dataVec.data(); }
         const void *getData() const { return dataVec.data(); }
         size_t getSize() const { return dataVec.size(); }
@@ -175,7 +176,12 @@ namespace FCT
         std::vector<char> dataVec;
         size_t vertexCount;
     };
-
+    inline uint32_t swapEndian(uint32_t value) {
+        return ((value >> 24) & 0x000000FF) |
+            ((value >> 8) & 0x0000FF00) |
+            ((value << 8) & 0x00FF0000) |
+            ((value << 24) & 0xFF000000);
+    }
     template <typename T>
     void VertexArray::setAttribute(size_t vertexIndex, const std::string &name, const T &value)
     {
@@ -191,7 +197,24 @@ namespace FCT
         const size_t offset = factory->getStride() * vertexIndex + attr.offset;
         std::memcpy(dataVec.data() + offset, &value, GetDataTypeSize(attr.dataType));
     }
+    /*
+    template <>
+    inline void VertexArray::setAttribute<int>(size_t vertexIndex, const std::string& name, const int& value) {
 
+        const auto& attr = factory->getAttribute(name);
+        if (GetDataTypeSize(attr.dataType) != sizeof(int))
+        {
+            throw std::runtime_error("Attribute size mismatch");
+        }
+        if (vertexIndex >= vertexCount)
+        {
+            throw std::out_of_range("Vertex index out of range");
+        }
+        const size_t offset = factory->getStride() * vertexIndex + attr.offset;
+        //int newvalue = swapEndian(value);
+        std::memcpy(dataVec.data() + offset, &newvalue, GetDataTypeSize(attr.dataType));
+    }
+    */
     template <typename T>
     T VertexArray::getAttribute(size_t vertexIndex, const std::string &name) const
     {

@@ -62,7 +62,7 @@ PipelineResourceType VertexShader::getType() const
 void VertexShader::generateCode()
 {
     for (const auto& attr : m_factory->getAttributes()) {
-        m_output.addOutput(attr.type, attr.name, attr.dataType);
+        m_output.addOutput(attr.type, attr.name, attr.dataType,attr.flat);
     }
 
     std::stringstream ss;
@@ -117,16 +117,16 @@ void VertexShader::generateCode()
     int locationCounter = 0;
     for (const auto& attr : m_factory->getAttributes()) {
         if (isPositionAttribute(attr.type)) {
-            ss << "layout (location = " << locationCounter << ") in " << positionType << " in_" << attr.name << ";\n";
-        } else {
-            ss << "layout (location = " << locationCounter << ") in " << GetDataTypeName(attr.dataType) << " in_" << attr.name << ";\n";
+            ss << "layout (location = " << locationCounter << ") " << " in " << positionType << " in_" << attr.name << ";\n";
+        } else {                                               
+            ss << "layout (location = " << locationCounter << ") " <<" in " << GetDataTypeName(attr.dataType) << " in_" << attr.name << ";\n";
         }
         locationCounter++;
     }
     locationCounter = 0;
     ss << "\nlayout (location = 0)out vec4 gl_Position;\n\n";
     for (const auto& output : m_output.getOutputs()) {
-        ss << "layout (location = " << locationCounter + 1 << ")" << "out " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+        ss << "layout (location = " << locationCounter + 1 << ") " << (output.flat ? "flat" : "\0") << " out " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
         locationCounter++;
     }
     ss << "\nvoid main() {\n";

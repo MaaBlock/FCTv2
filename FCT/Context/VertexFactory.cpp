@@ -1,6 +1,6 @@
 ﻿#include "../headers.h"
 
-void FCT::VertexFactory::addAttribute(PipelineAttributeType type, const std::string& name, DataType dataType)
+void FCT::VertexFactory::addAttribute(PipelineAttributeType type, const std::string& name, DataType dataType, bool flat)
 {
     std::string defaultName;
 
@@ -43,7 +43,7 @@ void FCT::VertexFactory::addAttribute(PipelineAttributeType type, const std::str
     }
 
     size_t offset = getStride();
-    attributes.emplace_back(type, name.empty() ? defaultName : name, dataType, offset);
+    attributes.emplace_back(type, name.empty() ? defaultName : name, dataType, offset, flat);
 }
 
 size_t FCT::VertexFactory::getStride() const

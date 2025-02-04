@@ -1,5 +1,6 @@
 #pragma once
 #include "../Context/Pipeline.h"
+#include "./TextLayout.h"
 namespace FCT {
 	struct TextScreenInformation {
 		Vec3 g_screenPosition;
@@ -17,11 +18,13 @@ namespace FCT {
 		~TextPipeline();
 		void screen(Vec3 pos, Vec3 xHalfVec, Vec3 yHalfVec);
 		void viewport(Vec2 lt, Vec2 rb);
+		void addFont(Font* font);
 		void beginDraw();
-		void drawText(float x, float y, float w, float h);
+		void drawText(const char32_t* str,float x, float y, float w, float h);
 		void endDraw();
-	private:
+		void toggleOriginVertical(bool toggle);
 		void updataScreenInformation();
+	private:
 		VertexFactory* createFactory();
 		Context* m_ctx;
 		std::vector<float> m_commandQueue;
@@ -36,7 +39,9 @@ namespace FCT {
 		InputLayout* m_il;
 		DrawCall* m_dc;
         Texture* m_transform;
+		Texture* m_commandTexture;
 		Mat4 m_cachedTransform;
+		std::vector<Font*> m_fonts;
 	};
 	/*
 	ToDo:

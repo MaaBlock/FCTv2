@@ -73,7 +73,7 @@ namespace FCT {
 
         int locationCounter = 0;
         for (const auto& output : m_vertexOutput.getOutputs()) {
-            ss << "layout (location = " << locationCounter + 1 << ")" << "in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
+            ss << "layout (location = " << locationCounter + 1 << ") " << (output.flat ? "flat" : "\0") << " in " << GetDataTypeName(output.dataType) << " vs2fs_" << output.name << ";\n";
             locationCounter++;
         }
         ss << "\nlayout (location = 0)out vec4 FragColor;\n\n";

@@ -1,5 +1,6 @@
 #include "../headers.h"
 #include <iostream>
+#include "FreeType_Font.h"
 
 void FCT::FreeType_FontShareData::init()
 {
@@ -24,7 +25,18 @@ FCT::FreeType_Font::FreeType_Font(FreeType_FontShareData *shareData)
 FCT::FreeType_Font::~FreeType_Font()
 {
 }
+const FCT::GlyphInfo* FCT::FreeType_Font::getGlyphInfo(char32_t ch)
+{
+    FT_UInt glyph_index = FT_Get_Char_Index(m_face, ch);
+    
+    if (glyph_index == 0)
+    {
+        std::cout << "Character " << ch << " not found in font." << std::endl;
+        return nullptr;
+    }
 
+    return getGlyphInfo(glyph_index);
+}
 bool FCT::FreeType_Font::create(const char *fontPath)
 {
 	if (FT_New_Face(g_shareData->g_library, fontPath, 0, &m_face))
@@ -81,15 +93,19 @@ bool FCT::FreeType_Font::create(const char *fontPath)
 
 void FCT::FreeType_Font::translateGlyph(char32_t ch)
 {
-	 if (m_glyphMap.find(ch) != m_glyphMap.end())
-        return;
+	FT_UInt glyph_index = FT_Get_Char_Index(m_face, ch);
+	if (glyph_index == 0)
+	{
+		std::cout << "Character " << ch << " not found in font." << std::endl;
+		return;
+	}
+	translateGlyph(glyph_index);
+}
 
-    FT_UInt glyph_index = FT_Get_Char_Index(m_face, ch);
-    if (glyph_index == 0)
-    {
-        std::cout << "Character " << ch << " not found in font." << std::endl;
+void FCT::FreeType_Font::translateGlyph(FT_UInt glyph_index)
+{
+    if (m_glyphMap.find(glyph_index) != m_glyphMap.end())
         return;
-    }
 
     FT_Int32 load_flags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
     if (FT_HAS_COLOR(m_face))
@@ -99,29 +115,54 @@ void FCT::FreeType_Font::translateGlyph(char32_t ch)
 
     if (FT_Load_Glyph(m_face, glyph_index, load_flags))
     {
-        std::cout << "Failed to load glyph for character: " << ch << std::endl;
+        std::cout << "Failed to load glyph for glyph index: " << glyph_index << std::endl;
         return;
     }
 
-	GlyphInfo glyphInfo;
-	glyphInfo.advanceX = m_face->glyph->advance.x / 64.0f;
-	glyphInfo.advanceY = m_face->glyph->advance.y / 64.0f;
-	glyphInfo.bitmapWidth = m_face->glyph->metrics.width / 64.0f;
-	glyphInfo.bitmapHeight = m_face->glyph->metrics.height / 64.0f;
-	glyphInfo.bitmapLeft = m_face->glyph->metrics.horiBearingX / 64.0f;
-	glyphInfo.bitmapTop = m_face->glyph->metrics.horiBearingY / 64.0f;
+    GlyphInfo glyphInfo;
+    glyphInfo.advanceX = m_face->glyph->advance.x / 64.0f;
+    glyphInfo.advanceY = m_face->glyph->advance.y / 64.0f;
+    glyphInfo.bitmapWidth = m_face->glyph->metrics.width / 64.0f;
+    glyphInfo.bitmapHeight = m_face->glyph->metrics.height / 64.0f;
+    glyphInfo.bitmapLeft = m_face->glyph->metrics.horiBearingX / 64.0f;
+    glyphInfo.bitmapTop = m_face->glyph->metrics.horiBearingY / 64.0f;
 
-	outlineToCommands(&m_face->glyph->outline, glyphInfo.outlineCommands);
+    outlineToCommands(&m_face->glyph->outline, glyphInfo.outlineCommands);
 
-	m_glyphMap[ch] = glyphInfo;
+    m_glyphMap[glyph_index] = glyphInfo;
 }
 
-const FCT::GlyphInfo *FCT::FreeType_Font::getGlyphInfo(char32_t ch) const
+const FCT::GlyphInfo *FCT::FreeType_Font::getGlyphInfo(FT_UInt glyph_index)
 {
-	auto it = m_glyphMap.find(ch);
+    auto it = m_glyphMap.find(glyph_index);
+    if (it != m_glyphMap.end())
+        return &it->second;
+
+    std::cout << "Warning: 没有已翻译的字形信息，现在翻译，建议提前进行翻译." << std::endl;
+    translateGlyph(glyph_index);
+	it = m_glyphMap.find(glyph_index);
 	if (it != m_glyphMap.end())
 		return &it->second;
-	return nullptr;
+	return NULL;
+}
+bool FCT::FreeType_Font::hasGlyph(FT_UInt glyph_index) const
+{
+    return m_glyphMap.find(glyph_index) != m_glyphMap.end();
+}
+bool FCT::FreeType_Font::hasGlyph(char32_t ch) const
+{
+    if (m_face == nullptr)
+    {
+        return false;
+    }
+
+    FT_UInt glyph_index = FT_Get_Char_Index(m_face, ch);
+    
+    return glyph_index != 0;
+}
+void *FCT::FreeType_Font::getBackendObject()
+{
+	return (void*)m_face;
 }
 void FCT::FreeType_Font::outlineToCommands(FT_Outline *outline, std::vector<float> &commands)
 {

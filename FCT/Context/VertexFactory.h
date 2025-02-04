@@ -17,9 +17,15 @@ namespace FCT {
         std::string name;
         DataType dataType;
         size_t offset;
+        bool flat;
 
         VertexAttribute(PipelineAttributeType t, const std::string& n, DataType dt, size_t o)
             : type(t), name(n), dataType(dt), offset(o) {
+            flat = false;
+        }
+        VertexAttribute(PipelineAttributeType t, const std::string& n, DataType dt, size_t o,bool f)
+            : type(t), name(n), dataType(dt), offset(o),flat(f) {
+
         }
     };
 
@@ -61,7 +67,7 @@ namespace FCT {
     public:
         VertexFactory() = default;
 
-        void addAttribute(PipelineAttributeType type, const std::string& name = "", DataType dataType = DataType::Float);
+        void addAttribute(PipelineAttributeType type, const std::string& name = "", DataType dataType = DataType::Float,bool flat = false);
 
         const std::vector<VertexAttribute>& getAttributes() const {
             return attributes;
