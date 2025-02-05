@@ -5,9 +5,10 @@ rem 设置版本信息
 set "VERSION=0.0.1"
 
 rem 定义项目路径和依赖库
-set "projects=FCT Tutorial"
+set "projects=FCT Tutorial BlockDemo"
 set "FCT_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
 set "TUTORIAL_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
+set "BLOCKDEMO_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
 
 for %%p in (%projects%) do (
     echo 正在处理 %%p 项目...
@@ -38,6 +39,5 @@ for %%p in (%projects%) do (
 )
 
 echo 所有项目的 vcpkg.json 文件已更新。
-#version 320 es#version 320 es
 endlocal
 

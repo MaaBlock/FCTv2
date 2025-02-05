@@ -23,8 +23,20 @@ namespace FCT
         void setAttribute(size_t vertexIndex, const std::string &name, const T &value);
         template <typename T>
         T getAttribute(size_t vertexIndex, const std::string &name) const;
-        //template <>
-        //void setAttribute<int>(size_t vertexIndex, const std::string& name, const int& value);
+        size_t getAttributeOffset(const std::string &name) const
+        {
+            const auto &attr = factory->getAttribute(name);
+            return attr.offset;
+        }
+
+        template <typename T>
+        void setAttribute(size_t vertexIndex, size_t offset, const T &value)
+        {
+            const size_t dataOffset = factory->getStride() * vertexIndex + offset;
+            std::memcpy(dataVec.data() + dataOffset, &value, sizeof(T));
+        }
+        // template <>
+        // void setAttribute<int>(size_t vertexIndex, const std::string& name, const int& value);
         void *getData() { return dataVec.data(); }
         const void *getData() const { return dataVec.data(); }
         size_t getSize() const { return dataVec.size(); }
@@ -80,7 +92,8 @@ namespace FCT
             dataVec.resize(newSize);
             vertexCount += size;
         }
-        void clear() {
+        void clear()
+        {
             dataVec.clear();
             vertexCount = 0;
         }
@@ -176,11 +189,12 @@ namespace FCT
         std::vector<char> dataVec;
         size_t vertexCount;
     };
-    inline uint32_t swapEndian(uint32_t value) {
+    inline uint32_t swapEndian(uint32_t value)
+    {
         return ((value >> 24) & 0x000000FF) |
-            ((value >> 8) & 0x0000FF00) |
-            ((value << 8) & 0x00FF0000) |
-            ((value << 24) & 0xFF000000);
+               ((value >> 8) & 0x0000FF00) |
+               ((value << 8) & 0x00FF0000) |
+               ((value << 24) & 0xFF000000);
     }
     template <typename T>
     void VertexArray::setAttribute(size_t vertexIndex, const std::string &name, const T &value)

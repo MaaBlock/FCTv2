@@ -87,7 +87,9 @@ bool FCT::FreeType_Font::create(const char *fontPath)
 		m_face = nullptr;
 		return false;
 	}*/
-
+	m_ascender = m_face->ascender / 64.0f;
+    m_descender = m_face->descender / 64.0f;
+    m_height = m_face->height / 64.0f;
 	return true;
 }
 
@@ -242,7 +244,7 @@ void FCT::FreeType_Font::outlineToCommands(FT_Outline *outline, std::vector<floa
 							commands.push_back(control.y);
 							commands.push_back(point.x);
 							commands.push_back(point.y);
-							std::cout << "BezierCurveTo: (" << control.x << ", " << control.y << ") (" << point.x << ", " << point.y << ")" << std::endl;
+							//std::cout << "BezierCurveTo: (" << control.x << ", " << control.y << ") (" << point.x << ", " << point.y << ")" << std::endl;
 							hasControl = false;
 						}
 						else
@@ -250,7 +252,7 @@ void FCT::FreeType_Font::outlineToCommands(FT_Outline *outline, std::vector<floa
 							commands.push_back(Command_LineTo);
 							commands.push_back(point.x);
 							commands.push_back(point.y);
-							std::cout << "LineTo: (" << point.x << ", " << point.y << ")" << std::endl;
+							//std::cout << "LineTo: (" << point.x << ", " << point.y << ")" << std::endl;
 						}
 						last = point;
 					}
@@ -264,7 +266,7 @@ void FCT::FreeType_Font::outlineToCommands(FT_Outline *outline, std::vector<floa
 							commands.push_back(control.y);
 							commands.push_back(mid.x);
 							commands.push_back(mid.y);
-							std::cout << "BezierCurveTo (mid-point): (" << control.x << ", " << control.y << ") (" << mid.x << ", " << mid.y << ")" << std::endl;
+							//std::cout << "BezierCurveTo (mid-point): (" << control.x << ", " << control.y << ") (" << mid.x << ", " << mid.y << ")" << std::endl;
 							last = mid;
 						}
 						control = point;

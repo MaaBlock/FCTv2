@@ -16,6 +16,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tutorial", "Tutorial\Tutori
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "glad\glad.vcxproj", "{82AE383E-0535-4744-8192-32CF9147CC7F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlockDemo", "BlockDemo\BlockDemo.vcxproj", "{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82AE383E-0535-4744-8192-32CF9147CC7F} = {82AE383E-0535-4744-8192-32CF9147CC7F}
+		{8F428744-8AF0-403E-9CB6-C2CF2281042F} = {8F428744-8AF0-403E-9CB6-C2CF2281042F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +54,14 @@ Global
 		{82AE383E-0535-4744-8192-32CF9147CC7F}.Release|x64.Build.0 = Release|x64
 		{82AE383E-0535-4744-8192-32CF9147CC7F}.Release|x86.ActiveCfg = Release|Win32
 		{82AE383E-0535-4744-8192-32CF9147CC7F}.Release|x86.Build.0 = Release|Win32
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Debug|x64.ActiveCfg = Debug|x64
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Debug|x64.Build.0 = Debug|x64
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Debug|x86.ActiveCfg = Debug|Win32
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Debug|x86.Build.0 = Debug|Win32
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Release|x64.ActiveCfg = Release|x64
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Release|x64.Build.0 = Release|x64
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Release|x86.ActiveCfg = Release|Win32
+		{AEAD8FD0-17EC-4163-99B2-F5EEFB8926B9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

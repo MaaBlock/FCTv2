@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8f428744-8af0-403e-9cb6-c2cf2281042f}</ProjectGuid>
-    <RootNamespace>FCT</RootNamespace>
+    <ProjectGuid>{aead8fd0-17ec-4163-99b2-f5eefb8926b9}</ProjectGuid>
+    <RootNamespace>BlockDemo</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,28 +71,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\glad;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Debug;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>../glad;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\x64\Debug;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>..\glad;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -102,14 +95,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -119,15 +109,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -137,119 +123,31 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Context\ConstBuffer.h" />
-    <ClInclude Include="Context\Context.h" />
-    <ClInclude Include="Context\D3D11_Context.h" />
-    <ClInclude Include="Context\DataTypes.h" />
-    <ClInclude Include="Context\DrawCall.h" />
-    <ClInclude Include="Context\GL_ConstBuffer.h" />
-    <ClInclude Include="Context\GL_Context.h" />
-    <ClInclude Include="Context\GL_ContextShareData.h" />
-    <ClInclude Include="Context\GL_DrawCall.h" />
-    <ClInclude Include="Context\GL_InputLayout.h" />
-    <ClInclude Include="Context\GL_Material.h" />
-    <ClInclude Include="Context\GL_PixelShader.h" />
-    <ClInclude Include="Context\GL_Texture.h" />
-    <ClInclude Include="Context\GL_VertexBuffer.h" />
-    <ClInclude Include="Context\GL_VertexShader.h" />
-    <ClInclude Include="Context\InputLayout.h" />
-    <ClInclude Include="Context\IPipelineResource.h" />
-    <ClInclude Include="Context\IRenderTarget.h" />
-    <ClInclude Include="Context\Material.h" />
-    <ClInclude Include="Context\Matrix.h" />
-    <ClInclude Include="Context\Pipeline.h" />
-    <ClInclude Include="Context\PixelShader.h" />
-    <ClInclude Include="Context\ShaderOutput.h" />
-    <ClInclude Include="Context\TextPipeline.h" />
-    <ClInclude Include="Context\Texture.h" />
-    <ClInclude Include="Context\VertexArray.h" />
-    <ClInclude Include="Context\VertexBuffer.h" />
-    <ClInclude Include="Context\VertexFactory.h" />
-    <ClInclude Include="Context\VertexRenderPipeline.h" />
-    <ClInclude Include="Context\VertexShader.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="headers.h" />
-    <ClInclude Include="ImageLoader\FreeImage_ImageLoader.h" />
-    <ClInclude Include="ImageLoader\ImageLoader.h" />
-    <ClInclude Include="MutilThreadBase\RefCount.h" />
-    <ClInclude Include="Object\Box.h" />
-    <ClInclude Include="Object\Object.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Runtime\runtime.h" />
-    <ClInclude Include="Shapes\Rectangle.h" />
-    <ClInclude Include="Shapes\Shape.h" />
-    <ClInclude Include="TextLayout.h" />
-    <ClInclude Include="Text\Font.h" />
-    <ClInclude Include="Text\FreeType_Font.h" />
-    <ClInclude Include="Text\TextLayout.h" />
-    <ClInclude Include="Text\TextPipeline.h" />
-    <ClInclude Include="Tools\Timer.h" />
-    <ClInclude Include="UI\CallBackHandler.h" />
-    <ClInclude Include="UI\EventHandler.h" />
-    <ClInclude Include="UI\GLFW_Window.h" />
-    <ClInclude Include="UI\GLFW_WindowShareData.h" />
-    <ClInclude Include="UI\Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Context\ConstBuffer.cpp" />
-    <ClCompile Include="Context\Context.cpp" />
-    <ClCompile Include="Context\DataTypes.cpp" />
-    <ClCompile Include="Context\DrawCall.cpp" />
-    <ClCompile Include="Context\GL_ConstBuffer.cpp" />
-    <ClCompile Include="Context\GL_Context.cpp" />
-    <ClCompile Include="Context\GL_ContextShareData.cpp" />
-    <ClCompile Include="Context\GL_DrawCall.cpp" />
-    <ClCompile Include="Context\GL_InputLayout.cpp" />
-    <ClCompile Include="Context\GL_Material.cpp" />
-    <ClCompile Include="Context\GL_PixelShader.cpp" />
-    <ClCompile Include="Context\GL_Texture.cpp" />
-    <ClCompile Include="Context\GL_VertexBuffer.cpp" />
-    <ClCompile Include="Context\GL_VertexShader.cpp" />
-    <ClCompile Include="Context\Pipeline.cpp" />
-    <ClCompile Include="Context\PixelShader.cpp" />
-    <ClCompile Include="Context\ShaderOutput.cpp" />
-    <ClCompile Include="Context\Texture.cpp" />
-    <ClCompile Include="Context\VertexBuffer.cpp" />
-    <ClCompile Include="Context\VertexFactory.cpp" />
-    <ClCompile Include="Context\VertexRenderPipeline.cpp" />
-    <ClCompile Include="Context\VertexShader.cpp" />
-    <ClCompile Include="FCT.cpp" />
-    <ClCompile Include="ImageLoader\FreeImage_ImageLoader.cpp" />
-    <ClCompile Include="Object\Box.cpp" />
-    <ClCompile Include="Object\Object.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Runtime\runtime.cpp" />
-    <ClCompile Include="Shapes\Rectangle.cpp" />
-    <ClCompile Include="Text\Font.cpp" />
-    <ClCompile Include="Text\FreeType_Font.cpp" />
-    <ClCompile Include="Text\TextLayout.cpp" />
-    <ClCompile Include="Text\TextPipeline.cpp" />
-    <ClCompile Include="Tools\Timer.cpp" />
-    <ClCompile Include="UI\GLFW_Window.cpp" />
-    <ClCompile Include="UI\GLFW_WindowShareData.cpp" />
-    <ClCompile Include="UI\Window.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="BlockFace.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="BlockFace.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

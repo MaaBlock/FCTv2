@@ -41,4 +41,5 @@
 #include "./Object/Object.h"
 #include "./Object/Box.h"
 #include "./Runtime/runtime.h"
+#include "./Tools/Timer.h"
 #pragma comment(lib,"FCT.lib")

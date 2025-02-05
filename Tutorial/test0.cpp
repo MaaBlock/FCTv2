@@ -22,14 +22,6 @@ namespace std
         }
     };
 }
-void GL_Check(const char *describe)
-{
-    int error = glGetError();
-    if (error != GL_NO_ERROR)
-    {
-        std::cerr << describe << ": OpenGL error " << error << std::endl;
-    }
-}
 
 void reviewport(FCT::Context *ctx, FCT::Window *wnd)
 {
@@ -381,8 +373,6 @@ void glfw_error_callback(int error, const char *description)
 }
 int main()
 {
-    _putenv_s("ANGLE_ENABLE_FEATURE_OVERRIDES", "*");
-    _putenv_s("ANGLE_ENABLE_VALIDATION", "0");
     FCT::Runtime *rt = FCT::CreateRuntime();
     rt->init();
     auto font = rt->createFont();
@@ -417,11 +407,6 @@ int main()
     leaveTextBoard->setPerspective(fov, aspect, nearPlane, farPlane);
     Block::Init(ctx, factory, il);
     World world;
-    // font->create("Noto-COLRv1.ttf");
-    // font->create("NotoColorEmoji.ttf");
-    // font->create("NotoColorEmoji_WindowsCompatible.ttf");
-    // font->create("C://Windows//Fonts//seguiemj.ttf");
-    // font->create("Twemoji.Mozilla.ttf");
     emjFont->create("C://Windows//Fonts//seguiemj.ttf");
     font->create("C:\\Windows\\Fonts\\simsun.ttc");
     abcFont->create("C:\\Windows\\Fonts\\arial.ttc");
@@ -521,23 +506,6 @@ int main()
         pipeline->begin();
         world.render(pipeline, camera.position);
         pipeline->end();
-        //vrp->begin(screen);
-        // vrp->rectangle(Vec2(15, 0), Vec2(20, 20),1);
-
-        // vrp->beginPath(1);
-        // vrp->moveTo(Vec2(20, 15));
-        // vrp->arcTo(Vec2(10, 15), 0, 2 * 3.14159);
-        // vrp->endPath();
-        /*
-        vrp->beginPath(0);
-        vrp->moveTo(Vec2(15, 15));
-        vrp->lineTo(Vec2(20, 15));
-        vrp->lineTo(Vec2(35, 15));
-        vrp->lineTo(Vec2(35, 35));
-        vrp->lineTo(Vec2(15, 35));
-        vrp->lineTo(Vec2(15, 15));
-        vrp->endPath();//*/
-        // vrp->drawChar(font, U'\U0001F600', 15, 15);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -545,11 +513,11 @@ int main()
         leaveTextBoard->beginDraw();
         leaveTextBoard->drawText(U"留言板", 0, 0, 200, 200);
         leaveTextBoard->drawText(U"🔥🥹🔥", 0, 20, 200, 200);
-        leaveTextBoard->endDraw();
+        leaveTextBoard->flush();
         tp->beginDraw();
         tp->drawText(fps_u32str.c_str(), 0, 0, 200, 200);
         tp->drawText(U"🥹草你妈", 0, 20, 200, 200);
-        tp->endDraw();
+        tp->flush();
         wnd->swapBuffers();
         GL_Check("loop end");
     }

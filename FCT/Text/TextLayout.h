@@ -67,6 +67,7 @@ namespace FCT
     private:
         Vec2 m_textSize = Vec2(18, 18);
         std::vector<Font *> m_fonts;
+        std::vector<Vec2> m_cacheScale;
         Vec2 m_layoutRectLT;
         Vec2 m_layoutRectRB;
         std::u32string m_text;

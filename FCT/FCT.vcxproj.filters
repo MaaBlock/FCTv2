@@ -85,6 +85,15 @@
     <Filter Include="text\headers">
       <UniqueIdentifier>{0b298809-c941-4c24-af50-5fbba94b2a56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{10a79e45-90c9-47ce-947c-197ee7d7dec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\headers">
+      <UniqueIdentifier>{dae8b5a1-6963-4d4f-8e3b-b9f15064336f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\source">
+      <UniqueIdentifier>{f6d31893-4167-4b80-aada-3ea7aac0f218}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -240,6 +249,9 @@
     <ClInclude Include="Context\ShaderOutput.h">
       <Filter>context\header</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\Timer.h">
+      <Filter>tools\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -349,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="Context\DrawCall.cpp">
       <Filter>context\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Timer.cpp">
+      <Filter>tools\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

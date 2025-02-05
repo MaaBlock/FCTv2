@@ -6,17 +6,17 @@ namespace FCT
     {
         m_color = color;
     }
-	TextPipeline::TextPipeline(Context *ctx) : Pipeline(ctx, createFactory())
-	{
-		m_transform = ctx->createTexture();
+    TextPipeline::TextPipeline(Context *ctx) : Pipeline(ctx, createFactory())
+    {
+        m_transform = ctx->createTexture();
         m_transform->setSlot(0);
         m_transform->create(4, 1, FCT::Texture::Format::RGBA32F);
-		m_transform->setData(&m_cachedTransform,sizeof(m_cachedTransform));
-		m_ctx = ctx;
-		m_vs = ctx->createVertexShader(m_vf);
+        m_transform->setData(&m_cachedTransform, sizeof(m_cachedTransform));
+        m_ctx = ctx;
+        m_vs = ctx->createVertexShader(m_vf);
         m_color = Vec4(1, 1, 1, 1);
-		m_vs->addCustomOutput(FCT::PipelineAttributeType::Position3f, "position");
-		if (!m_vs->compileFromSource(R"(
+        m_vs->addCustomOutput(FCT::PipelineAttributeType::Position3f, "position");
+        if (!m_vs->compileFromSource(R"(
 layout(std140,binding = 5) uniform TextScreenInformation{
 	vec3 g_screenPosition;
 	vec3 g_screenXHalfSize;
@@ -42,12 +42,12 @@ VertexOutput main(VertexInput vs_input) {
     return vs_output;
 }
 )"))
-		{
-			std::cout << "vs报错:" << std::endl;
-			std::cout << m_vs->getCompileError() << std::endl;
-		}
-		m_ps = ctx->createPixelShader(m_vs->getOutput());
-		if (!m_ps->compileFromSource(R"(
+        {
+            std::cout << "vs报错:" << std::endl;
+            std::cout << m_vs->getCompileError() << std::endl;
+        }
+        m_ps = ctx->createPixelShader(m_vs->getOutput());
+        if (!m_ps->compileFromSource(R"(
 layout(binding = 4) uniform sampler2D commandQueue;
 
 const float CommandEnd = -1.0;
@@ -187,6 +187,11 @@ vec2 applyTransform(vec2 point) {
     vec3 transformedPoint = transform * vec3(point, 1.0);
     return transformedPoint.xy / transformedPoint.z;
 }
+float fetchCommand(int index) {
+    int x = index % 4096;
+    int y = index / 4096;
+    return texelFetch(commandQueue, ivec2(x, y), 0).x;
+}
 
 PixelOutput main(PixelInput ps_input) {
     PixelOutput ps_output;
@@ -209,14 +214,14 @@ PixelOutput main(PixelInput ps_input) {
 	float pathOperation = 0.0; // 0: 默认 1:并 2:交 3:补
     int edge = i + int(ps_input.commandSize);
     while(i < edge) {
-        float command = texelFetch(commandQueue, ivec2(i, 0), 0).x;
+        float command = fetchCommand(i);
         i++;
 
         if (command == CommandEnd) break;
 		if (command == CommandBeginPath) {
         	isPathStarted = true;
         	pathCrossings = vec2(0.0);
-			pathOperation = texelFetch(commandQueue, ivec2(i, 0), 0).x;
+			pathOperation = fetchCommand(i);
 			i += 1;
     	}
     	else if (command == CommandEndPath) {
@@ -247,15 +252,15 @@ PixelOutput main(PixelInput ps_input) {
 			pathOperation = 0.0;
     	}
         if (command == CommandMoveTo) {
-            lastPos.x = texelFetch(commandQueue, ivec2(i, 0), 0).x;
-            lastPos.y = texelFetch(commandQueue, ivec2(i+1, 0), 0).x;
+            lastPos.x = fetchCommand(i);
+            lastPos.y = fetchCommand(i+1);
 			lastPos = applyTransform(lastPos);
             i += 2;
         } 
         else if (command == CommandLineTo) {
             vec2 to;
-            to.x = texelFetch(commandQueue, ivec2(i, 0), 0).x;
-            to.y = texelFetch(commandQueue, ivec2(i+1, 0), 0).x;
+            to.x = fetchCommand(i);
+            to.y = fetchCommand(i+1);
 			to = applyTransform(to);
             i += 2;
 
@@ -270,22 +275,22 @@ PixelOutput main(PixelInput ps_input) {
             lastPos = to;
         } 
         else if (command == CommandSetColor) { 
-			currentColor.r = texelFetch(commandQueue, ivec2(i, 0), 0).x;
-        	currentColor.g = texelFetch(commandQueue, ivec2(i+1, 0), 0).x;
-        	currentColor.b = texelFetch(commandQueue, ivec2(i+2, 0), 0).x;
-        	currentColor.a = texelFetch(commandQueue, ivec2(i+3, 0), 0).x;
+			currentColor.r = fetchCommand(i);
+        	currentColor.g = fetchCommand(i+1);
+        	currentColor.b = fetchCommand(i+2);
+        	currentColor.a = fetchCommand(i+3);
             i += 4;
         }
 		else if (command == CommandArcTo) {
 		    vec2 bp = lastPos;
 			vec2 c;
-			c.x = texelFetch(commandQueue, ivec2(i, 0), 0).x;
-			c.y = texelFetch(commandQueue, ivec2(i+1, 0), 0).x;
+			c.x = fetchCommand(i);
+			c.y = fetchCommand(i+1);
 			c = applyTransform(c);
 			float r = length(c - bp);
-			float b = texelFetch(commandQueue, ivec2(i+2, 0), 0).x;
-			float e = texelFetch(commandQueue, ivec2(i+3, 0), 0).x;
-			float q = texelFetch(commandQueue, ivec2(i+4, 0), 0).x;
+			float b = fetchCommand(i+2);
+			float e = fetchCommand(i+3);
+			float q = fetchCommand(i+4);
     		vec2 ep = c + vec2(r * cos(e), r * sin(e));
 			//if (isPathStarted) {
 				pathCrossings += transformSign * ArcTest(ps_input.vectorCoord, bp, ep, c, b, e, r, q, pixelsPerUnit);
@@ -296,10 +301,10 @@ PixelOutput main(PixelInput ps_input) {
 			i+=5;
 		}
 		else if (command == CommandBezierCurveTo) {
-            vec2 control = vec2(texelFetch(commandQueue, ivec2(i, 0), 0).x,
-                                texelFetch(commandQueue, ivec2(i+1, 0), 0).x);
-            vec2 end = vec2(texelFetch(commandQueue, ivec2(i+2, 0), 0).x,
-                            texelFetch(commandQueue, ivec2(i+3, 0), 0).x);
+            vec2 control = vec2(fetchCommand(i),
+                                fetchCommand(i+1));
+            vec2 end = vec2(fetchCommand(i+2),
+                            fetchCommand(i+3));
 			control = applyTransform(control);
 			end = applyTransform(end);
             i += 4;
@@ -317,7 +322,7 @@ PixelOutput main(PixelInput ps_input) {
 		else if (command == CommandSetTransform) {
 		    for (int j = 0; j < 3; j++) {
 		        for (int k = 0; k < 3; k++) {
-		            transform[j][k] = texelFetch(commandQueue, ivec2(i + j * 4 + k, 0), 0).x;
+		            transform[j][k] = fetchCommand(i + j * 4 + k);
 		        }
 		    }
 		    i += 16;
@@ -337,232 +342,165 @@ PixelOutput main(PixelInput ps_input) {
 	return ps_output;
 }
 )"))
-		{
-			std::cout << "ps报错:" << std::endl;
-			std::cout << m_ps->getCompileError() << std::endl;
+        {
+            std::cout << "ps报错:" << std::endl;
+            std::cout << m_ps->getCompileError() << std::endl;
             std::cout << "ps source:" << std::endl;
             std::cout << m_ps->getSource() << std::endl;
-		}
-		m_material = ctx->createMaterial(m_vs, m_ps);
-		m_material->compile();
-		setDefaultMaterial(m_material);
-		m_cb = ctx->createConstBuffer();
-		m_cb->create(sizeof(TextScreenInformation), 5);
-		screen(Vec3(0, 0, 0), Vec3(1, 0, 0), Vec3(0, 1, 0));
-		viewport(Vec2(0, 0),Vec2(800, 600));
-		updataScreenInformation();
-		m_arr = new VertexArray(m_defaultFactory, 0);
-		m_dc = ctx->createDrawCall(PrimitiveType::Triangles, 0, 0);
-	}
-	TextPipeline::~TextPipeline()
-	{
-		m_vf->release();
-	}
-	void TextPipeline::screen(Vec3 pos, Vec3 xHalfVec, Vec3 yHalfVec)
-	{
-		m_si.g_screenPosition = pos;
-		m_si.g_screenXHalfSize = xHalfVec;
-		m_si.g_screenYHalfSize = yHalfVec;
-	}
-	void TextPipeline::viewport(Vec2 lt, Vec2 rb)
-	{
-		m_si.g_screenLTCoord = lt;
-		m_si.g_screenRBCoord = rb;
-	}
-	void TextPipeline::beginDraw()
-	{
-	}
-    void TextPipeline::drawText(const char32_t* str, float x, float y, float w, float h)
+        }
+        m_material = ctx->createMaterial(m_vs, m_ps);
+        m_material->compile();
+        setDefaultMaterial(m_material);
+        m_cb = ctx->createConstBuffer();
+        m_cb->create(sizeof(TextScreenInformation), 5);
+        screen(Vec3(0, 0, 0), Vec3(1, 0, 0), Vec3(0, 1, 0));
+        viewport(Vec2(0, 0), Vec2(800, 600));
+        updataScreenInformation();
+        m_arr = new VertexArray(m_defaultFactory, 0);
+        m_dc = ctx->createDrawCall(PrimitiveType::Triangles, 0, 0);
+    }
+    TextPipeline::~TextPipeline()
+    {
+        m_vf->release();
+    }
+    void TextPipeline::screen(Vec3 pos, Vec3 xHalfVec, Vec3 yHalfVec)
+    {
+        m_si.g_screenPosition = pos;
+        m_si.g_screenXHalfSize = xHalfVec;
+        m_si.g_screenYHalfSize = yHalfVec;
+    }
+    void TextPipeline::viewport(Vec2 lt, Vec2 rb)
+    {
+        m_si.g_screenLTCoord = lt;
+        m_si.g_screenRBCoord = rb;
+    }
+    void TextPipeline::beginDraw()
+    {
+    }
+    void TextPipeline::drawText(const char32_t *str, float x, float y, float w, float h)
     {
         TextLayout layout;
-		for (auto font : m_fonts) {
-			layout.addFont(font);
-		}
-		layout.layoutRect(Vec2(x, y), Vec2(x + w, y + h));
-		layout.layoutText(str);
+        for (auto font : m_fonts)
+        {
+            layout.addFont(font);
+        }
+        layout.layoutRect(Vec2(x, y), Vec2(x + w, y + h));
+        layout.layoutText(str);
         auto rets = layout.layout();
-		for (auto ret : rets) {
-            const GlyphInfo* glyph = ret.font->getGlyphInfo(ret.id);
-            const float baseline_offset = glyph ? glyph->bitmapTop * ret.scale.y : 0;
-            auto id = ret.id;
-            Mat4 transform = ret.transform;
-            float offset = m_commandQueue.size();
-            float size = 0;
-            bool hasGlyph = false;
-            for (auto font : m_fonts) {
-                if (font->hasGlyph(id)) {
-                    auto data = font->getGlyphInfo(id);
-                    m_commandQueue.push_back(Command_SetColor);
-                    m_commandQueue.push_back(m_color.x);
-                    m_commandQueue.push_back(m_color.y);
-                    m_commandQueue.push_back(m_color.z);
-                    m_commandQueue.push_back(m_color.w);
-                    m_commandQueue.push_back(Command_SetTransform);
-                    m_commandQueue.push_back(transform.m[0]);
-                    m_commandQueue.push_back(transform.m[1]);
-                    m_commandQueue.push_back(transform.m[2]);
-                    m_commandQueue.push_back(transform.m[3]);
-                    m_commandQueue.push_back(transform.m[4]);
-                    m_commandQueue.push_back(transform.m[5]);
-                    m_commandQueue.push_back(transform.m[6]);
-                    m_commandQueue.push_back(transform.m[7]);
-                    m_commandQueue.push_back(transform.m[8]);
-                    m_commandQueue.push_back(transform.m[9]);
-                    m_commandQueue.push_back(transform.m[10]);
-                    m_commandQueue.push_back(transform.m[11]);
-                    m_commandQueue.push_back(transform.m[12]);
-                    m_commandQueue.push_back(transform.m[13]);
-                    m_commandQueue.push_back(transform.m[14]);
-                    m_commandQueue.push_back(transform.m[15]);
-                    if (data && !data->outlineCommands.empty())
-                    {
-                        m_commandQueue.insert(m_commandQueue.end(), data->outlineCommands.begin(), data->outlineCommands.end());
-                    }
-                    //m_commandQueue.push_back(Command_End);
-                    size = m_commandQueue.size() - offset;
-                    hasGlyph = true;
-                    break;
-                }
-            }
+        {
+            auto vectorCoordOffset = m_arr->getAttributeOffset("vectorCoord");
+            auto commandOffsetOffset = m_arr->getAttributeOffset("commandOffset");
+            auto commandSizeOffset = m_arr->getAttributeOffset("commandSize");
+            //AutoTimer timer("uploadText");
+            size_t currentSize;
+            for (auto ret : rets)
+            {
+                const GlyphInfo *glyph = ret.font->getGlyphInfo(ret.id);
+                auto id = ret.id;
+                float offset = m_commandQueue.size();
+                float size = 0;
+                auto font = ret.font;
+                auto data = font->getGlyphInfo(id);
+                m_commandQueue.push_back(Command_SetColor);
 
-            float begin = m_arr->getVertexCount();
-            m_arr->addVertex(6);
-            m_arr->setAttribute(begin + 0, "vectorCoord", Vec2(ret.bbox.min.x, ret.bbox.min.y));
-            m_arr->setAttribute(begin + 0, "commandOffset", offset);
-            m_arr->setAttribute(begin + 0, "commandSize", size);
-
-            m_arr->setAttribute(begin + 1, "vectorCoord", Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
-            m_arr->setAttribute(begin + 1, "commandOffset", offset);
-            m_arr->setAttribute(begin + 1, "commandSize", size);
-
-            m_arr->setAttribute(begin + 2, "vectorCoord", Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
-            m_arr->setAttribute(begin + 2, "commandOffset", offset);
-            m_arr->setAttribute(begin + 2, "commandSize", size);
-
-            m_arr->setAttribute(begin + 3, "vectorCoord", Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
-            m_arr->setAttribute(begin + 3, "commandOffset", offset);
-            m_arr->setAttribute(begin + 3, "commandSize", size);
-
-            m_arr->setAttribute(begin + 4, "vectorCoord", Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y + ret.bbox.size.y));
-            m_arr->setAttribute(begin + 4, "commandOffset", offset);
-            m_arr->setAttribute(begin + 4, "commandSize", size);
-
-            m_arr->setAttribute(begin + 5, "vectorCoord", Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
-            m_arr->setAttribute(begin + 5, "commandOffset", offset);
-            m_arr->setAttribute(begin + 5, "commandSize", size);
-
-
-		}
-        /*
-        int offset = m_commandQueue.size();
-        int size = 0;
-        bool hasGlyph = false;
-        Mat4 transform;
-        transform.translate(x + 20, y + 20);
-        for (auto font : m_fonts) {
-            if (font->hasGlyph(str[0])) {
-                auto data = font->getGlyphInfo(str[0]);
+                currentSize = m_commandQueue.size();
+                m_commandQueue.resize(currentSize + 4);
+                std::memcpy(m_commandQueue.data() + currentSize, &m_color, 4 * sizeof(float));
                 m_commandQueue.push_back(Command_SetTransform);
-                m_commandQueue.push_back(transform.m[0]);
-                m_commandQueue.push_back(transform.m[1]);
-                m_commandQueue.push_back(transform.m[2]);
-                m_commandQueue.push_back(transform.m[3]);
-                m_commandQueue.push_back(transform.m[4]);
-                m_commandQueue.push_back(transform.m[5]);
-                m_commandQueue.push_back(transform.m[6]);
-                m_commandQueue.push_back(transform.m[7]);
-                m_commandQueue.push_back(transform.m[8]);
-                m_commandQueue.push_back(transform.m[9]);
-                m_commandQueue.push_back(transform.m[10]);
-                m_commandQueue.push_back(transform.m[11]);
-                m_commandQueue.push_back(transform.m[12]);
-                m_commandQueue.push_back(transform.m[13]);
-                m_commandQueue.push_back(transform.m[14]);
-                m_commandQueue.push_back(transform.m[15]);
-                if (data && !data->outlineCommands.empty())
-                {
-                    m_commandQueue.insert(m_commandQueue.end(), data->outlineCommands.begin(), data->outlineCommands.end());
-                }
-                m_commandQueue.push_back(Command_End);
+                currentSize = m_commandQueue.size();
+                m_commandQueue.resize(m_commandQueue.size() + 16);
+                std::memcpy(m_commandQueue.data() + currentSize, ret.transform.m, 16 * sizeof(float));
+                currentSize = m_commandQueue.size();
+                size_t additionalSize = data->outlineCommands.size();
+                m_commandQueue.resize(currentSize + additionalSize);
+
+                std::memcpy(m_commandQueue.data() + currentSize,
+                            data->outlineCommands.data(),
+                            additionalSize * sizeof(float));
+
                 size = m_commandQueue.size() - offset;
-                hasGlyph = true;
-                break;
+
+                float begin = m_arr->getVertexCount();
+                m_arr->addVertex(6);
+                m_arr->setAttribute(begin, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y));
+                m_arr->setAttribute(begin, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin, commandSizeOffset, size);
+
+                m_arr->setAttribute(begin + 1, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
+                m_arr->setAttribute(begin + 1, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin + 1, commandSizeOffset, size);
+
+                m_arr->setAttribute(begin + 2, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
+                m_arr->setAttribute(begin + 2, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin + 2, commandSizeOffset, size);
+
+                m_arr->setAttribute(begin + 3, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
+                m_arr->setAttribute(begin + 3, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin + 3, commandSizeOffset, size);
+
+                m_arr->setAttribute(begin + 4, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y + ret.bbox.size.y));
+                m_arr->setAttribute(begin + 4, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin + 4, commandSizeOffset, size);
+
+                m_arr->setAttribute(begin + 5, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
+                m_arr->setAttribute(begin + 5, commandOffsetOffset, offset);
+                m_arr->setAttribute(begin + 5, commandSizeOffset, size);
             }
         }
-        if (!hasGlyph) {
-            std::cout << "warning: 文字管线中没有字体包含字符 " << (uint32_t)str[0] << "(" << str[0] << "）" << std::endl;
-        }
-        size_t begin = m_arr->getVertexCount();
-        m_arr->addVertex(6);
-
-        m_arr->setAttribute(begin + 0, "vectorCoord", Vec2(x, y));
-        m_arr->setAttribute(begin + 0, "commandOffset", offset);
-        m_arr->setAttribute(begin + 0, "commandSize", size);
-
-        m_arr->setAttribute(begin + 1, "vectorCoord", Vec2(x + w, y));
-        m_arr->setAttribute(begin + 1, "commandOffset", offset);
-        m_arr->setAttribute(begin + 1, "commandSize", size);
-
-        m_arr->setAttribute(begin + 2, "vectorCoord", Vec2(x, y + h));
-        m_arr->setAttribute(begin + 2, "commandOffset", offset);
-        m_arr->setAttribute(begin + 2, "commandSize", size);
-
-        m_arr->setAttribute(begin + 3, "vectorCoord", Vec2(x + w, y));
-        m_arr->setAttribute(begin + 3, "commandOffset", offset);
-        m_arr->setAttribute(begin + 3, "commandSize", size);
-
-        m_arr->setAttribute(begin + 4, "vectorCoord", Vec2(x + w, y + h));
-        m_arr->setAttribute(begin + 4, "commandOffset", offset);
-        m_arr->setAttribute(begin + 4, "commandSize", size);
-
-        m_arr->setAttribute(begin + 5, "vectorCoord", Vec2(x, y + h));
-        m_arr->setAttribute(begin + 5, "commandOffset", offset);
-        m_arr->setAttribute(begin + 5, "commandSize", size);
-        */
     }
-    void TextPipeline::addFont(Font* font)
+    void TextPipeline::addFont(Font *font)
     {
         m_fonts.push_back(font);
     }
-	void TextPipeline::endDraw()
-	{
-		m_vb = m_ctx->createVertexBuffer(m_arr);
-		m_vb->create(m_ctx);
-		m_il = m_ctx->createInputLayout(m_vf);
-		m_il->create(m_ctx,m_vb);
-		m_dc->setCount(m_arr->getVertexCount());
-		Texture *texture = m_context->createTexture();
-		texture->setSlot(4);
-		texture->create(m_commandQueue.size(), 1, FCT::Texture::Format::R32F);
-		texture->setData(m_commandQueue.data(), m_commandQueue.size());
-		begin();
-		texture->bind();
-		m_cb->bind();
-		m_transform->bind();
-		m_material->bind();
-		m_vb->bind();
-		m_il->bind();
-		m_dc->bind();
-		m_vb->release();
-		m_il->release();
-		m_arr->clear();
-		texture->release();
+    void TextPipeline::flush()
+    {
+        m_vb = m_ctx->createVertexBuffer(m_arr);
+        m_vb->create(m_ctx);
+        m_il = m_ctx->createInputLayout(m_vf);
+        m_il->create(m_ctx, m_vb);
+        m_dc->setCount(m_arr->getVertexCount());
+        GL_Check("TextPipeline::endDraw m_il->bind();");
+        Texture *texture = m_context->createTexture();
+        GL_Check("TextPipeline::endDraw createTexture->bind();");
+        texture->setSlot(4);
+        texture->create(4096, m_commandQueue.size() / 4096 + 1, FCT::Texture::Format::R32F);
+        GL_Check("TextPipeline::endDraw texture->create();");
+        texture->setData(m_commandQueue.data(), m_commandQueue.size());
+        begin();
+        texture->bind();
+        GL_Check("TextPipeline::endDraw texture->bind();");
+        m_cb->bind();
+        GL_Check("TextPipeline::endDraw m_cb->bind();");
+        m_transform->bind();
+        GL_Check("TextPipeline::endDraw m_transform->bind();");
+        m_material->bind();
+        GL_Check("TextPipeline::endDraw m_material->bind();");
+        m_vb->bind();
+        GL_Check("TextPipeline::endDraw m_vb->bind();");
+        m_il->bind();
+        GL_Check("TextPipeline::endDraw m_il->bind();");
+        m_dc->bind();
+        GL_Check("TextPipeline::endDraw m_dc->bind();");
+        m_vb->release();
+        m_il->release();
+        m_arr->clear();
+        texture->release();
         m_commandQueue.clear();
-	}
+    }
     void TextPipeline::toggleOriginVertical(bool toggle)
     {
     }
-	void TextPipeline::updataScreenInformation()
-	{
-		m_cb->setData(&m_si, sizeof(m_si));
-	}
-	VertexFactory *TextPipeline::createFactory()
-	{
-		m_vf = new VertexFactory();
-		// m_vf->addAttribute(FCT::PipelineAttributeType::Position3f, "position");
-		m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "vectorCoord", DataType::Vec2);
-		m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "commandOffset", DataType::Float, true);
-		m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "commandSize", DataType::Float, true);
-		return m_vf;
-	}
+    void TextPipeline::updataScreenInformation()
+    {
+        m_cb->setData(&m_si, sizeof(m_si));
+    }
+    VertexFactory *TextPipeline::createFactory()
+    {
+        m_vf = new VertexFactory();
+        // m_vf->addAttribute(FCT::PipelineAttributeType::Position3f, "position");
+        m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "vectorCoord", DataType::Vec2);
+        m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "commandOffset", DataType::Float, true);
+        m_vf->addAttribute(FCT::PipelineAttributeType::Custom, "commandSize", DataType::Float, true);
+        return m_vf;
+    }
 }

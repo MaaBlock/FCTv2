@@ -27,14 +27,18 @@ bool GL_VertexBuffer::create(Context* context) {
     }
 
     glGenBuffers(1, &m_bufferId);
+    GL_Check("before glGenBuffers");
     if (m_bufferId == 0) {
         return false;
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_bufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_bufferId); 
+    GL_Check("before glBindBuffer");
     glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getSize(), m_vertexArray->getData(), GL_STATIC_DRAW);
+    GL_Check("before glBufferData");
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     m_isCreated = true;
+	GL_Check("before create vertex buffer");
     return true;
 }
 

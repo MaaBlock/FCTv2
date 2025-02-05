@@ -1,0 +1,12 @@
+{
+  "name": "blockdemo",
+  "version": "0.0.1",
+  "dependencies": [
+    "freeimage",
+    "freetype",
+    "glslang",
+    "harfbuzz",
+    "spirv-cross",
+    "angle"
+  ]
+}

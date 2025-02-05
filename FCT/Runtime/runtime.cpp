@@ -1,7 +1,9 @@
 #include "../headers.h"
-namespace FCT {
-	Runtime* CreateRuntime() {
-		Runtime* ret = new Runtime;
+namespace FCT
+{
+	Runtime *CreateRuntime()
+	{
+		Runtime *ret = new Runtime;
 		return ret;
 	}
 	void Runtime::init()
@@ -13,6 +15,7 @@ namespace FCT {
 		FreeImage_ImageLoader::Init();
 		g_freeTypeFontShareData = new FreeType_FontShareData;
 		g_freeTypeFontShareData->init();
+		setOpenGLVesion(3, 2);
 	}
 	void Runtime::tern()
 	{
@@ -21,14 +24,17 @@ namespace FCT {
 		delete g_glfwWindowShareData;
 		delete g_glContextShareData;
 		delete g_freeTypeFontShareData;
-		delete this;
-
+		m_isTern = true;
+		if (!m_isRelease)
+		{
+			delete this;
+		}
 	}
-	Window* Runtime::createWindow(int w, int h, const char* title)
+	Window *Runtime::createWindow(int w, int h, const char *title)
 	{
-		return g_glfwWindowShareData->createWindow(w,h,title);
+		return g_glfwWindowShareData->createWindow(w, h, title);
 	}
-	Context* Runtime::createContext(IRenderTarget* target)
+	Context *Runtime::createContext(IRenderTarget *target)
 	{
 		return g_glContextShareData->createContext(target);
 	}
@@ -36,15 +42,15 @@ namespace FCT {
 	{
 		g_glContextShareData->setOpenGLVersion(major, minor);
 	}
-	Font* Runtime::createFont()
+	Font *Runtime::createFont()
 	{
 		return g_freeTypeFontShareData->create();
 	}
-	ImageLoader* Runtime::createImageLoader()
+	ImageLoader *Runtime::createImageLoader()
 	{
 		return new FreeImage_ImageLoader();
 	}
-	Pipeline* Runtime::createVectorRenderPipeline(Context* ctx)
+	Pipeline *Runtime::createVectorRenderPipeline(Context *ctx)
 	{
 		return nullptr;
 	}

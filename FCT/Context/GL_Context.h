@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "./Context.h"
 #include "./GL_Material.h"
 namespace FCT {
@@ -25,4 +26,13 @@ namespace FCT {
 		int g_glVersionMinor;
 		IRenderTarget* m_target;
 	};
+
+	inline void GL_Check(const char* where)
+	{
+		int error = glGetError();
+		if (error != GL_NO_ERROR)
+		{
+			std::cerr << "OpenGL error: errcode: " << error << " where: " << where << std::endl;
+		}
+	}
 }
