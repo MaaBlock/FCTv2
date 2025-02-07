@@ -93,6 +93,7 @@ public:
         }
     }
 
+    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
     void render(const Vec3 &playerPosition)
     {
         Vec2 playerChunkPos = getChunkPos(playerPosition);

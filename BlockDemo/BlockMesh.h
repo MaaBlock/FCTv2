@@ -129,54 +129,6 @@ private:
     bool m_needUpdataResource = false;
     static const int CHUNK_SIZE = 16;
     static const int CHUNK_HEIGHT = 256;
-    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1))
-    {
-        Vec3 halfNormal = getHalfNomal(face);
-        Vec3 halfTangent = getHalfTangent(face);
-        Vec3 halfBitangent = getHalfBitangent(face);
-        Vec3 vertices[4];
-        vertices[0] = pos + halfNormal + halfTangent + halfBitangent;
-        vertices[1] = pos + halfNormal + halfTangent - halfBitangent;
-        vertices[2] = pos + halfNormal - halfTangent - halfBitangent;
-        vertices[3] = pos + halfNormal - halfTangent + halfBitangent;
-        int startVertex;
-        if (m_memroy.empty()) {
-            startVertex = m_vertexArray->getVertexCount();
-            m_vertexArray->addVertex(6);
-        }
-        else {
-            auto front = m_memroy.front();
-            startVertex = front.beginVertex;
-            m_memroy.pop();
-        }
-
-        m_vertexArray->setAttribute(startVertex, m_positionOffset, vertices[0]);
-        m_vertexArray->setAttribute(startVertex, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex, m_texcoordOffset, Vec2(1, 1));
-
-        m_vertexArray->setAttribute(startVertex + 1, m_positionOffset, vertices[1]);
-        m_vertexArray->setAttribute(startVertex + 1, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex + 1, m_texcoordOffset, Vec2(1, 0));
-
-        m_vertexArray->setAttribute(startVertex + 2, m_positionOffset, vertices[2]);
-        m_vertexArray->setAttribute(startVertex + 2, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex + 2, m_texcoordOffset, Vec2(0, 0));
-
-        m_vertexArray->setAttribute(startVertex + 3, m_positionOffset, vertices[0]);
-        m_vertexArray->setAttribute(startVertex + 3, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex + 3, m_texcoordOffset, Vec2(1, 1));
-
-        m_vertexArray->setAttribute(startVertex + 4, m_positionOffset, vertices[2]);
-        m_vertexArray->setAttribute(startVertex + 4, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex + 4, m_texcoordOffset, Vec2(0, 0));
-
-        m_vertexArray->setAttribute(startVertex + 5, m_positionOffset, vertices[3]);
-        m_vertexArray->setAttribute(startVertex + 5, m_colorOffset, color);
-        m_vertexArray->setAttribute(startVertex + 5, m_texcoordOffset, Vec2(0, 1));
-        
-        m_blockVertices[pos].beginVertex[face] = startVertex;
-        m_blockVertices[pos].endVertex[face] = startVertex + 5; 
-    }
 
 public:
     void create()
@@ -210,6 +162,7 @@ public:
     void setWorld(World* world){
         m_world = world;
     }
+    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
     void updata();
     void updateResource()
     {
