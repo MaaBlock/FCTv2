@@ -27,32 +27,6 @@ namespace std
     };
 }
 
-/*
-class Chunk
-{
-public:
-	Chunk(Vec2 chunkPos) : m_chunkPos(chunkPos) {
-		genrateChunk();
-	}
-	void genrateChunk() {
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 16; j++) {
-				block[i][0][j] = CreateBlock(BlockType::grass);
-			}
-		}
-	}
-	void render();
-	static void Init(Pipeline* pl) {
-		m_pl = pl;
-	}
-private:
-    Vec2 m_chunkPos;
-    static Pipeline* m_pl;
-	Block* block[16][256][16] = {};
-};
-
-*/
-
 struct Chunk
 {
 public:
@@ -73,19 +47,19 @@ public:
     Vec3 worldPosToChunkPos(Vec3 worldPos) const
     {
         return Vec3(
-            (static_cast<int>(worldPos.x) % CHUNK_SIZE) % CHUNK_SIZE,
+            static_cast<int>(worldPos.x) % Chunk::CHUNK_SIZE,
             static_cast<int>(worldPos.y),
-            (static_cast<int>(worldPos.z) % CHUNK_SIZE) % CHUNK_SIZE);
+            static_cast<int>(worldPos.z) % Chunk::CHUNK_SIZE);
     }
 
-    void addBlock(Vec3 localPos, Block* block)
+    void addBlock(Vec3 pos, Block* block)
     {
-        blocks[localPos] = block;
+        blocks[pos] = block;
     }
 
-    void removeBlock(Vec3 localPos)
+    void removeBlock(Vec3 pos)
     {
-        auto it = blocks.find(localPos);
+        auto it = blocks.find(pos);
         if (it != blocks.end())
         {
             delete it->second;
@@ -93,15 +67,15 @@ public:
         }
     }
 
-    Block* getBlock(Vec3 localPos)
+    Block* getBlock(Vec3 pos)
     {
-        auto it = blocks.find(localPos);
+        auto it = blocks.find(pos);
         return (it != blocks.end()) ? it->second : nullptr;
     }
 
-    bool isBlockAt(Vec3 localPos) const
+    bool isBlockAt(Vec3 pos) const
     {
-        return blocks.find(localPos) != blocks.end();
+        return blocks.find(pos) != blocks.end();
     }
 
     void render(Pipeline* pipeline)

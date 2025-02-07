@@ -42,4 +42,6 @@
 #include "./Object/Box.h"
 #include "./Runtime/runtime.h"
 #include "./Tools/Timer.h"
+#include "./Physics/FhsyShareData.h"
+#include "./Physics/PhysicsSystem.h"
 #pragma comment(lib,"FCT.lib")

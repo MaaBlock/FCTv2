@@ -190,6 +190,7 @@
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics\FhsyShareData.h" />
+    <ClInclude Include="Physics\PhysicsSystem.h" />
     <ClInclude Include="Runtime\runtime.h" />
     <ClInclude Include="Shapes\Rectangle.h" />
     <ClInclude Include="Shapes\Shape.h" />
@@ -239,6 +240,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Physics\FhsyShareData.cpp" />
+    <ClCompile Include="Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Runtime\runtime.cpp" />
     <ClCompile Include="Shapes\Rectangle.cpp" />
     <ClCompile Include="Text\Font.cpp" />

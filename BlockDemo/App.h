@@ -6,7 +6,34 @@
 using namespace FCT;
 class App
 {
+private:
+	Runtime m_rt;
+	Font* m_abcFont;
+	Font* m_cnFont;
+	Font* m_emjFont;
+	Window* m_wnd;
+	Context* m_ctx;
+	ImageLoader* m_il;
+	TimeCounter m_logicCounter;
+	TimeCounter m_renderCounter;
+	TextPipeline* m_tp;
+	Pipeline* m_pipeline;
+	VertexFactory* m_vf;
+	Player* m_player;
+	World* m_world;
+	Camera* m_camera;
+	PhysicsSystem* m_phySys;
+	physx::PxScene* m_scene;
+	bool m_needViewPort;
+	char m_keyState[512];
+	bool m_mouseCanMove = false;
+
+	bool m_leftMousePressed = false;
+	bool m_rightMousePressed = false;
+	int m_mouseDx = 0, m_mouseDy = 0;
+
 public:
+
 	App()
 	{
 	}
@@ -57,9 +84,10 @@ public:
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		m_world = new World(m_pipeline);
+		m_phySys = m_rt.createPhysicsSystem();
+		m_scene = m_phySys->createBasicScene();
+		m_world = new World(m_pipeline, m_phySys, m_scene);
 		m_camera = new Camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3, 0.0f));
-
 		m_wnd->getCallBack()->addKeyDownCallback([this](FCT::Window *wnd, int key)
 												 { m_keyState[key] = true; });
 		m_wnd->getCallBack()->addKeyUpCallback([this](FCT::Window *wnd, int key)
@@ -89,6 +117,7 @@ public:
 		glCullFace(GL_BACK);
 
 		m_camera->addPipeline(m_pipeline);
+		m_scene->simulate(0);
 	}
 	void run()
 	{
@@ -104,6 +133,7 @@ public:
 	void logicTick()
 	{
 		float deltaTime = GetTickDuration("frame");
+		m_scene->fetchResults(true);
 		AutoTimer timer("logicTick");
 		std::string fpsText = "FPS:" + std::to_string(static_cast<int>(GetTps("frame")));
 		std::string logicTickDurationText = "logicTickDuration:" + std::to_string(GetDuration("logicTick") * 1000);
@@ -145,6 +175,7 @@ public:
 		m_mouseDy = 0;
 		m_camera->updata();
 		m_world->updata();
+		m_scene->simulate(deltaTime);
 	}
 	void renderTick()
 	{
@@ -178,27 +209,4 @@ public:
 		m_wnd->swapBuffers();
 	}
 
-private:
-	Runtime m_rt;
-	Font *m_abcFont;
-	Font *m_cnFont;
-	Font *m_emjFont;
-	Window *m_wnd;
-	Context *m_ctx;
-	ImageLoader *m_il;
-	TimeCounter m_logicCounter;
-	TimeCounter m_renderCounter;
-	TextPipeline *m_tp;
-	Pipeline *m_pipeline;
-	VertexFactory *m_vf;
-	Player *m_player;
-	World *m_world;
-	Camera *m_camera;
-	bool m_needViewPort;
-	char m_keyState[512];
-	bool m_mouseCanMove = false;
-
-	bool m_leftMousePressed = false;
-	bool m_rightMousePressed = false;
-	int m_mouseDx = 0, m_mouseDy = 0;
 };

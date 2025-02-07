@@ -106,6 +106,11 @@ private:
     size_t m_colorOffset;
     size_t m_texcoordOffset;
     VertexArray *m_vertexArray;
+    PhysicsSystem* m_phySys;
+    physx::PxTriangleMesh* m_physxMesh;
+    physx::PxShape* m_physxShape;
+    physx::PxMaterial* m_pxMarerial;
+    physx::PxRigidStatic* m_actor;
     struct BlockVertex
     {
         BlockVertex() : beginVertex{}, endVertex{} {
@@ -131,6 +136,18 @@ private:
     static const int CHUNK_HEIGHT = 256;
 
 public:
+    void updataPhysxResource() {
+        if (m_physxMesh) {
+            m_physxMesh->release();
+        }
+        if (m_physxShape) {
+            m_actor->detachShape(*m_physxShape);
+            m_physxShape->release();
+        }
+        m_physxMesh = m_phySys->createTriangleMeshNoIndices(m_vertexArray);
+        m_physxShape = m_phySys->createTriangleMeshShape(m_physxMesh,m_pxMarerial);
+        m_actor->attachShape(*m_physxShape);
+    }
     void create()
     {
     }
@@ -158,13 +175,16 @@ public:
         m_resources.push_back(m_buffer);
         m_resources.push_back(m_dc);
         m_isReady = false;
+        m_physxMesh = nullptr;
     }
-    void setWorld(World* world){
-        m_world = world;
-    }
+    void setWorld(World* world);
     void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
     void updata();
-    void updateResource()
+    void updataResource() {
+        updataRenderResource();
+        updataPhysxResource();
+    }
+    void updataRenderResource()
     {
         m_buffer->updata();
         m_dc->setCount(m_vertexArray->getVertexCount());

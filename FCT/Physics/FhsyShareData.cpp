@@ -1,54 +1,42 @@
-#include "FhsyShareData.h"
-#include <stdexcept>
+#include "../headers.h"
 
-namespace FCT {
-    void FhsyShareData::init() {
-        mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, mAllocator, mErrorCallback);
-        if (!mFoundation) throw std::runtime_error("PxCreateFoundation failed!");
-
-        mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation, physx::PxTolerancesScale());
-        if (!mPhysics) throw std::runtime_error("PxCreatePhysics failed!");
-
-        mDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
-    }
-
-    void FhsyShareData::term() {
-        for (auto& pair : mScenes) {
-            if (pair.second) pair.second->release();
+namespace FCT
+{
+    void FhsyShareData::init()
+    {
+        g_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, g_allocator, g_rrrorCallback);
+        if (!g_foundation)
+        {
+            std::cerr << "PxCreateFoundation failed!" << std::endl;
+            return;
         }
-        mScenes.clear();
-        if (mDispatcher) mDispatcher->release();
-        if (mPhysics) mPhysics->release();
-        if (mFoundation) mFoundation->release();
 
-        mDispatcher = nullptr;
-        mPhysics = nullptr;
-        mFoundation = nullptr;
-    }
-
-    physx::PxScene* FhsyShareData::createScene(const std::string& name, const physx::PxSceneDesc& desc) {
-        if (mScenes.find(name) != mScenes.end()) {
-            throw std::runtime_error("Scene with this name already exists");
+        g_dispatcher = physx::PxDefaultCpuDispatcherCreate(2); 
+        if (!g_dispatcher)
+        {
+            std::cerr << "PxDefaultCpuDispatcherCreate failed!" << std::endl;
+            return;
         }
-        physx::PxScene* scene = mPhysics->createScene(desc);
-        if (!scene) throw std::runtime_error("Failed to create scene");
-        mScenes[name] = scene;
-        return scene;
+
+        std::cout << "FhsyShareData initialized successfully." << std::endl;
     }
 
-    physx::PxScene* FhsyShareData::getScene(const std::string& name) {
-        auto it = mScenes.find(name);
-        if (it == mScenes.end()) {
-            return nullptr;
+    void FhsyShareData::term()
+    {
+        // 释放 CPU Dispatcher
+        if (g_dispatcher)
+        {
+            g_dispatcher->release();
+            g_dispatcher = nullptr;
         }
-        return it->second;
-    }
 
-    void FhsyShareData::removeScene(const std::string& name) {
-        auto it = mScenes.find(name);
-        if (it != mScenes.end()) {
-            it->second->release();
-            mScenes.erase(it);
+        // 释放 Foundation
+        if (g_foundation)
+        {
+            g_foundation->release();
+            g_foundation = nullptr;
         }
+
+        std::cout << "FhsyShareData terminated successfully." << std::endl;
     }
-}// namespace FCT
+} // namespace FCT

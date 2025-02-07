@@ -27,6 +27,15 @@ namespace FCT
         {
             const auto &attr = factory->getAttribute(name);
             return attr.offset;
+        } 
+        size_t getAttributeOffsetBytype(PipelineAttributeType type) const
+        {
+            auto attrs = factory->getAttributes();
+            for (auto attr : attrs) {
+                if (attr.type == type) {
+                    return attr.offset;
+                }
+            }
         }
 
         template <typename T>
@@ -37,9 +46,9 @@ namespace FCT
         }
         // template <>
         // void setAttribute<int>(size_t vertexIndex, const std::string& name, const int& value);
-        void *getData() { return dataVec.data(); }
-        const void *getData() const { return dataVec.data(); }
-        size_t getSize() const { return dataVec.size(); }
+        void *data() { return dataVec.data(); }
+        const void *data() const { return dataVec.data(); }
+        size_t getByteSize() const { return dataVec.size(); }
         size_t getVertexCount() const { return vertexCount; }
 
         const VertexFactory *getFactory() const { return factory; }

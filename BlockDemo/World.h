@@ -11,7 +11,10 @@ public:
     Pipeline *pipeline;
     std::unordered_map<Vec2, BlockMesh *> chunkMeshes;
     Texture* m_texture;
-    World(Pipeline *pl) : pipeline(pl)
+    PhysicsSystem* m_phySys;
+    physx::PxScene* m_scene;
+    World(Pipeline *pl, PhysicsSystem* phySys, physx::PxScene* scene) : pipeline(pl) , m_phySys(phySys),
+        m_scene(scene)
     {
         for (int x = -64; x <= 64; ++x)
         {
@@ -52,22 +55,22 @@ public:
     void setBlock(Vec3 pos) {
 
         Vec2 chunkPos = getChunkPos(pos);
-        Vec3 localPos = worldToLocalPos(pos);
+        //Vec3 localPos = worldToLocalPos(pos);
         Chunk& chunk = getOrCreateChunk(chunkPos);
 
         Block* block = new Block;
         block->setPos(pos);
-        chunk.addBlock(localPos, block);
+        chunk.addBlock(pos, block);
     }
     void addBlock(Vec3 pos)
     {
         Vec2 chunkPos = getChunkPos(pos);
-        Vec3 localPos = worldToLocalPos(pos);
+        //Vec3 localPos = worldToLocalPos(pos);
         Chunk &chunk = getOrCreateChunk(chunkPos);
 
         Block *block = new Block;
         block->setPos(pos);
-        chunk.addBlock(localPos, block);
+        chunk.addBlock(pos, block);
 
         auto meshIt = chunkMeshes.find(chunkPos);
         if (meshIt != chunkMeshes.end()) {
@@ -75,25 +78,19 @@ public:
         }
         //updateChunkMesh(chunkPos);
     }
-
     void removeBlock(Vec3 pos)
     {
         Vec2 chunkPos = getChunkPos(pos);
-        Vec3 localPos = worldToLocalPos(pos);
         auto chunkIt = chunks.find(chunkPos);
         if (chunkIt != chunks.end())
         {
-            chunkIt->second.removeBlock(localPos);
-            //updateChunkMesh(chunkPos);
+            chunkIt->second.removeBlock(pos);
         }
-
         auto meshIt = chunkMeshes.find(chunkPos);
         if (meshIt != chunkMeshes.end()) {
             meshIt->second->removeBlock(pos, chunkIt->second);
         }
     }
-
-    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
     void render(const Vec3 &playerPosition)
     {
         Vec2 playerChunkPos = getChunkPos(playerPosition);
@@ -120,11 +117,10 @@ public:
             std::abs(pos.z - blockCenter.z) <= 0.5f)
         {
             Vec2 chunkPos = getChunkPos(blockCenter);
-            Vec3 localPos = worldToLocalPos(blockCenter);
             auto chunkIt = chunks.find(chunkPos);
             if (chunkIt != chunks.end())
             {
-                return chunkIt->second.isBlockAt(localPos);
+                return chunkIt->second.isBlockAt(blockCenter);
             }
         }
         return false;
@@ -132,11 +128,10 @@ public:
     Block *getBlock(Vec3 pos)
     {
         Vec2 chunkPos = getChunkPos(pos);
-        Vec3 localPos = worldToLocalPos(pos);
         auto chunkIt = chunks.find(chunkPos);
         if (chunkIt != chunks.end())
         {
-            return chunkIt->second.getBlock(localPos);
+            return chunkIt->second.getBlock(pos);
         }
         return nullptr;
     }
@@ -174,17 +169,9 @@ public:
                 }
             }
         }
-        //for (auto &pair : chunkMeshes){
-        //    pipeline->draw(pair.second);
-        //}
     }
-    void clearFace(Vec3 vec, BlockFace face) {
-        Vec2 chunkPos = getChunkPos(vec);
-        auto meshIt = chunkMeshes.find(chunkPos);
-        if (meshIt != chunkMeshes.end()) {
-            meshIt->second->clearFace(vec, face);
-        }
-    }
+    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
+    void clearFace(Vec3 vec, BlockFace face);
     void selectBlock(const Vec3 &pos)
     {
         Block *block = getBlock(pos);
@@ -275,16 +262,8 @@ private:
     Vec2 getChunkPos(const Vec3 &worldPos) const
     {
         return Vec2(
-            static_cast<int>(std::floor(worldPos.x / Chunk::CHUNK_SIZE)),
-            static_cast<int>(std::floor(worldPos.z / Chunk::CHUNK_SIZE)));
-    }
-
-    Vec3 worldToLocalPos(const Vec3 &worldPos) const
-    {
-        return Vec3(
-            static_cast<int>(worldPos.x) % Chunk::CHUNK_SIZE,
-            static_cast<int>(worldPos.y),
-            static_cast<int>(worldPos.z) % Chunk::CHUNK_SIZE);
+            int(worldPos.x / Chunk::CHUNK_SIZE),
+            int(worldPos.z / Chunk::CHUNK_SIZE));
     }
 
     Chunk &getOrCreateChunk(const Vec2 &chunkPos)

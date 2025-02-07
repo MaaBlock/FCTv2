@@ -34,7 +34,7 @@ bool GL_VertexBuffer::create(Context* context) {
 
     glBindBuffer(GL_ARRAY_BUFFER, m_bufferId); 
     GL_Check("before glBindBuffer");
-    glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getSize(), m_vertexArray->getData(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getByteSize(), m_vertexArray->data(), GL_DYNAMIC_DRAW);
     GL_Check("before glBufferData");
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     m_isCreated = true;
@@ -46,7 +46,7 @@ void GL_VertexBuffer::updata()
 {
 	if (m_isCreated) {
 		glBindBuffer(GL_ARRAY_BUFFER, m_bufferId);
-		glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getSize(), m_vertexArray->getData(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, m_vertexArray->getByteSize(), m_vertexArray->data(), GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

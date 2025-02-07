@@ -58,4 +58,9 @@ namespace FCT
 	{
 		return nullptr;
 	}
+	PhysicsSystem* Runtime::createPhysicsSystem()
+	{
+		PhysicsSystem* ret = new PhysicsSystem(this, g_phsyShareData);
+		return ret;
+	}
 }

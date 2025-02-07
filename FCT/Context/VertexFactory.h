@@ -51,8 +51,8 @@ namespace FCT {
         template<typename T>
         T getAttribute(const std::string& name) const;
 
-        void* getData() { return m_data; }
-        const void* getData() const { return m_data; }
+        void* data() { return m_data; }
+        const void* data() const { return m_data; }
         size_t getSize() const { return m_dataSize; }
 
     private:
@@ -113,7 +113,7 @@ namespace FCT {
                 if (GetDataTypeSize(attr.dataType) != sizeof(T)) {
                     throw std::runtime_error("属性大小不匹配");
                 }
-                std::memcpy(vertexData.getData() + attr.offset, &value, GetDataTypeSize(attr.dataType));
+                std::memcpy(vertexData.data() + attr.offset, &value, GetDataTypeSize(attr.dataType));
                 return;
             }
         }

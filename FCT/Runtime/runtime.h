@@ -11,6 +11,7 @@ namespace FCT
 	class GL_ContextShareData;
 	class FreeType_FontShareData;
 	class Pipeline;
+	class PhysicsSystem;
 	class Runtime
 	{
 	public:
@@ -36,7 +37,7 @@ namespace FCT
 		Font *createFont();
 		ImageLoader *createImageLoader();
 		Pipeline *createVectorRenderPipeline(Context *ctx);
-
+		PhysicsSystem* createPhysicsSystem();
 	private:
 		bool m_isRelease = false;
 		bool m_isTern = false;

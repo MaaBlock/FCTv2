@@ -65,7 +65,7 @@ void FCT::VertexFactory::setVertexData(VertexData& vertexData, const void* data,
     if (dataSize != getStride()) {
         throw std::runtime_error("数据大小与顶点步长不匹配");
     }
-    std::memcpy(vertexData.getData(), data, dataSize);
+    std::memcpy(vertexData.data(), data, dataSize);
 }
 
 const FCT::VertexAttribute& FCT::VertexFactory::getAttribute(const std::string& name) const

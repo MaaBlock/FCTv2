@@ -1,5 +1,14 @@
 #include "BlockMesh.h"
 #include "World.h"
+void BlockMesh::setWorld(World* world)
+{
+    m_world = world;
+    m_phySys = m_world->m_phySys;
+    m_pxMarerial = m_phySys->createMaterial(0.7, 0.5, 0.1);
+    m_physxShape = nullptr;
+    m_actor = m_phySys->createStaticRigidBody(Vec3(0, 0, 0));
+    world->m_scene->addActor(*m_actor);
+}
 void BlockMesh::addFace(Vec3 pos, BlockFace face, Vec4 color)
 
 {
@@ -52,7 +61,8 @@ void BlockMesh::addFace(Vec3 pos, BlockFace face, Vec4 color)
 void BlockMesh::updata()
 {
     if (m_needUpdataResource) {
-        updateResource();
+        updataRenderResource();
+        updataPhysxResource();
         m_isReady = true;
         m_needUpdataResource = false;
     }
@@ -86,10 +96,11 @@ void BlockMesh::addBlock(const Vec3& position, const Chunk& chunk)
                 m_world->clearFace(nearVec, back);
             }
             else {
-                addFace(position, BlockFace(i));
+                m_world->addFace(position, BlockFace(i));
             }
         }
-        updateResource();
+        updataRenderResource();
+        updataPhysxResource();
     }
 }
 void BlockMesh::removeBlock(const Vec3& pos, const Chunk& chunk)
@@ -99,12 +110,13 @@ void BlockMesh::removeBlock(const Vec3& pos, const Chunk& chunk)
             auto back = getBackFace(BlockFace(i));
             auto nearVec = pos + getNomal(BlockFace(i));
             if (m_blockVertices[pos].endVertex[i]) {
-                clearFace(pos, BlockFace(i));
+                m_world->clearFace(pos, BlockFace(i));
             }
             if (m_world->isBlockAt(nearVec)) {
                 m_world->addFace(nearVec, back);
             }
         }
-        updateResource();
+        updataRenderResource();
+        updataPhysxResource();
     }
 }

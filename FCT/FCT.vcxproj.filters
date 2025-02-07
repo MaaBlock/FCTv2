@@ -261,8 +261,11 @@
     <ClInclude Include="Tools\Timer.h">
       <Filter>tools\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\PhysicsSystem.h">
+      <Filter>physics\headers</Filter>
+    </ClInclude>
     <ClInclude Include="Physics\FhsyShareData.h">
-      <Filter>physics\source</Filter>
+      <Filter>physics\headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,8 +380,11 @@
     <ClCompile Include="Tools\Timer.cpp">
       <Filter>tools\source</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
+      <Filter>physics\source</Filter>
+    </ClCompile>
     <ClCompile Include="Physics\FhsyShareData.cpp">
-      <Filter>physics\headers</Filter>
+      <Filter>physics\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
