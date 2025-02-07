@@ -524,6 +524,6 @@ int main()
     delete pipeline;
     factory->release();
     ctx->release();
-    rt->tern();
+    rt->term();
     return 0;
 }

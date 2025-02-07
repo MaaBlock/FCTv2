@@ -14,6 +14,8 @@ GL_InputLayout::~GL_InputLayout() {
 }
 
 void GL_InputLayout::bind() {
+
+    GL_Check("GL_InputLayout bind");
     if (m_isCreated) {
         glBindVertexArray(m_vao);
     }

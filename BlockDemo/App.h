@@ -1,13 +1,17 @@
 ﻿#pragma once
 #include "../FCT/headers.h"
+#include "Chunk.h"
+#include "World.h"
+#include "Camera.h"
 using namespace FCT;
 class App
 {
 public:
-	App() {
-
+	App()
+	{
 	}
-	~App() {
+	~App()
+	{
 		m_abcFont->release();
 		m_cnFont->release();
 		m_emjFont->release();
@@ -16,7 +20,8 @@ public:
 		delete m_tp;
 		m_ctx->release();
 	}
-	void init() {
+	void init()
+	{
 
 		m_abcFont = m_rt.createFont();
 		m_cnFont = m_rt.createFont();
@@ -36,38 +41,118 @@ public:
 		m_ctx = m_rt.createContext(m_wnd);
 
 		m_tp = new TextPipeline(m_ctx);
-		//m_tp->addFont(m_abcFont);
 		m_tp->addFont(m_cnFont);
 		m_tp->addFont(m_emjFont);
 
+		m_vf = new VertexFactory();
+		m_vf->addAttribute(PipelineAttributeType::Position3f, "position");
+		m_vf->addAttribute(PipelineAttributeType::Color4f, "color");
+		m_vf->addAttribute(FCT::PipelineAttributeType::TexCoord2f, "TexCoord");
+		m_pipeline = new Pipeline(m_ctx, m_vf);
 		reviewport();
 
-		m_wnd->getCallBack()->addResizeCallback([this](FCT::Window* wnd, int w, int h)
-			{ m_needViewPort = true; });
+		Block::Init(m_ctx, m_vf, m_il);
+		m_wnd->getCallBack()->addResizeCallback([this](FCT::Window *wnd, int w, int h)
+												{ m_needViewPort = true; });
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_world = new World(m_pipeline);
+		m_camera = new Camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3, 0.0f));
+
+		m_wnd->getCallBack()->addKeyDownCallback([this](FCT::Window *wnd, int key)
+												 { m_keyState[key] = true; });
+		m_wnd->getCallBack()->addKeyUpCallback([this](FCT::Window *wnd, int key)
+											   {
+				if (key == FCT::KC_ESCAPE)
+					m_mouseCanMove = !m_mouseCanMove;
+				m_keyState[key] = false; });
+
+		m_wnd->getCallBack()->addMouseMoveCallback([this](FCT::Window *wnd, int x, int y)
+												   {
+				if (!m_mouseCanMove) {
+					m_mouseDx = x - wnd->getWidth() / 2;
+					m_mouseDy = wnd->getHeight() / 2 - y;
+					wnd->setCursorPos(wnd->getWidth() / 2, wnd->getHeight() / 2);
+				} });
+
+		m_wnd->getCallBack()->addRButtonUpCallback([this](Window *wnd, int x, int y)
+												   { m_rightMousePressed = true; });
+		m_wnd->getCallBack()->addLButtonUpCallback([this](Window *wnd, int x, int y)
+												   { m_leftMousePressed = true; });
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+
+		m_camera->addPipeline(m_pipeline);
 	}
-	void run() {
-		while (m_wnd->isRunning()) {
+	void run()
+	{
+		while (m_wnd->isRunning())
+		{
+			AutoTicker("frame");
 			if (m_needViewPort)
 				reviewport();
 			logicTick();
 			renderTick();
-			AutoTicker("frame");
 		}
 	}
-	void logicTick() {
+	void logicTick()
+	{
+		float deltaTime = GetTickDuration("frame");
 		AutoTimer timer("logicTick");
 		std::string fpsText = "FPS:" + std::to_string(static_cast<int>(GetTps("frame")));
 		std::string logicTickDurationText = "logicTickDuration:" + std::to_string(GetDuration("logicTick") * 1000);
 		std::string renderTickDurationText = "renderTickDuration:" + std::to_string(GetDuration("renderTick") * 1000);
+		std::string frameDurationText = "frameDuration:" + std::to_string(GetTickDuration("frame") * 1000);
+		std::string posText = "currentPos:(" + std::to_string(m_camera->position.x) + "," + std::to_string(m_camera->position.y) + "," + std::to_string(m_camera->position.z) + ")";
+
+		m_tp->drawText(posText, 0, 80);
+		m_tp->drawText(frameDurationText, 0, 60);
 		m_tp->drawText(renderTickDurationText, 0, 40);
 		m_tp->drawText(logicTickDurationText, 0, 20);
 		m_tp->drawText(fpsText, 0, 0);
+		Vec3 rayDirection = m_camera->getRayDirection();
+		std::pair<bool, Vec3> ret = m_world->raycast(m_camera->position, rayDirection, 5.0f);
+		auto hit = ret.first;
+		auto hitPosition = ret.second;
+		if (hit)
+		{
+			m_world->selectBlock(hitPosition);
+			if (m_leftMousePressed)
+			{
+				m_world->destroyBlock(hitPosition);
+				m_leftMousePressed = false;
+			}
+			if (m_rightMousePressed)
+			{
+				Vec3 normal = m_world->getNormal(hitPosition, m_camera->position);
+				m_world->placeBlock(hitPosition, normal);
+				m_rightMousePressed = false;
+			}
+		}
+		if (m_keyState['T'])
+		{
+			m_camera->position = Vec3(0, 5, 0);
+		}
+		m_camera->processKeyboard(m_keyState, deltaTime, *m_world);
+		m_camera->processMouseMovement(m_mouseDx, m_mouseDy);
+		m_mouseDx = 0;
+		m_mouseDy = 0;
+		m_camera->updata();
+		m_world->updata();
 	}
-	void renderTick() {
+	void renderTick()
+	{
 		AutoTimer timer("renderTick");
+		m_ctx->clear(0.2f, 0.3f, 0.3f);
+		m_pipeline->begin();
+		m_world->render(m_pipeline, m_camera->position);
+		m_pipeline->end();
 		renderDebug();
 	}
 	void reviewport()
@@ -87,22 +172,33 @@ public:
 		}
 		m_ctx->viewport(x, y, w, h);
 	}
-	void renderDebug() {
-		m_ctx->clear(0, 0, 0);
+	void renderDebug()
+	{
 		m_tp->flush();
 		m_wnd->swapBuffers();
 	}
+
 private:
 	Runtime m_rt;
-	Font* m_abcFont;
-	Font* m_cnFont;
-	Font* m_emjFont;
-	Window* m_wnd;
-	Context* m_ctx;
-	ImageLoader* m_il;
+	Font *m_abcFont;
+	Font *m_cnFont;
+	Font *m_emjFont;
+	Window *m_wnd;
+	Context *m_ctx;
+	ImageLoader *m_il;
 	TimeCounter m_logicCounter;
 	TimeCounter m_renderCounter;
-	TextPipeline* m_tp;
+	TextPipeline *m_tp;
+	Pipeline *m_pipeline;
+	VertexFactory *m_vf;
+	Player *m_player;
+	World *m_world;
+	Camera *m_camera;
 	bool m_needViewPort;
-};
+	char m_keyState[512];
+	bool m_mouseCanMove = false;
 
+	bool m_leftMousePressed = false;
+	bool m_rightMousePressed = false;
+	int m_mouseDx = 0, m_mouseDy = 0;
+};

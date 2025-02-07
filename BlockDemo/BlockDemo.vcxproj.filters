@@ -30,6 +30,18 @@
     <ClCompile Include="BlockFace.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -45,6 +57,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BlockFace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockMesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

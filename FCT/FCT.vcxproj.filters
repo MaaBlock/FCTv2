@@ -94,6 +94,15 @@
     <Filter Include="tools\source">
       <UniqueIdentifier>{f6d31893-4167-4b80-aada-3ea7aac0f218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{9e9bab40-dac3-4c99-ad8b-d33084c6faf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics\headers">
+      <UniqueIdentifier>{77e9d72c-c4a3-4466-8239-9480021c3bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics\source">
+      <UniqueIdentifier>{d893d0fb-1cec-42bb-ac9e-59e08a63328f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -252,6 +261,9 @@
     <ClInclude Include="Tools\Timer.h">
       <Filter>tools\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\FhsyShareData.h">
+      <Filter>physics\source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -364,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Tools\Timer.cpp">
       <Filter>tools\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\FhsyShareData.cpp">
+      <Filter>physics\headers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

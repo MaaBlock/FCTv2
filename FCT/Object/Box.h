@@ -6,10 +6,12 @@
 #include "../Context/VertexBuffer.h"
 
 namespace FCT {
+	class Pipeline;
 	class Box : public Object {
 	public:
 		Box(Context* context, VertexFactory* factory);
 		Box(Context* context, VertexFactory* factory, const Vec3& size);
+		Box(Pipeline* pipeline);
 		~Box();
 		void texture(Texture* texture);
 		void size(const Vec3& size);

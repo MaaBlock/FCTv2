@@ -85,7 +85,6 @@ namespace FCT
         }
         void addVertex(int size = 1)
         {
-
             const size_t stride = factory->getStride();
             const size_t newSize = dataVec.size() + size * stride;
 

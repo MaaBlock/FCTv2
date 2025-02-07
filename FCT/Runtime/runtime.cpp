@@ -12,18 +12,22 @@ namespace FCT
 		g_glfwWindowShareData->init();
 		g_glContextShareData = new GL_ContextShareData(this);
 		g_glContextShareData->init();
+		g_phsyShareData = new FhsyShareData;
+		g_phsyShareData->init();
 		FreeImage_ImageLoader::Init();
 		g_freeTypeFontShareData = new FreeType_FontShareData;
 		g_freeTypeFontShareData->init();
 		setOpenGLVesion(3, 2);
 	}
-	void Runtime::tern()
+	void Runtime::term()
 	{
 		FreeImage_ImageLoader::Tern();
 		g_freeTypeFontShareData->tern();
+		g_phsyShareData->term();
 		delete g_glfwWindowShareData;
 		delete g_glContextShareData;
 		delete g_freeTypeFontShareData;
+		delete g_phsyShareData;
 		m_isTern = true;
 		if (!m_isRelease)
 		{

@@ -391,7 +391,7 @@ PixelOutput main(PixelInput ps_input) {
             auto vectorCoordOffset = m_arr->getAttributeOffset("vectorCoord");
             auto commandOffsetOffset = m_arr->getAttributeOffset("commandOffset");
             auto commandSizeOffset = m_arr->getAttributeOffset("commandSize");
-            //AutoTimer timer("uploadText");
+            // AutoTimer timer("uploadText");
             size_t currentSize;
             for (auto ret : rets)
             {
@@ -426,15 +426,15 @@ PixelOutput main(PixelInput ps_input) {
                 m_arr->setAttribute(begin, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin, commandSizeOffset, size);
 
-                m_arr->setAttribute(begin + 1, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
+                m_arr->setAttribute(begin + 1, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
                 m_arr->setAttribute(begin + 1, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin + 1, commandSizeOffset, size);
 
-                m_arr->setAttribute(begin + 2, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
+                m_arr->setAttribute(begin + 2, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
                 m_arr->setAttribute(begin + 2, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin + 2, commandSizeOffset, size);
 
-                m_arr->setAttribute(begin + 3, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
+                m_arr->setAttribute(begin + 3, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
                 m_arr->setAttribute(begin + 3, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin + 3, commandSizeOffset, size);
 
@@ -442,7 +442,7 @@ PixelOutput main(PixelInput ps_input) {
                 m_arr->setAttribute(begin + 4, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin + 4, commandSizeOffset, size);
 
-                m_arr->setAttribute(begin + 5, vectorCoordOffset, Vec2(ret.bbox.min.x, ret.bbox.min.y + ret.bbox.size.y));
+                m_arr->setAttribute(begin + 5, vectorCoordOffset, Vec2(ret.bbox.min.x + ret.bbox.size.x, ret.bbox.min.y));
                 m_arr->setAttribute(begin + 5, commandOffsetOffset, offset);
                 m_arr->setAttribute(begin + 5, commandSizeOffset, size);
             }

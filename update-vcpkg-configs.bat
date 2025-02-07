@@ -6,9 +6,9 @@ set "VERSION=0.0.1"
 
 rem 定义项目路径和依赖库
 set "projects=FCT Tutorial BlockDemo"
-set "FCT_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
-set "TUTORIAL_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
-set "BLOCKDEMO_DEPS=spirv-cross glslang freeimage freetype harfbuzz angle"
+set "FCT_DEPS=spirv-cross glslang freeimage freetype harfbuzz physx"
+set "TUTORIAL_DEPS=spirv-cross glslang freeimage freetype harfbuzz physx"
+set "BLOCKDEMO_DEPS=spirv-cross glslang freeimage freetype harfbuzz physx"
 
 for %%p in (%projects%) do (
     echo 正在处理 %%p 项目...

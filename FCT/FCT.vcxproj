@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\glad;$(IncludePath)</IncludePath>
+    <IncludePath>..\glad;.\vcpkg_installed\x64-windows\x64-windows\include\physx;$(IncludePath)</IncludePath>
     <LibraryPath>..\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -189,6 +189,7 @@
     <ClInclude Include="Object\Box.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Physics\FhsyShareData.h" />
     <ClInclude Include="Runtime\runtime.h" />
     <ClInclude Include="Shapes\Rectangle.h" />
     <ClInclude Include="Shapes\Shape.h" />
@@ -237,6 +238,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Physics\FhsyShareData.cpp" />
     <ClCompile Include="Runtime\runtime.cpp" />
     <ClCompile Include="Shapes\Rectangle.cpp" />
     <ClCompile Include="Text\Font.cpp" />

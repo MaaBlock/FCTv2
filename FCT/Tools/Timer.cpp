@@ -10,4 +10,8 @@ namespace FCT {
     float GetDuration(std::string name) {
         return g_timerShareData.duration[name];
     }
+    float GetTickDuration(std::string name)
+    {
+        return g_timerShareData.tick[name].during();
+    }
 }

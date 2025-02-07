@@ -1,59 +1,118 @@
 #include "Camera.h"
+/*
+Camera::Camera(const Vec3 &position, const Vec3 &target, const Vec3 &up,
+               float fov, float aspectRatio, float nearPlane, float farPlane)
+    : m_position(position), m_target(target), m_up(up),
+      m_fov(fov), m_aspectRatio(aspectRatio), m_nearPlane(nearPlane), m_farPlane(farPlane)
+{
 
-Camera::Camera(const FCT::Vec3& position, const FCT::Vec3& front, const FCT::Vec3& up)
-    : m_position(position), m_front(front), m_up(up), m_yaw(-90.0f), m_pitch(0.0f) {
-    updateCameraVectors();
 }
 
-void Camera::setPosition(const FCT::Vec3& position) {
+void Camera::setPosition(const Vec3 &position)
+{
     m_position = position;
+    updateViewMatrix();
 }
 
-void Camera::setFront(const FCT::Vec3& front) {
-    m_front = FCT::normalize(front);
-    updateCameraVectors();
+void Camera::setTarget(const Vec3 &target)
+{
+    m_target = target;
+    updateViewMatrix();
 }
 
-void Camera::setUp(const FCT::Vec3& up) {
-    m_up = FCT::normalize(up);
-    updateCameraVectors();
+void Camera::setUp(const Vec3 &up)
+{
+    m_up = up;
+    updateViewMatrix();
 }
 
-void Camera::move(const FCT::Vec3& offset) {
+void Camera::setFOV(float fov)
+{
+    m_fov = fov;
+    updateProjectionMatrix();
+}
+
+void Camera::setAspectRatio(float aspectRatio)
+{
+    m_aspectRatio = aspectRatio;
+    updateProjectionMatrix();
+}
+
+void Camera::setNearPlane(float nearPlane)
+{
+    m_nearPlane = nearPlane;
+    updateProjectionMatrix();
+}
+
+void Camera::setFarPlane(float farPlane)
+{
+    m_farPlane = farPlane;
+    updateProjectionMatrix();
+}
+void Camera::move(const Vec3 &offset)
+{
     m_position += offset;
+    m_target += offset;
+    updateViewMatrix();
 }
 
-void Camera::rotate(float yaw, float pitch) {
-    m_yaw += yaw;
-    m_pitch += pitch;
+void Camera::rotate(float yaw, float pitch)
+{
+    Vec3 front = getFront();
 
-    if (m_pitch > 89.0f)
-        m_pitch = 89.0f;
-    if (m_pitch < -89.0f)
-        m_pitch = -89.0f;
+    front = front.rotate(m_up, yaw);
 
-    updateCameraVectors();
+    Vec3 right = front.cross(m_up).normalize();
+    front = front.rotate(right, pitch);
+
+    m_target = m_position + front;
+
+    m_up = right.cross(front).normalize();
+
+    updateViewMatrix();
 }
 
-FCT::Mat4 Camera::getViewMatrix() const {
-    return FCT::Mat4::lookAt(m_position, m_position + m_front, m_up);
+Vec3 Camera::getPosition() const { return m_position; }
+Vec3 Camera::getTarget() const { return m_target; }
+Vec3 Camera::getUp() const { return m_up; }
+
+Vec3 Camera::getFront() const
+{
+    return (m_target - m_position).normalize();
 }
 
-FCT::Mat4 Camera::getProjectionMatrix() const {
-    return m_projectionMatrix;
+void Camera::update()
+{
+    updateViewMatrix();
+    updateProjectionMatrix();
 }
 
-void Camera::setPerspective(float fov, float aspect, float near, float far) {
-    m_projectionMatrix = FCT::Mat4::perspective(fov, aspect, near, far);
+void Camera::updateViewMatrix()
+{
+    for (auto pipeline : m_pipelines) {
+        pipeline->lookAt(m_position, m_target, m_up);
+    }
 }
 
-void Camera::updateCameraVectors() {
-    FCT::Vec3 front;
-    front.x = cos(FCT::radians(m_yaw)) * cos(FCT::radians(m_pitch));
-    front.y = sin(FCT::radians(m_pitch));
-    front.z = sin(FCT::radians(m_yaw)) * cos(FCT::radians(m_pitch));
-    m_front = FCT::normalize(front);
-
-    m_right = FCT::normalize(FCT::cross(m_front, FCT::Vec3(0.0f, 1.0f, 0.0f)));
-    m_up = FCT::normalize(FCT::cross(m_right, m_front));
+void Camera::updateProjectionMatrix()
+{
+    for (auto pipeline : m_pipelines) {
+        pipeline->setPerspective(m_fov, m_aspectRatio, m_nearPlane, m_farPlane);
+    }
 }
+
+void Camera::addPipeline(Pipeline* pipeline) {
+    if (pipeline && std::find(m_pipelines.begin(), m_pipelines.end(), pipeline) == m_pipelines.end()) {
+        m_pipelines.push_back(pipeline);
+        updateViewMatrix();
+        updateProjectionMatrix();
+    }
+}
+
+void Camera::removePipeline(Pipeline* pipeline) {
+    auto it = std::find(m_pipelines.begin(), m_pipelines.end(), pipeline);
+    if (it != m_pipelines.end()) {
+        m_pipelines.erase(it);
+    }
+}
+*/

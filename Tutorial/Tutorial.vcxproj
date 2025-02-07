@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>..\x64\Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\glad;$(IncludePath)</IncludePath>
+    <IncludePath>..\glad;.\vcpkg_installed\x64-windows\x64-windows\include\physx;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>

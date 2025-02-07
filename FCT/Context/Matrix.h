@@ -70,33 +70,53 @@ namespace FCT
 				0, 0, 0, 1};
 			*this = *this * rot;
 		}
-		static Mat4 CreateTranslation(float x,float y) {
+		static Mat4 CreateTranslation(float x, float y)
+		{
 			Mat4 ret;
 			ret.m[8] += x;
 			ret.m[9] += y;
 			return ret;
 		}
-		static Mat4 CreateScale(float scaleX, float scaleY) {
+		static Mat4 CreateScale(float scaleX, float scaleY)
+		{
 			Mat4 ret = {
-				scaleX,0, 0, 0,
+				scaleX, 0, 0, 0,
 				0, scaleY, 0, 0,
 				0, 0, 1, 0,
-				0, 0, 0, 1 };
+				0, 0, 0, 1};
 			return ret;
 		}
-		static Mat4 Translate(float x, float y) {
+		static Mat4 Translate(float x, float y)
+		{
 			Mat4 ret;
 			ret.m[8] += x;
 			ret.m[9] += y;
 			return ret;
 		}
-		static Mat4 Scale(float scaleX, float scaleY) {
+		static Mat4 Scale(float scaleX, float scaleY)
+		{
 			Mat4 ret = {
-				scaleX,0, 0, 0,
+				scaleX, 0, 0, 0,
 				0, scaleY, 0, 0,
 				0, 0, 1, 0,
-				0, 0, 0, 1 };
+				0, 0, 0, 1};
 			return ret;
+		}
+		static Mat4 Perspective(float fovy, float aspect, float zNear, float zFar)
+		{
+			float tanHalfFovy = tanf(fovy / 2.0f);
+
+			Mat4 result;
+			result.identity();
+
+			result.m[0] = 1.0f / (aspect * tanHalfFovy);
+			result.m[5] = 1.0f / tanHalfFovy;
+			result.m[10] = -(zFar + zNear) / (zFar - zNear);
+			result.m[11] = -1.0f;
+			result.m[14] = -(2.0f * zFar * zNear) / (zFar - zNear);
+			result.m[15] = 0.0f;
+
+			return result;
 		}
 		void rotateY(float degrees)
 		{
@@ -111,7 +131,6 @@ namespace FCT
 				0, 0, 0, 1};
 			*this = *this * rot;
 		}
-
 		void rotateZ(float degrees)
 		{
 			float radians = degrees * 3.14159265f / 180.0f;

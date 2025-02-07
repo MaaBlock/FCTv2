@@ -101,9 +101,11 @@ namespace FCT
 
     void Object::draw() const {
         updateTransform();
+        //GL_Check("Object draw");
         m_transform->setData(&m_cachedTransform, sizeof(m_cachedTransform));
         m_transform->bind();
         for (auto res : m_resources) {
+            //GL_Check("Object bind");
             if (res)
                 res->bind();
         }

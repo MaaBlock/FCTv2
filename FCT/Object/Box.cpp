@@ -1,20 +1,33 @@
 #include "../headers.h"
+#include "Box.h"
 
-namespace FCT {
-	Box::Box(Context* context, VertexFactory* factory)
-		: m_factory(factory), Object(context), m_size(1, 1, 1) {
-		m_context = context;
-		m_array = new VertexArray(m_factory, 36); 
-		m_texture = nullptr;
-		updateVertices();
-	}
-
-	Box::Box(Context* context, VertexFactory* factory, const Vec3& size)
-		: m_factory(factory), Object(context), m_size(size) {
+namespace FCT
+{
+	Box::Box(Context *context, VertexFactory *factory)
+		: m_factory(factory), Object(context), m_size(1, 1, 1)
+	{
 		m_context = context;
 		m_array = new VertexArray(m_factory, 36);
 		m_texture = nullptr;
 		updateVertices();
+	}
+
+	Box::Box(Context *context, VertexFactory *factory, const Vec3 &size)
+		: m_factory(factory), Object(context), m_size(size)
+	{
+		m_context = context;
+		m_array = new VertexArray(m_factory, 36);
+		m_texture = nullptr;
+		updateVertices();
+	}
+
+	Box::Box(Pipeline *pipeline) : Object(pipeline->getContext()), m_factory(pipeline->getVertexFactory()), m_size(1, 1, 1)
+	{
+        m_context = pipeline->getContext();
+        m_factory = pipeline->getVertexFactory();	
+		m_array = new VertexArray(m_factory, 36);
+        m_texture = nullptr;
+        updateVertices();
 	}
 	Box::~Box()
 	{
@@ -23,14 +36,15 @@ namespace FCT {
 		safeRelease(m_vertexBuffer);
 		safeRelease(m_drawCall);
 	}
-	void Box::texture(Texture* texture)
+	void Box::texture(Texture *texture)
 	{
 		safeRelease(m_texture);
 		m_texture = texture;
 		m_texture->setSlot(3);
 		safeAddRef(m_texture);
 	}
-	void Box::setTextureCoordinates() {
+	void Box::setTextureCoordinates()
+	{
 		// Front face
 		m_array->setTexCoord(0, Vec2(0, 1));
 		m_array->setTexCoord(1, Vec2(1, 1));
@@ -83,18 +97,22 @@ namespace FCT {
 	{
 		m_vertexBuffer->updata();
 	}
-	void Box::size(const Vec3& size) {
+	void Box::size(const Vec3 &size)
+	{
 		m_size = size;
 		updateVertices();
 	}
 
-	void Box::color(const Vec4& color) {
-		for (int i = 0; i < 36; ++i) {
+	void Box::color(const Vec4 &color)
+	{
+		for (int i = 0; i < 36; ++i)
+		{
 			m_array->setColor(i, color);
 		}
 	}
 
-	void Box::create() {
+	void Box::create()
+	{
 		m_vertexBuffer = m_context->createVertexBuffer(m_array);
 		m_vertexBuffer->create(m_context);
 		m_inputLayout = m_context->createInputLayout(m_factory);
@@ -107,7 +125,8 @@ namespace FCT {
 		m_initialized = true;
 	}
 
-	void Box::updateVertices() {
+	void Box::updateVertices()
+	{
 		float w = m_size.x * 0.5f;
 		float h = m_size.y * 0.5f;
 		float d = m_size.z * 0.5f;

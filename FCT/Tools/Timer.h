@@ -6,6 +6,10 @@ namespace FCT {
 
     class TimeCounter {
     public:
+        TimeCounter() {
+            m_duration = std::chrono::high_resolution_clock::duration(0);
+            tick();
+        }
         void tick() {
             auto now = std::chrono::high_resolution_clock::now();
             m_duration = now - m_lastTick;
@@ -53,4 +57,5 @@ namespace FCT {
     void AutoTicker(std::string name);
     float GetTps(std::string name);
     float GetDuration(std::string name);
+    float GetTickDuration(std::string name);
 }

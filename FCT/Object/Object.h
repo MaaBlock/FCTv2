@@ -43,7 +43,7 @@ namespace FCT
         void addResource(IPipelineResource* res);
         
         virtual void create() = 0;
-        void draw() const;
+        virtual void draw() const;
 
     protected:
         void markDirty();

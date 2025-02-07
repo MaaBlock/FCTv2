@@ -4,6 +4,7 @@
 #include "../Context/GL_ContextShareData.h"
 #include "../ImageLoader/ImageLoader.h"
 #include "../Text/FreeType_Font.h"
+#include "../Physics/FhsyShareData.h"
 namespace FCT
 {
 	class GLFW_WindowShareData;
@@ -21,14 +22,14 @@ namespace FCT
 		{
 			m_isRelease = true;
 			if (!m_isTern)
-				tern();
+				term();
 		}
 		Runtime(Runtime &) = delete;
 		Runtime &operator=(const Runtime &) = delete;
 		Runtime(Runtime &&) = delete;
 		Runtime &operator=(Runtime &&) = delete;
 		void init();
-		void tern();
+		void term();
 		Window *createWindow(int w, int h, const char *title);
 		Context *createContext(IRenderTarget *target);
 		void setOpenGLVesion(int major, int minor);
@@ -42,6 +43,7 @@ namespace FCT
 		GLFW_WindowShareData *g_glfwWindowShareData;
 		GL_ContextShareData *g_glContextShareData;
 		FreeType_FontShareData *g_freeTypeFontShareData;
+		FhsyShareData* g_phsyShareData;
 	};
 	Runtime *CreateRuntime();
 }
