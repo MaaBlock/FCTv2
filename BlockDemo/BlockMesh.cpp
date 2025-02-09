@@ -4,7 +4,7 @@ void BlockMesh::setWorld(World* world)
 {
     m_world = world;
     m_phySys = m_world->m_phySys;
-    m_pxMarerial = m_phySys->createMaterial(0.7, 0.5, 0.1);
+    m_pxMarerial = m_phySys->createMaterial(0.7, 0.5, 0);
     m_physxShape = nullptr;
     m_actor = m_phySys->createStaticRigidBody(Vec3(0, 0, 0));
     world->m_scene->addActor(*m_actor);
@@ -118,5 +118,18 @@ void BlockMesh::removeBlock(const Vec3& pos, const Chunk& chunk)
         }
         updataRenderResource();
         updataPhysxResource();
+    }
+}
+
+void BlockMesh::lightenFace(const Vec3& pos, BlockFace face, float light) {
+    Vec4 color = Vec4(light, light, light, 1.0);
+	if (m_blockVertices[pos].endVertex[face]) {
+        int startVertex = m_blockVertices[pos].beginVertex[face];
+        m_vertexArray->setAttribute(startVertex + 0, m_colorOffset, color);
+        m_vertexArray->setAttribute(startVertex + 1, m_colorOffset, color);
+        m_vertexArray->setAttribute(startVertex + 2, m_colorOffset, color);
+        m_vertexArray->setAttribute(startVertex + 3, m_colorOffset, color);
+        m_vertexArray->setAttribute(startVertex + 4, m_colorOffset, color);
+        m_vertexArray->setAttribute(startVertex + 5, m_colorOffset, color);
     }
 }

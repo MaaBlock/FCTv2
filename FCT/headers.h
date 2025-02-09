@@ -44,4 +44,6 @@
 #include "./Tools/Timer.h"
 #include "./Physics/FhsyShareData.h"
 #include "./Physics/PhysicsSystem.h"
+#include "./Physics/SimulationCallBack.h"
+#include "./Physics/Controller.h"
 #pragma comment(lib,"FCT.lib")

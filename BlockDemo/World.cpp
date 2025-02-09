@@ -29,3 +29,21 @@ void World::clearFace(Vec3 vec, BlockFace face)
         meshIt->second->updataResource();
     }
 }
+
+void World::lightenFace(const Vec3& pos, BlockFace face, float light)
+{
+	Vec2 chunkPos = getChunkPos(pos);
+	auto meshIt = chunkMeshes.find(chunkPos);
+	if (meshIt != chunkMeshes.end()) {
+		meshIt->second->lightenFace(pos, face, light);
+	}
+}
+
+void World::updataMeshRenderSource(const Vec3& pos)
+{
+	Vec2 chunkPos = getChunkPos(pos);
+	auto meshIt = chunkMeshes.find(chunkPos);
+	if (meshIt != chunkMeshes.end()) {
+		meshIt->second->updataRenderResource();
+	}
+}
