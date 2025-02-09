@@ -83,6 +83,7 @@ public:
 		m_wnd->getCallBack()->addResizeCallback([this](FCT::Window *wnd, int w, int h)
 												{ m_needViewPort = true; });
 
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		m_phySys = m_rt.createPhysicsSystem();
