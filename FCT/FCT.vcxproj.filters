@@ -267,6 +267,12 @@
     <ClInclude Include="Physics\FhsyShareData.h">
       <Filter>physics\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\SimulationCallBack.h">
+      <Filter>physics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Controller.h">
+      <Filter>physics\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -385,6 +391,12 @@
     </ClCompile>
     <ClCompile Include="Physics\FhsyShareData.cpp">
       <Filter>physics\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\SimulationCallBack.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Controller.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

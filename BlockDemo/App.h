@@ -3,27 +3,53 @@
 #include "Chunk.h"
 #include "World.h"
 #include "Camera.h"
+#include "Player.h"
 using namespace FCT;
+
+class SimulationFilterCallback : public physx::PxSimulationFilterCallback
+{
+public:
+	physx::PxFilterFlags pairFound(physx::PxU64 pairID,
+								   physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
+								   const physx::PxActor *a0, const physx::PxShape *s0,
+								   physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
+								   const physx::PxActor *a1, const physx::PxShape *s1,
+								   physx::PxPairFlags &pairFlags) override
+	{
+		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
+		return physx::PxFilterFlags();
+	}
+
+	void pairLost(physx::PxU64 pairID,
+				  physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
+				  physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
+				  bool objectRemoved) {}
+
+	bool statusChange(physx::PxU64 &pairID, physx::PxPairFlags &pairFlags, physx::PxFilterFlags &filterFlags)
+	{
+		return false;
+	}
+};
 class App
 {
 private:
 	Runtime m_rt;
-	Font* m_abcFont;
-	Font* m_cnFont;
-	Font* m_emjFont;
-	Window* m_wnd;
-	Context* m_ctx;
-	ImageLoader* m_il;
+	Font *m_abcFont;
+	Font *m_cnFont;
+	Font *m_emjFont;
+	Window *m_wnd;
+	Context *m_ctx;
+	ImageLoader *m_il;
 	TimeCounter m_logicCounter;
 	TimeCounter m_renderCounter;
-	TextPipeline* m_tp;
-	Pipeline* m_pipeline;
-	VertexFactory* m_vf;
-	Player* m_player;
-	World* m_world;
-	Camera* m_camera;
-	PhysicsSystem* m_phySys;
-	physx::PxScene* m_scene;
+	TextPipeline *m_tp;
+	Pipeline *m_pipeline;
+	VertexFactory *m_vf;
+	Player *m_player;
+	World *m_world;
+	Camera *m_camera;
+	PhysicsSystem *m_phySys;
+	physx::PxScene *m_scene;
 	bool m_needViewPort;
 	char m_keyState[512];
 	bool m_mouseCanMove = false;
@@ -31,9 +57,10 @@ private:
 	bool m_leftMousePressed = false;
 	bool m_rightMousePressed = false;
 	int m_mouseDx = 0, m_mouseDy = 0;
+	SimulationCallback m_callback;
+	SimulationFilterCallback *m_filterCallback;
 
 public:
-
 	App()
 	{
 	}
@@ -47,6 +74,7 @@ public:
 		delete m_tp;
 		m_ctx->release();
 	}
+	float m_groundCheckTimer = 0.0f;
 	void init()
 	{
 
@@ -85,7 +113,8 @@ public:
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		m_phySys = m_rt.createPhysicsSystem();
-		m_scene = m_phySys->createBasicScene();
+		m_filterCallback = new SimulationFilterCallback;
+		m_scene = m_phySys->createBasicScene(m_filterCallback);
 		m_world = new World(m_pipeline, m_phySys, m_scene);
 		m_camera = new Camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3, 0.0f));
 		m_wnd->getCallBack()->addKeyDownCallback([this](FCT::Window *wnd, int key)
@@ -117,6 +146,42 @@ public:
 		glCullFace(GL_BACK);
 
 		m_camera->addPipeline(m_pipeline);
+		m_player = new Player(m_world, m_camera, m_phySys, m_scene);
+		m_callback.bindToScene(m_scene);
+		m_callback.addContactCallback([this](const physx::PxContactPairHeader &pairHeader, const physx::PxContactPair *pairs, physx::PxU32 nbPairs)
+									  {
+    bool playerContact = false;
+    bool groundContact = false;
+
+    for (physx::PxU32 i = 0; i < nbPairs; i++)
+    {
+        const physx::PxContactPair& cp = pairs[i];
+        if (cp.contactCount > 0)
+        {
+            std::vector<physx::PxContactPairPoint> contacts(cp.contactCount);
+            cp.extractContacts(&contacts[0], cp.contactCount);
+
+            for (physx::PxU32 j = 0; j < cp.contactCount; j++)
+            {
+                const physx::PxContactPairPoint& contact = contacts[j];
+                physx::PxVec3 normal = contact.normal;
+
+                if (pairHeader.actors[0] == m_player->getActor() || pairHeader.actors[1] == m_player->getActor())
+                {
+                    playerContact = true;
+                    if (normal.y > 0.5f)
+                    {
+                        groundContact = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if (groundContact)
+    {
+        m_player->setOnGround(true);
+    } });
 		m_scene->simulate(0);
 	}
 	void run()
@@ -147,12 +212,14 @@ public:
 		m_tp->drawText(logicTickDurationText, 0, 20);
 		m_tp->drawText(fpsText, 0, 0);
 		Vec3 rayDirection = m_camera->getRayDirection();
+		Vec3 normal;
 		std::pair<bool, Vec3> ret = m_world->raycast(m_camera->position, rayDirection, 5.0f);
+		ret.first = m_world->MousePickFace(m_camera->position, rayDirection, ret.second, normal);
 		auto hit = ret.first;
-		auto hitPosition = ret.second;
+		auto hitPosition = m_world->GetBlockPositionFromHit(ret.second, normal);
 		if (hit)
 		{
-			m_world->selectBlock(hitPosition);
+			m_world->selectBlock(hitPosition, normal);
 			if (m_leftMousePressed)
 			{
 				m_world->destroyBlock(hitPosition);
@@ -160,17 +227,19 @@ public:
 			}
 			if (m_rightMousePressed)
 			{
-				Vec3 normal = m_world->getNormal(hitPosition, m_camera->position);
-				m_world->placeBlock(hitPosition, normal);
+				//Vec3 normal = m_world->getNormal(hitPosition, m_camera->position);
+				m_world->placeBlock(m_world->GetAdjacentBlockPosition(ret.second,normal));
 				m_rightMousePressed = false;
 			}
 		}
-		if (m_keyState['T'])
-		{
-			m_camera->position = Vec3(0, 5, 0);
+		else {
+			m_world->unselect();
 		}
+		m_player->processKeyboard(m_keyState, deltaTime, *m_world);
+		m_player->processMouseMovement(m_mouseDx, m_mouseDy);
+		/*
 		m_camera->processKeyboard(m_keyState, deltaTime, *m_world);
-		m_camera->processMouseMovement(m_mouseDx, m_mouseDy);
+		m_camera->processMouseMovement(m_mouseDx, m_mouseDy);*/
 		m_mouseDx = 0;
 		m_mouseDy = 0;
 		m_camera->updata();
@@ -208,5 +277,4 @@ public:
 		m_tp->flush();
 		m_wnd->swapBuffers();
 	}
-
 };

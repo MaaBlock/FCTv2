@@ -21,7 +21,6 @@ public:
     float aspectRatio;
     float nearPlane;
     float farPlane;
-
     Camera(FCT::Vec3 pos = FCT::Vec3(0.0f, 0.0f, 5.0f), float fov = 45.0f,
         float aspectRatio = 4.0f / 3.0f,
         float nearPlane = 0.1f,
@@ -42,6 +41,22 @@ public:
         {
             pipeline->setPerspective(fov, aspectRatio, nearPlane, farPlane);
         }
+    }
+    FCT::Vec3 flatFrontX() {
+        return FCT::normalize(FCT::Vec3(0.0f, front.y, front.z));
+    }
+    FCT::Vec3 flatFrontY() {
+        return FCT::normalize(FCT::Vec3(front.x, 0.0f, front.z));
+    } 
+
+    FCT::Vec3 flatFrontZ() {
+        return FCT::normalize(FCT::Vec3(front.x, front.y, 0.0f));
+    }
+    FCT::Vec3 flatRightY() {
+        return FCT::normalize(FCT::cross(flatFrontY(), FCT::Vec3(0.0f, 1.0f, 0.0f)));
+    }
+    FCT::Vec3 pos() const {
+        return position;
     }
     void processKeyboard(char* keyState, float deltaTime, const World& world)
     {
@@ -119,7 +134,26 @@ public:
             }
         }
     }
+    void move(const Vec3& offset) {
+        position += offset;
+    }
+    void pos(const Vec3& pos) {
+        position = pos;
+    }
+    void rotate(float xoffset, float yoffset) {
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
 
+        yaw += xoffset;
+        pitch += yoffset;
+
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
+
+        updateCameraVectors();
+    }
     void processMouseMovement(float xoffset, float yoffset)
     {
         xoffset *= sensitivity;
@@ -166,17 +200,6 @@ public:
     {
         return front;
     }
-};
-
-class Player {
-public:
-    Player(Camera* camera) {
-		m_camera = camera;
-    }
-
-private:
-    Vec3 m_pos;
-    Camera* m_camera;
 };
 /*
 class Camera

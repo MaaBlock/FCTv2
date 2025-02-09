@@ -1,6 +1,7 @@
 #pragma once
 #include "./Matrix.h"
 #include <string>
+#include <PxPhysicsAPI.h>
 namespace FCT
 {
 
@@ -142,6 +143,17 @@ namespace FCT
 
     struct Vec3
     {
+        operator physx::PxExtendedVec3() const {
+            return physx::PxExtendedVec3(x, y, z);
+        }
+        operator physx::PxVec3() const {
+            return physx::PxVec3(x, y, z);
+        }
+        Vec3(const physx::PxVec3& other) {
+			x = other.x;
+		    y = other.y;
+		    z = other.z;
+		}
         float x, y, z;
         Vec3(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
 

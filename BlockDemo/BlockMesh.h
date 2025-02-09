@@ -33,6 +33,34 @@ inline BlockFace getBackFace(BlockFace face) {
         return BlockFace::BlockFace_End;
     }
 }
+inline BlockFace getFaceFromNormal(const Vec3& normal)
+{
+    const float epsilon = 0.001f;
+
+    if (std::abs(normal.x - 1.0f) < epsilon) {
+        return BlockFace::Right_Xpositive;
+    }
+    if (std::abs(normal.x + 1.0f) < epsilon) {
+        return BlockFace::Left_Xnegative;
+    }
+
+    if (std::abs(normal.y - 1.0f) < epsilon) {
+        return BlockFace::Top_Ypositive;
+    }
+    if (std::abs(normal.y + 1.0f) < epsilon) {
+        return BlockFace::Bottom_Ynegative;
+    }
+
+    if (std::abs(normal.z - 1.0f) < epsilon) {
+        return BlockFace::Front_Zpositive;
+    }
+    if (std::abs(normal.z + 1.0f) < epsilon) {
+        return BlockFace::Back_Znegative;
+    }
+
+    return BlockFace::BlockFace_End;
+}
+
 inline Vec3 getHalfNomal(BlockFace face)
 {
     switch (face)
@@ -216,5 +244,6 @@ public:
     }
     void addBlock(const Vec3& position, const Chunk& chunk);
     void removeBlock(const Vec3& pos, const Chunk& chunk);
+	void lightenFace(const Vec3& pos, BlockFace face,float light);
 private:
 };

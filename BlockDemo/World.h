@@ -1,7 +1,6 @@
 #pragma once
 #include <unordered_map>
 #include "Chunk.h"
-#include "player.h"
 #include "BlockMesh.h"
 class World
 {
@@ -10,11 +9,11 @@ public:
     Vec3 selectedPos;
     Pipeline *pipeline;
     std::unordered_map<Vec2, BlockMesh *> chunkMeshes;
-    Texture* m_texture;
-    PhysicsSystem* m_phySys;
-    physx::PxScene* m_scene;
-    World(Pipeline *pl, PhysicsSystem* phySys, physx::PxScene* scene) : pipeline(pl) , m_phySys(phySys),
-        m_scene(scene)
+    Texture *m_texture;
+    PhysicsSystem *m_phySys;
+    physx::PxScene *m_scene;
+    World(Pipeline *pl, PhysicsSystem *phySys, physx::PxScene *scene) : pipeline(pl), m_phySys(phySys),
+                                                                        m_scene(scene)
     {
         for (int x = -64; x <= 64; ++x)
         {
@@ -27,6 +26,40 @@ public:
             }
         }
         generateChunkMeshes();
+    }
+    Vec3 GetBlockPositionFromHit(const Vec3 &hitPosition, const Vec3& normal)
+    {
+        return Vec3(
+            std::round(hitPosition.x - 0.1 * normal.x),
+            std::round(hitPosition.y - 0.1 * normal.y),
+            std::round(hitPosition.z - 0.1 * normal.z));
+    }
+    Vec3 GetAdjacentBlockPosition(const Vec3 &blockPos, const Vec3&normal)
+    {
+        return Vec3(
+            std::round(blockPos.x + 0.9 * normal.x),
+            std::round(blockPos.y + 0.9 * normal.y),
+            std::round(blockPos.z + 0.9 * normal.z));
+    }
+
+    bool MousePickFace(Vec3 rayOrigin, Vec3 rayDir, Vec3 &outHitPosition, Vec3 &outHitNormal)
+    {
+        physx::PxRaycastBuffer hit; // 用于存储命中结果
+
+        // 设置过滤器，忽略玩家，仅检测可见方块
+        physx::PxQueryFilterData filterData;
+        filterData.flags = physx::PxQueryFlag::eSTATIC;
+
+        // 发射射线，最大检测距离设为 1000.0f
+        if (m_scene->raycast(rayOrigin, rayDir, 6.0f, hit, physx::PxHitFlag::ePOSITION | physx::PxHitFlag::eNORMAL, filterData))
+        {
+            outHitPosition = hit.block.position;
+            outHitNormal = hit.block.normal;
+
+            return true; // 命中成功
+        }
+
+        return false; // 没有命中任何表面
     }
     void updateChunkMesh(const Vec2 &chunkPos)
     {
@@ -52,31 +85,49 @@ public:
             delete pair.second;
         }
     }
-    void setBlock(Vec3 pos) {
-
-        Vec2 chunkPos = getChunkPos(pos);
-        //Vec3 localPos = worldToLocalPos(pos);
-        Chunk& chunk = getOrCreateChunk(chunkPos);
-
-        Block* block = new Block;
-        block->setPos(pos);
-        chunk.addBlock(pos, block);
-    }
-    void addBlock(Vec3 pos)
+    void setBlock(Vec3 pos)
     {
+
         Vec2 chunkPos = getChunkPos(pos);
-        //Vec3 localPos = worldToLocalPos(pos);
+        // Vec3 localPos = worldToLocalPos(pos);
         Chunk &chunk = getOrCreateChunk(chunkPos);
 
         Block *block = new Block;
         block->setPos(pos);
         chunk.addBlock(pos, block);
+    }
+    bool CanPlaceBlock(Vec3 blockPosition)
+    {
+        physx::PxBoxGeometry boxGeom(0.5f, 0.5f, 0.5f);
+        physx::PxTransform blockTransform(blockPosition);
 
-        auto meshIt = chunkMeshes.find(chunkPos);
-        if (meshIt != chunkMeshes.end()) {
-            meshIt->second->addBlock(pos, chunk);
+        physx::PxOverlapBuffer hit;
+        physx::PxQueryFilterData filterData;
+        filterData.flags = physx::PxQueryFlag::eDYNAMIC | physx::PxQueryFlag::eANY_HIT;
+
+        bool hasOverlap = m_scene->overlap(boxGeom, blockTransform, hit, filterData);
+
+        return !hasOverlap;
+    }
+    void addBlock(Vec3 pos)
+    {
+        if (CanPlaceBlock(pos))
+        {
+            Vec2 chunkPos = getChunkPos(pos);
+            // Vec3 localPos = worldToLocalPos(pos);
+            Chunk &chunk = getOrCreateChunk(chunkPos);
+
+            Block *block = new Block;
+            block->setPos(pos);
+            chunk.addBlock(pos, block);
+
+            auto meshIt = chunkMeshes.find(chunkPos);
+            if (meshIt != chunkMeshes.end())
+            {
+                meshIt->second->addBlock(pos, chunk);
+            }
         }
-        //updateChunkMesh(chunkPos);
+        // updateChunkMesh(chunkPos);
     }
     void removeBlock(Vec3 pos)
     {
@@ -87,7 +138,8 @@ public:
             chunkIt->second.removeBlock(pos);
         }
         auto meshIt = chunkMeshes.find(chunkPos);
-        if (meshIt != chunkMeshes.end()) {
+        if (meshIt != chunkMeshes.end())
+        {
             meshIt->second->removeBlock(pos, chunkIt->second);
         }
     }
@@ -135,14 +187,16 @@ public:
         }
         return nullptr;
     }
-    void updata() {
-        for (auto& pair : chunkMeshes) {
+    void updata()
+    {
+        for (auto &pair : chunkMeshes)
+        {
             pair.second->updata();
         }
     }
     void render(Pipeline *pipeline, const Vec3 &playerPosition)
     {
-        
+
         Vec2 playerChunkPos = getChunkPos(playerPosition);
         /*for (int x = -1; x <= 1; ++x)
         {
@@ -172,23 +226,36 @@ public:
     }
     void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
     void clearFace(Vec3 vec, BlockFace face);
-    void selectBlock(const Vec3 &pos)
+    void lightenFace(const Vec3 &pos, BlockFace face, float light);
+    void updataMeshRenderSource(const Vec3 &pos);
+    void selectBlock(const Vec3 &pos,Vec3 normal)
     {
         Block *block = getBlock(pos);
+
         if (block)
         {
-            if (selectedBlock)
-            {
-                selectedBlock->box->color(Vec4(1, 1, 1, 1));
-                selectedBlock->box->updata();
-            }
+            unselect();
             selectedBlock = block;
-            selectedBlock->box->color(Vec4(1.2, 1.2, 1.2, 1));
-            selectedBlock->box->updata();
             selectedPos = pos;
+            //for (int i = 1; i <= 6; i++)
+            //{
+                lightenFace(selectedPos,getFaceFromNormal(normal), 1.2f);
+            //}
+            updataMeshRenderSource(selectedPos);
         }
     }
-
+    void unselect()
+    {
+        if (selectedBlock)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                lightenFace(selectedPos, BlockFace(i), 1.0f);
+            }
+            updataMeshRenderSource(selectedPos);
+        }
+        selectedBlock = nullptr;
+    }
     void destroyBlock(const Vec3 &pos)
     {
         removeBlock(pos);
@@ -198,9 +265,9 @@ public:
         }
     }
 
-    void placeBlock(const Vec3 &pos, const Vec3 &normal)
+    void placeBlock(const Vec3 &pos)
     {
-        Vec3 placePos = pos + normal;
+        Vec3 placePos = pos;
         if (!isBlockAt(placePos))
         {
             addBlock(placePos);
@@ -226,7 +293,25 @@ public:
 
         return {false, current};
     }
+    Vec3 posToBlockPos(Vec3 pos)
+    {
+        return Vec3(std::round(pos.x), std::round(pos.y), std::round(pos.z));
+    }
+    Vec3 GetBlockCoords(const Vec3 &hitPos, const Vec3 &hitNormal, bool placeNewBlock)
+    {
+        int blockX = static_cast<int>(round(hitPos.x));
+        int blockY = static_cast<int>(round(hitPos.y));
+        int blockZ = static_cast<int>(round(hitPos.z));
 
+        if (placeNewBlock)
+        {
+            blockX += static_cast<int>(round(hitNormal.x));
+            blockY += static_cast<int>(round(hitNormal.y));
+            blockZ += static_cast<int>(round(hitNormal.z));
+        }
+
+        return Vec3(blockX, blockY, blockZ);
+    }
     Vec3 getNormal(const Vec3 &hitPos, const Vec3 &rayStart)
     {
         Vec3 diff = hitPos - rayStart;
