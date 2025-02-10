@@ -34,7 +34,26 @@ public:
     Vec2 chunkPos;
     std::unordered_map<Vec3, Block*> blocks;
 
-    Chunk(Vec2 pos) : chunkPos(pos) {}
+    Chunk(Vec2 pos) : chunkPos(pos) {
+        Vec3 offset = Vec3(pos.x * 16, 0, pos.y * 16);
+        for (int i = 0; i < 16; i++) {
+
+			for (int j = 0; j < 16; j++) {
+                for (int y = 0; y < 3; ++y)
+                {
+                    newBlock(offset + Vec3(i, y, j), 0);
+                }
+                for (int y = 3; y < 5; ++y)
+                {
+                    newBlock(offset + Vec3(i, y, j), 1);
+                }
+                for (int y = 5; y < 6; ++y)
+                {
+                    newBlock(offset + Vec3(i, y, j), 2);
+                }
+            }
+        }
+    }
 
     ~Chunk()
     {
@@ -59,6 +78,12 @@ public:
     {
         blocks[pos] = block;
     }
+    void newBlock(Vec3 pos, unsigned id) {
+        Block* block = new Block;
+		block->type = id;
+        block->setPos(pos);
+		addBlock(pos, block);
+	}
 
     void removeBlock(Vec3 pos)
     {

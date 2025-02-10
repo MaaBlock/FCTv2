@@ -3,6 +3,7 @@
 #include "Chunk.h"
 #include "BlockMesh.h"
 struct Camera;
+class Player;
 class World
 {
 public:
@@ -14,6 +15,7 @@ public:
     PhysicsSystem *m_phySys;
     physx::PxScene *m_scene;
     Camera* m_camera;
+    Player* m_player;
     World(Pipeline* pl, PhysicsSystem* phySys, physx::PxScene* scene, Camera* camera);
     Vec3 getBlockPositionFromHit(const Vec3 &hitPosition, const Vec3& normal)
     {
@@ -22,6 +24,7 @@ public:
             std::round(hitPosition.y - 0.1 * normal.y),
             std::round(hitPosition.z - 0.1 * normal.z));
     }
+    void player(Player* player);
     unsigned getBlockType(Vec3 pos) {
         Vec2 chunkPos = getChunkPos(pos);
         auto chunkIt = chunks.find(chunkPos);
@@ -143,6 +146,8 @@ public:
             for (int z = -1; z <= 1; ++z)
             {
                 Vec2 chunkPos = playerChunkPos + Vec2(x, z);
+                std::cout << "render" << "\n";
+                getOrCreateChunk(chunkPos);
                 auto meshIt = chunkMeshes.find(chunkPos);
                 if (meshIt != chunkMeshes.end())
                 {
@@ -179,13 +184,7 @@ public:
         }
         return nullptr;
     }
-    void updata()
-    {
-        for (auto &pair : chunkMeshes)
-        {
-            pair.second->updata();
-        }
-    }
+    void updata();
     void render(Pipeline *pipeline, const Vec3 &playerPosition)
     {
         Block::texture->bind();
@@ -248,8 +247,8 @@ private:
     Vec2 getChunkPos(const Vec3 &worldPos) const
     {
         return Vec2(
-            int(worldPos.x / Chunk::CHUNK_SIZE),
-            int(worldPos.z / Chunk::CHUNK_SIZE));
+            floor(worldPos.x / Chunk::CHUNK_SIZE),
+            floor(worldPos.z / Chunk::CHUNK_SIZE));
     }
 
     Chunk &getOrCreateChunk(const Vec2 &chunkPos)
@@ -257,9 +256,11 @@ private:
         auto it = chunks.find(chunkPos);
         if (it == chunks.end())
         {
+
             auto result = chunks.emplace(std::piecewise_construct,
                                          std::forward_as_tuple(chunkPos),
                                          std::forward_as_tuple(chunkPos));
+            updateChunkMesh(chunkPos);
             return result.first->second;
         }
         return it->second;

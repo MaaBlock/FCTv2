@@ -22,3 +22,9 @@ void Player::checkGround(physx::PxScene* scene, float deltaTime)
     m_onGround = false;
     return;
 }
+
+Vec3 Player::pos()
+{
+    physx::PxTransform pose = m_actor->getGlobalPose();
+    return Vec3(pose.p);
+}

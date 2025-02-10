@@ -121,6 +121,7 @@ public:
 
 		m_camera->addPipeline(m_pipeline);
 		m_player = new Player(m_world, m_camera, m_phySys, m_scene);
+		m_world->player(m_player);
 		m_scene->simulate(0);
 	}
 	void run()

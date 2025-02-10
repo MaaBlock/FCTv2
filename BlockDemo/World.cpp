@@ -1,20 +1,14 @@
 #include "Chunk.h"
-#include "player.h"
+#include "Player.h"
 #include "BlockMesh.h"
 #include "World.h"
 #include "Camera.h"
-/*
-World::World(Player *player)
-{
-    this->player = player;
-}
-
-*/
 
 World::World(Pipeline* pl, PhysicsSystem* phySys, physx::PxScene* scene, Camera* camera)
     : pipeline(pl), m_phySys(phySys),
     m_scene(scene), m_camera(camera)
 {
+    /*
     for (int x = -64; x <= 64; ++x)
     {
         for (int z = -64; z <= 64; ++z)
@@ -33,7 +27,31 @@ World::World(Pipeline* pl, PhysicsSystem* phySys, physx::PxScene* scene, Camera*
             }
         }
     }
+    */
     generateChunkMeshes();
+}
+
+void World::player(Player* player)
+{
+    m_player = player;
+}
+
+void World::updata()
+{
+    for (auto& pair : chunkMeshes)
+    {
+        pair.second->updata();
+    }
+    Block::texture->bind();
+    Vec2 playerChunkPos = getChunkPos(m_player->pos());
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int z = -1; z <= 1; ++z)
+        {
+            Vec2 chunkPos = playerChunkPos + Vec2(x, z);
+            getOrCreateChunk(chunkPos);
+        }
+    }
 }
 
 void World::selectBlock(bool& isLPress, bool& isRPress)
