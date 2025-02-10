@@ -9,9 +9,9 @@ void BlockMesh::setWorld(World* world)
     m_actor = m_phySys->createStaticRigidBody(Vec3(0, 0, 0));
     world->m_scene->addActor(*m_actor);
 }
-void BlockMesh::addFace(Vec3 pos, BlockFace face, Vec4 color)
-
+void BlockMesh::addFace(Vec3 pos, BlockFace face, unsigned id, Vec4 color)
 {
+    auto drawId = getFaceId(id, face);
     Vec3 halfNormal = getHalfNomal(face);
     Vec3 halfTangent = getHalfTangent(face);
     Vec3 halfBitangent = getHalfBitangent(face);
@@ -20,6 +20,11 @@ void BlockMesh::addFace(Vec3 pos, BlockFace face, Vec4 color)
     vertices[1] = pos + halfNormal + halfTangent - halfBitangent;
     vertices[2] = pos + halfNormal - halfTangent - halfBitangent;
     vertices[3] = pos + halfNormal - halfTangent + halfBitangent;
+	Vec2 texcoords[4];
+	texcoords[0] = Vec2(0, 0);
+	texcoords[1] = Vec2(0, 1);
+	texcoords[2] = Vec2(1, 1);
+    texcoords[3] = Vec2(1, 0);
     int startVertex;
     if (m_memroy.empty()) {
         startVertex = m_vertexArray->getVertexCount();
@@ -33,27 +38,33 @@ void BlockMesh::addFace(Vec3 pos, BlockFace face, Vec4 color)
 
     m_vertexArray->setAttribute(startVertex, m_positionOffset, vertices[0]);
     m_vertexArray->setAttribute(startVertex, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex, m_texcoordOffset, Vec2(1, 1));
+    m_vertexArray->setAttribute(startVertex, m_texcoordOffset, texcoords[0]);
+    m_vertexArray->setAttribute(startVertex, m_typeIdOffset, drawId);
 
     m_vertexArray->setAttribute(startVertex + 1, m_positionOffset, vertices[1]);
     m_vertexArray->setAttribute(startVertex + 1, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex + 1, m_texcoordOffset, Vec2(1, 0));
+    m_vertexArray->setAttribute(startVertex + 1, m_texcoordOffset, texcoords[1]);
+    m_vertexArray->setAttribute(startVertex + 1, m_typeIdOffset, drawId);
 
     m_vertexArray->setAttribute(startVertex + 2, m_positionOffset, vertices[2]);
     m_vertexArray->setAttribute(startVertex + 2, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex + 2, m_texcoordOffset, Vec2(0, 0));
+    m_vertexArray->setAttribute(startVertex + 2, m_texcoordOffset, texcoords[2]);
+    m_vertexArray->setAttribute(startVertex + 2, m_typeIdOffset, drawId);
 
     m_vertexArray->setAttribute(startVertex + 3, m_positionOffset, vertices[0]);
     m_vertexArray->setAttribute(startVertex + 3, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex + 3, m_texcoordOffset, Vec2(1, 1));
+    m_vertexArray->setAttribute(startVertex + 3, m_texcoordOffset, texcoords[0]);
+    m_vertexArray->setAttribute(startVertex + 3, m_typeIdOffset, drawId);
 
     m_vertexArray->setAttribute(startVertex + 4, m_positionOffset, vertices[2]);
     m_vertexArray->setAttribute(startVertex + 4, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex + 4, m_texcoordOffset, Vec2(0, 0));
+    m_vertexArray->setAttribute(startVertex + 4, m_texcoordOffset, texcoords[2]);
+    m_vertexArray->setAttribute(startVertex + 4, m_typeIdOffset, drawId);
 
     m_vertexArray->setAttribute(startVertex + 5, m_positionOffset, vertices[3]);
     m_vertexArray->setAttribute(startVertex + 5, m_colorOffset, color);
-    m_vertexArray->setAttribute(startVertex + 5, m_texcoordOffset, Vec2(0, 1));
+    m_vertexArray->setAttribute(startVertex + 5, m_texcoordOffset, texcoords[3]);
+    m_vertexArray->setAttribute(startVertex + 5, m_typeIdOffset, drawId);
 
     m_blockVertices[pos].beginVertex[face] = startVertex;
     m_blockVertices[pos].endVertex[face] = startVertex + 5;
@@ -75,7 +86,7 @@ void BlockMesh::generateMesh(const Chunk &chunk)
                             for (auto block : chunk.blocks) {
                                 for (int i = BlockFace::BlockFace_Begin + 1; i < BlockFace::BlockFace_End; i++) {
                                     if (!m_world->isBlockAt(block.second->pos + getNomal(BlockFace(i)))) {
-                                        addFace(block.second->pos, BlockFace(i));
+                                        addFace(block.second->pos, BlockFace(i), block.second->type);
                                     }
                                 }
                             }
@@ -113,7 +124,7 @@ void BlockMesh::removeBlock(const Vec3& pos, const Chunk& chunk)
                 m_world->clearFace(pos, BlockFace(i));
             }
             if (m_world->isBlockAt(nearVec)) {
-                m_world->addFace(nearVec, back);
+                m_world->addFace(nearVec, back, m_world->getBlockType(nearVec));
             }
         }
         updataRenderResource();

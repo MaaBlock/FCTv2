@@ -37,6 +37,10 @@ void FCT::VertexFactory::addAttribute(PipelineAttributeType type, const std::str
         dataType = DataType::Vec3;
         defaultName = "bitangent";
         break;
+    case PipelineAttributeType::TextureId:
+        dataType = DataType::Float;
+        defaultName = "textureId";
+        break;
     case PipelineAttributeType::Custom:
         defaultName = "custom";
         break;

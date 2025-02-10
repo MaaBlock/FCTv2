@@ -125,6 +125,29 @@ inline Vec3 getHalfBitangent(BlockFace face)
         return Vec3(0, 0, 0);
     }
 }
+inline float getFaceId(size_t blockId, BlockFace face){
+    switch (face)
+    {
+    case BlockFace_Begin:
+        break;
+    case Right_Xpositive:
+    case Left_Xnegative:
+    case Front_Zpositive:
+    case Back_Znegative:
+		return blockId;
+        break;
+    case Top_Ypositive:
+        return blockId + BlockTypeSize;
+        break;
+    case Bottom_Ynegative:
+        return blockId + 2 * BlockTypeSize;
+        break;
+    case BlockFace_End:
+        break;
+    default:
+        break;
+    }
+}
 class World;
 class BlockMesh : public Object
 {
@@ -133,6 +156,7 @@ private:
     size_t m_positionOffset;
     size_t m_colorOffset;
     size_t m_texcoordOffset;
+    size_t m_typeIdOffset;
     VertexArray *m_vertexArray;
     PhysicsSystem* m_phySys;
     physx::PxTriangleMesh* m_physxMesh;
@@ -156,7 +180,7 @@ private:
     DrawCall *m_dc;
     VertexBuffer *m_buffer;
     InputLayout *m_inputlayout;
-    Texture *m_texture;
+    TextureArray *m_texture;
     World* m_world;
     bool m_isReady;
     bool m_needUpdataResource = false;
@@ -191,6 +215,7 @@ public:
         m_positionOffset = m_vertexArray->getAttributeOffset("position");
         m_colorOffset = m_vertexArray->getAttributeOffset("color");
         m_texcoordOffset = m_vertexArray->getAttributeOffset("TexCoord");
+        m_typeIdOffset = m_vertexArray->getAttributeOffset("typeId");
         Context *ctx = m_pl->getContext();
         m_buffer = ctx->createVertexBuffer(m_vertexArray);
         m_buffer->create(ctx);
@@ -206,7 +231,7 @@ public:
         m_physxMesh = nullptr;
     }
     void setWorld(World* world);
-    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
+    void addFace(Vec3 pos, BlockFace face,  unsigned id = 0, Vec4 color = Vec4(1, 1, 1, 1));
     void updata();
     void updataResource() {
         updataRenderResource();
@@ -218,7 +243,7 @@ public:
         m_dc->setCount(m_vertexArray->getVertexCount());
     }
 
-    void texture(Texture *texture)
+    void texture(TextureArray*texture)
     {
         m_texture = texture;
         m_resources[0] = texture;

@@ -68,7 +68,7 @@ public:
         physx::PxTransform pose = m_actor->getGlobalPose();
         if (keyState['T']) {
 			physx::PxTransform newPose = pose;
-            newPose.p = Vec3(0, 5, 0);
+            newPose.p = Vec3(0, 15, 0);
             m_actor->setGlobalPose(newPose);
         }
         if (movement.x != 0.0f || movement.z != 0.0f)

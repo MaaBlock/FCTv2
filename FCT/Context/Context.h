@@ -8,6 +8,7 @@
 #include "./DrawCall.h"
 #include "./ConstBuffer.h"
 #include "./Texture.h"
+#include "./TextureArray.h"
 namespace FCT {
 	class VertexBuffer;
 	class InputLayout;
@@ -25,6 +26,7 @@ namespace FCT {
 		virtual DrawCall* createDrawCall(PrimitiveType primitiveType, uint32_t startVertex, uint32_t vertexCount) = 0;
 		virtual ConstBuffer* createConstBuffer() = 0;
 		virtual Texture* createTexture() = 0;
+		virtual TextureArray* createTextureArray() = 0;
 	private:
 
 	};

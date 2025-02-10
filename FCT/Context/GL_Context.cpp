@@ -69,4 +69,9 @@ namespace FCT {
 		return new GL_ConstBuffer(this);
 	}
 
+	TextureArray* GL_Context::createTextureArray()
+	{
+		return new GL_TextureArray();
+	}
+
 }

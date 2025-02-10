@@ -46,8 +46,31 @@ namespace FCT {
         ss << "#version 320 es\n\n";
         ss << "precision highp float;\n";
         ss << "precision highp int;\n";
+        ss << "precision highp sampler2D;\n";
+        ss << "precision highp sampler2DArray;\n";
+
+        bool hasColorAttribute = false;
+        bool hasTexCoordAttribute = false;
+        bool hasTextureId = false;
+        for (const auto& output : m_vertexOutput.getOutputs()) {
+            if (output.type == PipelineAttributeType::Color4f) {
+                hasColorAttribute = true;
+            }
+            if (output.type == PipelineAttributeType::TexCoord2f) {
+                hasTexCoordAttribute = true;
+            }
+            if (output.type == PipelineAttributeType::TextureId) {
+                hasTextureId = true;
+            }
+        }
         //ss << "#extension GL_ARB_shading_language_420pack : enable\n";
-        ss << "layout(binding = 3) uniform sampler2D mainTexture;\n\n";
+        if (hasTextureId) {
+            ss << "layout(binding = 3) uniform sampler2DArray mainTexture;\n\n";
+        }
+        else {
+            ss << "layout(binding = 3) uniform sampler2D mainTexture;\n\n";
+        }
+        
         ss << "struct PixelInput {\n";
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    " << GetDataTypeName(output.dataType) << " " << output.name << ";\n";
@@ -55,16 +78,8 @@ namespace FCT {
         ss << "};\n\n";
 
         ss << "struct PixelOutput {\n";
-        bool hasColorAttribute = false;
-        bool hasTexCoordAttribute = false;
         for (const auto& output : m_vertexOutput.getOutputs()) {
             ss << "    " << GetDataTypeName(output.dataType) << " " << output.name << ";\n";
-            if (output.type == PipelineAttributeType::Color4f) {
-                hasColorAttribute = true;
-            }
-            if (output.type == PipelineAttributeType::TexCoord2f) {
-				hasTexCoordAttribute = true;
-            }
         }
         if (!hasColorAttribute) {
             ss << "    vec4 color;\n";
@@ -77,7 +92,6 @@ namespace FCT {
             locationCounter++;
         }
         ss << "\nlayout (location = 0)out vec4 FragColor;\n\n";
-
         ss << "PixelOutput fct_user_main(PixelInput);\n\n";
 
         ss << "void main() {\n";
@@ -87,10 +101,20 @@ namespace FCT {
         }
         if (hasTexCoordAttribute) {
             if (hasColorAttribute) {
-                ss << "ps_input." << getColorName() << " *= texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
+                if (hasTextureId) {
+                    ss << "ps_input." << getColorName() << " *= texture(mainTexture, vec3(ps_input." << getTexCoordName() << ",ps_input." << getTextureIdName() << ")); \n";
+                }
+                else {
+                    ss << "ps_input." << getColorName() << " *= texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
+                }
 			}
 			else {
-                ss << "ps_input." << getColorName() << " = texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
+                if (hasTextureId) {
+                    ss << "ps_input." << getColorName() << " = texture(mainTexture, vec3(ps_input." << getTexCoordName() << ",ps_input." << getTextureIdName() << ")); \n";
+                }
+                else {
+                    ss << "ps_input." << getColorName() << " = texture(mainTexture, ps_input." << getTexCoordName() << "); \n";
+                }
             }
         }
         ss << "    PixelOutput ps_output = fct_user_main(ps_input);\n";
@@ -140,6 +164,13 @@ namespace FCT {
         }
         return "";
     }
+	std::string PixelShader::getTextureIdName() const {
+		for (const auto& output : m_vertexOutput.getOutputs()) {
+			if (output.type == PipelineAttributeType::TextureId) {
+				return output.name;
+			}
+		}
+	}
 
     std::string PixelShader::getColorName() const {
         for (const auto& output : m_vertexOutput.getOutputs()) {

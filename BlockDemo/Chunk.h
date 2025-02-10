@@ -44,6 +44,9 @@ public:
         }
     }
 
+    unsigned getBlockType(Vec3 pos) {
+		return (isBlockAt(pos)) ? blocks[pos]->type : 0;
+    }
     Vec3 worldPosToChunkPos(Vec3 worldPos) const
     {
         return Vec3(

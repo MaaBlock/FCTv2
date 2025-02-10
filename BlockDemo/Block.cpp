@@ -3,7 +3,14 @@
 Context* Block::ctx = nullptr;
 VertexFactory* Block::factory = nullptr;
 ImageLoader* Block::il = nullptr;
-Texture* Block::texture = nullptr;
+TextureArray* Block::texture = nullptr;
+std::string BlockIdMap[] =
+{
+	"Stone",
+	"Dirt",
+	"Grass"
+};
+const int BlockTypeSize = 3;
 /*
 Block* CreateBlock(BlockType type)
 {

@@ -34,6 +34,7 @@ void GL_Texture::create(unsigned int width, unsigned int height, Format format) 
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 
+    GL_Check("glBindTexture");
     glTexImage2D(GL_TEXTURE_2D, 0, getGLInternalFormat(), width, height, 0, getGLFormat(), getGLDataType(), nullptr);
     GL_Check("glTexImage2D");
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

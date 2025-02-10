@@ -156,6 +156,7 @@
     <ClInclude Include="Context\D3D11_Context.h" />
     <ClInclude Include="Context\DataTypes.h" />
     <ClInclude Include="Context\DrawCall.h" />
+    <ClInclude Include="Context\GLES_TextureArray.h" />
     <ClInclude Include="Context\GL_ConstBuffer.h" />
     <ClInclude Include="Context\GL_Context.h" />
     <ClInclude Include="Context\GL_ContextShareData.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Context\ShaderOutput.h" />
     <ClInclude Include="Context\TextPipeline.h" />
     <ClInclude Include="Context\Texture.h" />
+    <ClInclude Include="Context\TextureArray.h" />
     <ClInclude Include="Context\VertexArray.h" />
     <ClInclude Include="Context\VertexBuffer.h" />
     <ClInclude Include="Context\VertexFactory.h" />
@@ -213,6 +215,7 @@
     <ClCompile Include="Context\Context.cpp" />
     <ClCompile Include="Context\DataTypes.cpp" />
     <ClCompile Include="Context\DrawCall.cpp" />
+    <ClCompile Include="Context\GLES_TextureArray.cpp" />
     <ClCompile Include="Context\GL_ConstBuffer.cpp" />
     <ClCompile Include="Context\GL_Context.cpp" />
     <ClCompile Include="Context\GL_ContextShareData.cpp" />
@@ -227,6 +230,7 @@
     <ClCompile Include="Context\PixelShader.cpp" />
     <ClCompile Include="Context\ShaderOutput.cpp" />
     <ClCompile Include="Context\Texture.cpp" />
+    <ClCompile Include="Context\TextureArray.cpp" />
     <ClCompile Include="Context\VertexBuffer.cpp" />
     <ClCompile Include="Context\VertexFactory.cpp" />
     <ClCompile Include="Context\VertexRenderPipeline.cpp" />

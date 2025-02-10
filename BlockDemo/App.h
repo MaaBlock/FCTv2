@@ -75,7 +75,8 @@ public:
 		m_vf = new VertexFactory();
 		m_vf->addAttribute(PipelineAttributeType::Position3f, "position");
 		m_vf->addAttribute(PipelineAttributeType::Color4f, "color");
-		m_vf->addAttribute(FCT::PipelineAttributeType::TexCoord2f, "TexCoord");
+		m_vf->addAttribute(PipelineAttributeType::TexCoord2f, "TexCoord");
+		m_vf->addAttribute(PipelineAttributeType::TextureId, "typeId");
 		m_pipeline = new Pipeline(m_ctx, m_vf);
 		reviewport();
 
@@ -88,7 +89,7 @@ public:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		m_phySys = m_rt.createPhysicsSystem();
 		m_scene = m_phySys->createBasicScene();
-		m_camera = new Camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3, 0.0f));
+		m_camera = new Camera(FCT::Vec3(0.0f, 0.5f + 1.6f + 3 + 5 + 10 + 15 + 50, 0.0f));
 		m_world = new World(m_pipeline, m_phySys, m_scene, m_camera);
 		m_wnd->getCallBack()->addKeyDownCallback([this](FCT::Window *wnd, int key)
 												 { m_keyState[key] = true; });

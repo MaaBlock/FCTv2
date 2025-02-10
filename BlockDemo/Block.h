@@ -1,6 +1,8 @@
 #pragma once
 #include "../FCT/headers.h"
 using namespace FCT;
+extern std::string BlockIdMap[];
+extern const int BlockTypeSize;
 /*
 enum class BlockType {
 	grass
@@ -11,6 +13,7 @@ struct Block : public RefCount
 };
 Block* CreateBlock(BlockType type);
 */
+
 class Block
 {
 public:
@@ -18,24 +21,37 @@ public:
     static Context* ctx;
     static VertexFactory* factory;
     static ImageLoader* il;
-    static Texture* texture;
+    static TextureArray* texture;
+    unsigned type;
     Vec3 pos;
+    static std::vector<std::string> getPaths() {
+        std::vector<std::string> ret;
+        for (int i = 0; i < BlockTypeSize; i++) {
+            ret.push_back("res/" + BlockIdMap[i] + "_Side.png");
+        }
+        for (int i = 0; i < BlockTypeSize; i++) {
+            ret.push_back("res/" + BlockIdMap[i] + "_Top.png");
+        }
+        for (int i = 0; i < BlockTypeSize; i++) {
+            ret.push_back("res/" + BlockIdMap[i] + "_Bottom.png");
+        }
+        return ret;
+    }
     static void Init(Context* ctx, VertexFactory* factory, ImageLoader* il)
     {
         Block::ctx = ctx;
         Block::factory = factory;
         Block::il = il;
-        texture = ctx->createTexture();
+        texture = ctx->createTextureArray();
+        texture->create(64, 64, BlockTypeSize * 3, TextureArray::Format::RGBA8);
         texture->setSlot(3);
-        if (texture->loadFromFile("MaBlock.png", il))
-        {
-            std::cout << "Texture loaded successfully" << std::endl;
-        }
+        texture->loadFromFile(getPaths(), il);
+
     }
     Block()
     {
         box = new Box(ctx, factory);
-        box->texture(texture);
+        //box->texture(texture);
         box->size(FCT::Vec3(1, 1, 1));
         box->setTextureCoordinates();
         box->color(Vec4(1, 1, 1, 1));

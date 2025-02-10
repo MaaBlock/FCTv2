@@ -22,6 +22,15 @@ public:
             std::round(hitPosition.y - 0.1 * normal.y),
             std::round(hitPosition.z - 0.1 * normal.z));
     }
+    unsigned getBlockType(Vec3 pos) {
+        Vec2 chunkPos = getChunkPos(pos);
+        auto chunkIt = chunks.find(chunkPos);
+        if (chunkIt != chunks.end())
+        {
+            return chunkIt->second.getBlockType(pos);
+        }
+		return 0;
+	}
     Vec3 getAdjacentBlockPosition(const Vec3 &blockPos, const Vec3&normal)
     {
         return Vec3(
@@ -71,18 +80,19 @@ public:
             delete pair.second;
         }
     }
-    void setBlock(Vec3 pos)
+    void setBlock(Vec3 pos,unsigned id)
     {
 
         Vec2 chunkPos = getChunkPos(pos);
         Chunk &chunk = getOrCreateChunk(chunkPos);
         Block *block = new Block;
+        block->type = id;
         block->setPos(pos);
         chunk.addBlock(pos, block);
     }
     bool canPlaceBlock(Vec3 blockPosition)
     {
-        physx::PxBoxGeometry boxGeom(0.5f, 0.5f, 0.5f);
+        physx::PxBoxGeometry boxGeom(0.49f, 0.49f, 0.49f);
         physx::PxTransform blockTransform(blockPosition);
 
         physx::PxOverlapBuffer hit;
@@ -178,7 +188,7 @@ public:
     }
     void render(Pipeline *pipeline, const Vec3 &playerPosition)
     {
-
+        Block::texture->bind();
         Vec2 playerChunkPos = getChunkPos(playerPosition);
         for (int x = -1; x <= 1; ++x)
         {
@@ -194,7 +204,7 @@ public:
         }
     }
     void selectBlock(bool& isLPress, bool& isRPress);
-    void addFace(Vec3 pos, BlockFace face, Vec4 color = Vec4(1, 1, 1, 1));
+    void addFace(Vec3 pos, BlockFace face,unsigned id = 0, Vec4 color = Vec4(1, 1, 1, 1));
     void clearFace(Vec3 vec, BlockFace face);
     void lightenFace(const Vec3 &pos, BlockFace face, float light);
     void updataMeshRenderSource(const Vec3 &pos);

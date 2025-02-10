@@ -19,9 +19,17 @@ World::World(Pipeline* pl, PhysicsSystem* phySys, physx::PxScene* scene, Camera*
     {
         for (int z = -64; z <= 64; ++z)
         {
-            for (int y = 0; y < 1; ++y)
+            for (int y = 0; y < 3; ++y)
             {
-                setBlock(Vec3(x, y, z));
+                setBlock(Vec3(x, y, z),0);
+            }
+            for (int y = 3; y < 5; ++y)
+            {
+                setBlock(Vec3(x, y, z), 1);
+            }
+            for (int y = 5; y < 6; ++y)
+            {
+                setBlock(Vec3(x, y, z), 2);
             }
         }
     }
@@ -53,12 +61,13 @@ void World::selectBlock(bool& isLPress, bool& isRPress)
         unselect();
     }
 }
-void World::addFace(Vec3 pos, BlockFace face, Vec4 color)
+
+void World::addFace(Vec3 pos, BlockFace face,unsigned id, Vec4 color)
 {
     Vec2 chunkPos = getChunkPos(pos);
     auto meshIt = chunkMeshes.find(chunkPos);
     if (meshIt != chunkMeshes.end()) {
-        meshIt->second->addFace(pos, face, color);
+        meshIt->second->addFace(pos, face,id, color);
         meshIt->second->updataResource();
     }
 }

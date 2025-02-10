@@ -49,6 +49,14 @@ namespace FCT {
 
         FreeImage_ConvertToRawBits(imageData.data.data(), dibConverted, pitch, 32,
             FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, TRUE);
+        
+        for (unsigned int y = 0; y < imageData.height; ++y) {
+            for (unsigned int x = 0; x < imageData.width; ++x) {
+                unsigned int offset = (y * pitch) + (x * 4); 
+                std::swap(imageData.data[offset], imageData.data[offset + 2]);
+            }
+        }
+
 
         FreeImage_Unload(dibConverted);
 

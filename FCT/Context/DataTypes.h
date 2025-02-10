@@ -39,6 +39,7 @@ namespace FCT
         Tangent3f,
         Bitangent3f,
         BatchId,
+        TextureId,
         Custom,
     };
     inline void TranslagteAttributeType(PipelineAttributeType attribute, DataType &type)
@@ -69,6 +70,9 @@ namespace FCT
         case PipelineAttributeType::Bitangent3f:
             type = DataType::Vec3;
             break;
+		case PipelineAttributeType::TextureId:
+            type = DataType::Float;
+            break;
         default:
             break;
         }
@@ -93,6 +97,8 @@ namespace FCT
             return "tangent";
         case PipelineAttributeType::Bitangent3f:
             return "bitangent";
+        case PipelineAttributeType::TextureId:
+			return "textureId";
         case PipelineAttributeType::Custom:
             return "custom";
         }

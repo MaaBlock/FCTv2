@@ -19,6 +19,7 @@ namespace FCT {
 		DrawCall* createDrawCall(PrimitiveType primitiveType, uint32_t startVertex, uint32_t vertexCount) override;
 		Texture* createTexture() override;
 		ConstBuffer* createConstBuffer() override;
+		TextureArray* createTextureArray() override;
 	private:
 		GL_ContextShareData* g_shareData;
 		Runtime* g_runtime;
