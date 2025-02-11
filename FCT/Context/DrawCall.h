@@ -22,6 +22,9 @@ namespace FCT {
 		void setCount(uint32_t count){
 			m_vertexCount = count;
 		}
+		void primitive(PrimitiveType primitive) {
+			m_primitiveType = primitive;
+		}
 		void bind() override = 0;
 		void unbind() override = 0;
 

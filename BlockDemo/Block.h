@@ -17,7 +17,6 @@ Block* CreateBlock(BlockType type);
 class Block
 {
 public:
-    Box* box;
     static Context* ctx;
     static VertexFactory* factory;
     static ImageLoader* il;
@@ -50,21 +49,13 @@ public:
     }
     Block()
     {
-        box = new Box(ctx, factory);
-        //box->texture(texture);
-        box->size(FCT::Vec3(1, 1, 1));
-        box->setTextureCoordinates();
-        box->color(Vec4(1, 1, 1, 1));
-        box->create();
     }
     ~Block()
     {
-        box->release();
     }
     void setPos(Vec3 pos)
     {
         this->pos = pos;
-        box->setPosition(pos);
     }
     void render(Pipeline* pipeline)
     {

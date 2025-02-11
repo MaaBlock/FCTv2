@@ -1,4 +1,8 @@
 #include "Chunk.h"
+
+module::Perlin Chunk::baseNoise;
+module::Billow Chunk::detailNoise;
+module::Add Chunk::combinedNoise;
 /*
 Pipeline* Chunk::m_pl = nullptr;
 void Chunk::render()

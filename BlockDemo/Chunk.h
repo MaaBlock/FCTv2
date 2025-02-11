@@ -1,14 +1,17 @@
 #pragma once
 #include "Block.h"
 #include "../FCT/headers.h"
+#include <noise/noise.h>
 using namespace FCT;
+using namespace noise;
+#pragma comment(lib,"libnoise.lib")
 
 namespace std
 {
     template <>
     struct hash<Vec2>
     {
-        size_t operator()(const Vec2& v) const
+        size_t operator()(const Vec2 &v) const
         {
             return ((v.x + v.y) * (v.x + v.y + 1) / 2) + v.y;
         }
@@ -16,7 +19,7 @@ namespace std
     template <>
     struct hash<FCT::Vec3>
     {
-        size_t operator()(const FCT::Vec3& v) const
+        size_t operator()(const FCT::Vec3 &v) const
         {
             size_t h1 = std::hash<float>{}(v.x);
             size_t h2 = std::hash<float>{}(v.y);
@@ -31,40 +34,84 @@ struct Chunk
 {
 public:
     static const int CHUNK_SIZE = 16;
+    static module::Perlin baseNoise;
+    static module::Billow detailNoise;
+    static module::Add combinedNoise;
+    bool m_isInit;
+    static void Init()
+    {
+        Chunk::baseNoise.SetOctaveCount(6);
+        Chunk::baseNoise.SetFrequency(0.01);
+        Chunk::baseNoise.SetPersistence(0.5);
+
+        Chunk::detailNoise.SetOctaveCount(8);
+        Chunk::detailNoise.SetFrequency(0.03);
+        Chunk::detailNoise.SetPersistence(0.5);
+
+        Chunk::combinedNoise.SetSourceModule(0, Chunk::baseNoise);
+        Chunk::combinedNoise.SetSourceModule(1, Chunk::detailNoise);
+    }
     Vec2 chunkPos;
-    std::unordered_map<Vec3, Block*> blocks;
+    Vec2 m_pos;
+    bool m_isReady;
+    std::unordered_map<Vec3, Block *> blocks;
+    bool isReady() {
+        return m_isReady;
+    }
+    void generate() {
+        Vec3 offset = Vec3(m_pos.x * CHUNK_SIZE, 0, m_pos.y * CHUNK_SIZE);
+        for (int i = 0; i < CHUNK_SIZE; i++)
+        {
+            for (int j = 0; j < CHUNK_SIZE; j++)
+            {
+                double worldX = offset.x + i;
+                double worldZ = offset.z + j;
 
-    Chunk(Vec2 pos) : chunkPos(pos) {
-        Vec3 offset = Vec3(pos.x * 16, 0, pos.y * 16);
-        for (int i = 0; i < 16; i++) {
+                double value = combinedNoise.GetValue(worldX * 0.01, worldZ * 0.01, 0);
+                int height = static_cast<int>((value + 1) * 32) + 64;
 
-			for (int j = 0; j < 16; j++) {
-                for (int y = 0; y < 3; ++y)
+                for (int y = 0; y < height; ++y)
                 {
-                    newBlock(offset + Vec3(i, y, j), 0);
-                }
-                for (int y = 3; y < 5; ++y)
-                {
-                    newBlock(offset + Vec3(i, y, j), 1);
-                }
-                for (int y = 5; y < 6; ++y)
-                {
-                    newBlock(offset + Vec3(i, y, j), 2);
+                    unsigned blockType;
+                    if (y == height - 1)
+                    {
+                        blockType = 2;
+                    }
+                    else if (y > height - 4)
+                    {
+                        blockType = 1;
+                    }
+                    else
+                    {
+                        blockType = 0;
+                    }
+                    newBlock(offset + Vec3(i, y, j), blockType);
                 }
             }
         }
+        m_isReady = true;
     }
-
+    Chunk(Vec2 pos) : chunkPos(pos), m_pos(pos)
+    {
+        m_isReady = false;
+        m_isInit = false;
+    }
     ~Chunk()
     {
-        for (auto& pair : blocks)
+        for (auto &pair : blocks)
         {
             delete pair.second;
         }
     }
-
-    unsigned getBlockType(Vec3 pos) {
-		return (isBlockAt(pos)) ? blocks[pos]->type : 0;
+    bool isInit() const {
+        return m_isInit;
+    }
+    void isInit(bool inited) {
+        m_isInit = inited;
+    }
+    unsigned getBlockType(Vec3 pos)
+    {
+        return (isBlockAt(pos)) ? blocks[pos]->type : 0;
     }
     Vec3 worldPosToChunkPos(Vec3 worldPos) const
     {
@@ -74,16 +121,17 @@ public:
             static_cast<int>(worldPos.z) % Chunk::CHUNK_SIZE);
     }
 
-    void addBlock(Vec3 pos, Block* block)
+    void addBlock(Vec3 pos, Block *block)
     {
         blocks[pos] = block;
     }
-    void newBlock(Vec3 pos, unsigned id) {
-        Block* block = new Block;
-		block->type = id;
+    void newBlock(Vec3 pos, unsigned id)
+    {
+        Block *block = new Block;
+        block->type = id;
         block->setPos(pos);
-		addBlock(pos, block);
-	}
+        addBlock(pos, block);
+    }
 
     void removeBlock(Vec3 pos)
     {
@@ -95,7 +143,7 @@ public:
         }
     }
 
-    Block* getBlock(Vec3 pos)
+    Block *getBlock(Vec3 pos)
     {
         auto it = blocks.find(pos);
         return (it != blocks.end()) ? it->second : nullptr;
@@ -106,11 +154,11 @@ public:
         return blocks.find(pos) != blocks.end();
     }
 
-    void render(Pipeline* pipeline)
+    void render(Pipeline *pipeline)
     {
-        //for (const auto& pair : blocks)
+        // for (const auto& pair : blocks)
         //{
-            //pair.second->render(pipeline);
+        // pair.second->render(pipeline);
         //}
     }
 

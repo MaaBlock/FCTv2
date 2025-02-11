@@ -97,7 +97,7 @@ void BlockMesh::generateMesh(const Chunk &chunk)
     }
 }
 
-void BlockMesh::addBlock(const Vec3& position, const Chunk& chunk)
+void BlockMesh::addBlock(const Vec3& position, Chunk* chunk)
 {
     if (m_isReady) {
         for (int i = BlockFace::BlockFace_Begin + 1; i < BlockFace::BlockFace_End; i++) {
@@ -114,7 +114,7 @@ void BlockMesh::addBlock(const Vec3& position, const Chunk& chunk)
         updataPhysxResource();
     }
 }
-void BlockMesh::removeBlock(const Vec3& pos, const Chunk& chunk)
+void BlockMesh::removeBlock(const Vec3& pos, Chunk* chunk)
 {
     if (m_isReady) {
         for (int i = BlockFace::BlockFace_Begin + 1; i < BlockFace::BlockFace_End; i++) {

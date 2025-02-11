@@ -16,6 +16,10 @@ public:
     physx::PxScene *m_scene;
     Camera* m_camera;
     Player* m_player;
+    bool m_onlyDrawLines;
+    void onlyDrawLines(bool onlyDrawLines) {
+        m_onlyDrawLines = onlyDrawLines;
+    }
     World(Pipeline* pl, PhysicsSystem* phySys, physx::PxScene* scene, Camera* camera);
     Vec3 getBlockPositionFromHit(const Vec3 &hitPosition, const Vec3& normal)
     {
@@ -87,11 +91,11 @@ public:
     {
 
         Vec2 chunkPos = getChunkPos(pos);
-        Chunk &chunk = getOrCreateChunk(chunkPos);
+        Chunk* chunk = getOrCreateChunk(chunkPos);
         Block *block = new Block;
         block->type = id;
         block->setPos(pos);
-        chunk.addBlock(pos, block);
+        chunk->addBlock(pos, block);
     }
     bool canPlaceBlock(Vec3 blockPosition)
     {
@@ -111,11 +115,13 @@ public:
         if (canPlaceBlock(pos))
         {
             Vec2 chunkPos = getChunkPos(pos);
-            Chunk &chunk = getOrCreateChunk(chunkPos);
-
+            Chunk* chunk = getOrCreateChunk(chunkPos);
+            if (!chunk)
+                return;
             Block *block = new Block;
             block->setPos(pos);
-            chunk.addBlock(pos, block);
+            block->type = 0;
+            chunk->addBlock(pos, block);
 
             auto meshIt = chunkMeshes.find(chunkPos);
             if (meshIt != chunkMeshes.end())
@@ -135,7 +141,7 @@ public:
         auto meshIt = chunkMeshes.find(chunkPos);
         if (meshIt != chunkMeshes.end())
         {
-            meshIt->second->removeBlock(pos, chunkIt->second);
+            meshIt->second->removeBlock(pos, &chunkIt->second);
         }
     }
     void render(const Vec3 &playerPosition)
@@ -169,7 +175,15 @@ public:
             auto chunkIt = chunks.find(chunkPos);
             if (chunkIt != chunks.end())
             {
-                return chunkIt->second.isBlockAt(blockCenter);
+                if (chunkIt->second.isInit()) {
+                    return chunkIt->second.isBlockAt(blockCenter);
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return true;
             }
         }
         return false;
@@ -197,6 +211,7 @@ public:
                 auto chunkIt = chunkMeshes.find(chunkPos);
                 if (chunkIt != chunkMeshes.end())
                 {
+                    chunkIt->second->onlyDrawLines(m_onlyDrawLines);
                     pipeline->draw(chunkIt->second);
                 }
             }
@@ -251,18 +266,29 @@ private:
             floor(worldPos.z / Chunk::CHUNK_SIZE));
     }
 
-    Chunk &getOrCreateChunk(const Vec2 &chunkPos)
+    Chunk* getOrCreateChunk(const Vec2 &chunkPos)
     {
         auto it = chunks.find(chunkPos);
         if (it == chunks.end())
         {
-
             auto result = chunks.emplace(std::piecewise_construct,
                                          std::forward_as_tuple(chunkPos),
                                          std::forward_as_tuple(chunkPos));
-            updateChunkMesh(chunkPos);
-            return result.first->second;
+            auto it = chunks.find(chunkPos);
+            std::thread thread([it, this, chunkPos]() {
+                it->second.generate();
+                });
+            thread.detach();
         }
-        return it->second;
+        else {
+            if (it->second.isReady()) {
+                if (!it->second.isInit()) {
+                    updateChunkMesh(chunkPos);
+                    it->second.isInit(true);
+                }
+                return  &it->second;
+            }
+        }
+        return nullptr;
     }
 };

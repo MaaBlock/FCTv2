@@ -187,6 +187,7 @@ private:
     static const int CHUNK_SIZE = 16;
     static const int CHUNK_HEIGHT = 256;
 
+    bool m_onlyDrawLines;
 public:
     void updataPhysxResource() {
         if (m_physxMesh) {
@@ -202,6 +203,12 @@ public:
     }
     void create()
     {
+    }
+    void onlyDrawLines(bool onlyDrawLines) {
+        if (onlyDrawLines)
+            m_dc->primitive(PrimitiveType::Lines);
+        else 
+            m_dc->primitive(PrimitiveType::Triangles);
     }
     void draw() const {
         if (!m_isReady)
@@ -267,8 +274,8 @@ public:
             m_blockVertices[vec].beginVertex[face] = 0;
         }
     }
-    void addBlock(const Vec3& position, const Chunk& chunk);
-    void removeBlock(const Vec3& pos, const Chunk& chunk);
+    void addBlock(const Vec3& position, Chunk* chunk);
+    void removeBlock(const Vec3& pos, Chunk* chunk);
 	void lightenFace(const Vec3& pos, BlockFace face,float light);
 private:
 };

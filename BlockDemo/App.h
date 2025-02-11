@@ -50,7 +50,7 @@ public:
 	float m_groundCheckTimer = 0.0f;
 	void init()
 	{
-
+		Chunk::Init();
 		m_abcFont = m_rt.createFont();
 		m_cnFont = m_rt.createFont();
 		m_emjFont = m_rt.createFont();
@@ -159,6 +159,12 @@ public:
 		m_camera->updata();
 		m_world->updata();
 		m_scene->simulate(deltaTime);
+		if (m_keyState['R']) {
+			m_world->onlyDrawLines(true);
+		}
+		else {
+			m_world->onlyDrawLines(false);
+		}
 	}
 	void renderTick()
 	{

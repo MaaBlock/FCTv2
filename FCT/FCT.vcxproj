@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\glad;.\vcpkg_installed\x64-windows\x64-windows\include\physx;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\glad;..\libs\include;.\vcpkg_installed\x64-windows\x64-windows\include\physx;$(IncludePath)</IncludePath>
+    <LibraryPath>..\x64\Debug;..\libs\lib\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>../glad;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -183,6 +183,7 @@
     <ClInclude Include="Context\VertexFactory.h" />
     <ClInclude Include="Context\VertexRenderPipeline.h" />
     <ClInclude Include="Context\VertexShader.h" />
+    <ClInclude Include="FCTApi.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="ImageLoader\FreeImage_ImageLoader.h" />

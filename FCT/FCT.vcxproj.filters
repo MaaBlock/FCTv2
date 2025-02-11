@@ -273,6 +273,15 @@
     <ClInclude Include="Physics\Controller.h">
       <Filter>physics\headers</Filter>
     </ClInclude>
+    <ClInclude Include="Context\GLES_TextureArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Context\TextureArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FCTApi.h">
+      <Filter>runtime\headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCT.cpp">
@@ -396,6 +405,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Physics\Controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\GLES_TextureArray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Context\TextureArray.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

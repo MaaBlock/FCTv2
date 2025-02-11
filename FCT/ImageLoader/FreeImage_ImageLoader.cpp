@@ -1,4 +1,4 @@
-#include "FreeImage_ImageLoader.h"
+#include "../FCTApi.h"
 #include <iostream>
 
 namespace FCT {
