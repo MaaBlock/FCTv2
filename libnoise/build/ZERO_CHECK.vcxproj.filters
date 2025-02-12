@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="G:\libnoise-master\build\CMakeFiles\7f7f968f1acb1d6b30b002809efe9a2b\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9164893A-B2F0-3D8A-960F-559008B8233B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

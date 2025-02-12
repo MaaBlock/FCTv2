@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5BFACBEB-5253-3280-8F67-970A0073BAE4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>libnoise</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">G:\libnoise-master\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libnoise.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libnoise</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">G:\libnoise-master\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libnoise.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libnoise</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">G:\libnoise-master\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">libnoise.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">libnoise</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">G:\libnoise-master\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">libnoise.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">libnoise</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>G:\libnoise-master\include;G:\libnoise-master\include\noise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="G:\libnoise-master\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule G:/libnoise-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"E:\Program Files\CMake\bin\cmake.exe" -SG:/libnoise-master -BG:/libnoise-master/build --check-stamp-file G:/libnoise-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeRCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">G:\libnoise-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule G:/libnoise-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"E:\Program Files\CMake\bin\cmake.exe" -SG:/libnoise-master -BG:/libnoise-master/build --check-stamp-file G:/libnoise-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeRCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">G:\libnoise-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule G:/libnoise-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"E:\Program Files\CMake\bin\cmake.exe" -SG:/libnoise-master -BG:/libnoise-master/build --check-stamp-file G:/libnoise-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeRCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">G:\libnoise-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule G:/libnoise-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"E:\Program Files\CMake\bin\cmake.exe" -SG:/libnoise-master -BG:/libnoise-master/build --check-stamp-file G:/libnoise-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeRCInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Compiler\MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\Windows.cmake;E:\Program Files\CMake\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;G:\libnoise-master\build\CMakeFiles\3.31.4\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">G:\libnoise-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="G:\libnoise-master\include\noise\basictypes.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\exception.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\interp.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\latlon.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\mathconsts.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\misc.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\noise.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\noisegen.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\vectortable.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\model\cylinder.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\model\line.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\model\model.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\model\plane.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\model\sphere.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\abs.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\add.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\billow.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\blend.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\cache.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\checkerboard.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\clamp.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\const.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\curve.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\cylinders.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\displace.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\exponent.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\invert.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\max.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\min.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\module.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\modulebase.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\multiply.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\perlin.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\power.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\ridgedmulti.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\rotatepoint.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\scalebias.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\scalepoint.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\select.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\spheres.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\terrace.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\translatepoint.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\turbulence.h" />
+    <ClInclude Include="G:\libnoise-master\include\noise\module\voronoi.h" />
+    <ClCompile Include="G:\libnoise-master\src\latlon.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\noisegen.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\model\cylinder.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\model\line.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\model\plane.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\model\sphere.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\abs.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\add.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\billow.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\blend.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\cache.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\checkerboard.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\clamp.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\const.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\curve.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\cylinders.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\displace.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\exponent.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\invert.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\max.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\min.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\modulebase.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\multiply.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\perlin.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\power.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\ridgedmulti.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\rotatepoint.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\scalebias.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\scalepoint.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\select.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\spheres.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\terrace.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\translatepoint.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\turbulence.cpp" />
+    <ClCompile Include="G:\libnoise-master\src\module\voronoi.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="G:\libnoise-master\build\ZERO_CHECK.vcxproj">
+      <Project>{8D8D868B-B8F0-3AEC-B6B2-B84307D6CF89}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

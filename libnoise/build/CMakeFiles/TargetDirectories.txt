@@ -1,0 +1,4 @@
+G:/libnoise-master/build/CMakeFiles/libnoise.dir
+G:/libnoise-master/build/CMakeFiles/INSTALL.dir
+G:/libnoise-master/build/CMakeFiles/ALL_BUILD.dir
+G:/libnoise-master/build/CMakeFiles/ZERO_CHECK.dir
