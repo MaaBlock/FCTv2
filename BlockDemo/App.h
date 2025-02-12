@@ -26,7 +26,7 @@ private:
 	PhysicsSystem *m_phySys;
 	physx::PxScene *m_scene;
 	bool m_needViewPort;
-	char m_keyState[512] = {};
+	char m_keyState[512];
 	bool m_mouseCanMove = false;
 
 	bool m_leftMousePressed = false;
@@ -34,7 +34,7 @@ private:
 	int m_mouseDx = 0, m_mouseDy = 0;
 
 public:
-	App()
+	App() : m_keyState{}
 	{
 	}
 	~App()

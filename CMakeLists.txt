@@ -3,7 +3,11 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-set(CMAKE_TOOLCHAIN_FILE "G:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+if(DEFINED ENV{VCPKG_ROOT})
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+else()
+    message(WARNING "VCPKG_ROOT environment variable is not set. vcpkg integration may not work.")
+endif()
 
 # 如果支持，请为 MSVC 编译器启用热重载。
 if (POLICY CMP0141)
